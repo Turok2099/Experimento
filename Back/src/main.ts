@@ -14,9 +14,16 @@ let server: Handler;
 async function createApp() {
   const app = await NestFactory.create(AppModule);
 
+  // Configuración de CORS para Vercel
+  const allowedOrigins = process.env.FRONT_ORIGIN
+    ? process.env.FRONT_ORIGIN.split(',')
+    : ['http://localhost:3000', 'https://nuevotrain.vercel.app'];
+
   app.enableCors({
-    origin: (process.env.FRONT_ORIGIN || 'http://localhost:3000').split(','),
+    origin: allowedOrigins,
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
   });
 
   app.use(cookieParser());
@@ -29,8 +36,8 @@ async function createApp() {
   );
 
   const config = new DocumentBuilder()
-    .setTitle('TrainUp API')
-    .setDescription('API del proyecto final')
+    .setTitle('NuevoTrain API')
+    .setDescription('API del sistema de gestión de gimnasio')
     .setVersion('1.0')
     .addBearerAuth()
     .addCookieAuth('refresh_token')
