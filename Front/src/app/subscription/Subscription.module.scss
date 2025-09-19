@@ -1,0 +1,488 @@
+//Subscription.module.scss
+@use "../../styles/utils.scss" as utils;
+
+.contSubscriptionView {
+  width: 100%;
+  min-height: calc(100vh - 5rem);
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5)),
+    url("/images/poster16.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+  z-index: 1;
+  padding: 6rem 1rem 2rem 1rem;
+  gap: 2rem;
+}
+
+.mainContent {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  max-width: 1000px;
+  width: 100%;
+  align-items: center;
+  justify-items: center;
+  margin-bottom: 2rem;
+}
+
+// Panel izquierdo - Plan Premium
+.leftSection {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.planCard {
+  background: linear-gradient(180deg, #6366f1 0%, #4f46e5 50%, #3730a3 100%);
+  border: none;
+  border-radius: 20px;
+  padding: 1.5rem;
+  max-width: 400px;
+  width: 100%;
+  text-align: left;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.planCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.planName {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--colorAmarillo);
+  margin: 0;
+  font-family: "Arial", sans-serif;
+}
+
+.welcomeMessage {
+  margin-bottom: 1.5rem;
+
+  p {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1rem;
+    line-height: 1.4;
+    margin: 0;
+    font-family: "Arial", sans-serif;
+    text-align: center;
+  }
+}
+
+.priceSection {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.currentPrice {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: white;
+  font-family: "Arial", sans-serif;
+}
+
+.originalPrice {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: line-through;
+  font-family: "Arial", sans-serif;
+}
+
+.planBenefits {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem;
+  text-align: left;
+}
+
+.planBenefits li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0.75rem 0;
+  font-size: 1rem;
+  color: white;
+  font-family: "Arial", sans-serif;
+}
+
+.checkIcon {
+  font-size: 1.1rem;
+  color: #90ee90;
+  flex-shrink: 0;
+}
+
+// Panel derecho - Resumen de pago
+.rightSection {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  gap: 1.5rem;
+}
+
+.loading {
+  @include utils.ClassFlexCenter;
+  flex-direction: column;
+  color: white;
+  font-size: 1.4rem;
+  font-weight: 600;
+  text-align: center;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 1.5rem 2rem;
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  gap: 0.5rem;
+
+  p {
+    margin: 0;
+    line-height: 1.5;
+  }
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(255, 255, 255, 0.3);
+  border-top: 5px solid var(--colorAmarillo);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.authRequired {
+  @include utils.ClassFlexCenter;
+  flex-direction: column;
+  color: white;
+  font-size: 1.4rem;
+  font-weight: 600;
+  text-align: center;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 1.5rem 2rem;
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  gap: 0.5rem;
+
+  .authIcon {
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+  }
+
+  h2 {
+    margin: 0 0 1rem 0;
+    font-size: 1.8rem;
+  }
+
+  p {
+    margin: 0 0 2rem 0;
+    font-size: 1.1rem;
+    line-height: 1.6;
+  }
+}
+
+.loginButton {
+  all: unset;
+  cursor: pointer;
+  color: var(--colorAmarillo);
+  font-size: 1.4rem;
+  font-weight: 700;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  background: linear-gradient(45deg, var(--colorAmarillo), #ffd700);
+  color: black;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+  margin: 0.5rem 0;
+  box-shadow: 0 4px 15px rgba(237, 204, 54, 0.3);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(237, 204, 54, 0.5);
+    background: linear-gradient(45deg, #ffd700, var(--colorAmarillo));
+  }
+}
+
+.paymentSection {
+  width: 100%;
+  max-width: 600px;
+}
+
+.error {
+  @include utils.ClassFlexCenter;
+  flex-direction: column;
+  color: white;
+  font-size: 1.4rem;
+  font-weight: 600;
+  text-align: center;
+  width: 100%;
+  background: rgba(220, 38, 38, 0.2);
+  padding: 1.5rem 2rem;
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(220, 38, 38, 0.3);
+  box-shadow: 0 8px 32px rgba(220, 38, 38, 0.2);
+  gap: 0.5rem;
+
+  h3 {
+    color: #ff6b6b;
+    margin: 0 0 1rem 0;
+    font-size: 1.5rem;
+  }
+
+  p {
+    margin: 0 0 2rem 0;
+    line-height: 1.6;
+    font-size: 1.1rem;
+  }
+}
+
+.retryButton {
+  all: unset;
+  cursor: pointer;
+  color: var(--colorAmarillo);
+  font-size: 1.4rem;
+  font-weight: 700;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  background: linear-gradient(45deg, var(--colorAmarillo), #ffd700);
+  color: black;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+  margin: 0.5rem 0;
+  box-shadow: 0 4px 15px rgba(237, 204, 54, 0.3);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(237, 204, 54, 0.5);
+    background: linear-gradient(45deg, #ffd700, var(--colorAmarillo));
+  }
+}
+
+.securityInfo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  color: white;
+  font-size: 0.95rem;
+  text-align: center;
+  max-width: 600px;
+
+  p {
+    margin: 0;
+    line-height: 1.5;
+  }
+}
+
+.securityIcon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+/* Tablets (≤1024px) */
+@media (max-width: 1024px) {
+  .contSubscriptionView {
+    padding: 5rem 1rem 1.5rem 1rem;
+    gap: 1.5rem;
+  }
+
+  .mainContent {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .planCard {
+    max-width: 350px;
+    padding: 1.25rem;
+  }
+
+  .planName {
+    font-size: 1.8rem;
+  }
+
+  .currentPrice {
+    font-size: 2.2rem;
+  }
+
+  .originalPrice {
+    font-size: 1.1rem;
+  }
+
+  .planBenefits li {
+    font-size: 0.95rem;
+  }
+
+  .welcomeMessage p {
+    font-size: 0.9rem;
+  }
+
+  .loading,
+  .authRequired,
+  .error {
+    font-size: 1.3rem;
+    padding: 1.2rem 1.5rem;
+    width: 90%;
+  }
+
+  .loginButton,
+  .retryButton {
+    font-size: 1.3rem;
+    padding: 0.4rem 0.8rem;
+  }
+}
+
+/* Móvil (≤768px) */
+@media (max-width: 768px) {
+  .contSubscriptionView {
+    padding: 4rem 1rem 1rem 1rem;
+    gap: 1.2rem;
+    background-attachment: scroll; // Mejor rendimiento en móvil
+  }
+
+  .mainContent {
+    gap: 1.5rem;
+  }
+
+  .planCard {
+    width: 90%;
+    max-width: 350px;
+    padding: 1.25rem;
+  }
+
+  .cardHeader {
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+
+  .planName {
+    font-size: 1.6rem;
+  }
+
+  .currentPrice {
+    font-size: 2rem;
+  }
+
+  .originalPrice {
+    font-size: 1rem;
+  }
+
+  .planBenefits li {
+    font-size: 0.9rem;
+  }
+
+  .welcomeMessage p {
+    font-size: 0.85rem;
+  }
+
+  .loading,
+  .authRequired,
+  .error {
+    font-size: 1.2rem;
+    padding: 1rem 1.2rem;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .loginButton,
+  .retryButton {
+    font-size: 1.2rem;
+    padding: 0.4rem 0.8rem;
+  }
+}
+
+/* Móvil pequeño (≤480px) */
+@media (max-width: 480px) {
+  .contSubscriptionView {
+    padding: 3rem 1rem 0.8rem 1rem;
+    gap: 1rem;
+    min-height: calc(100vh - 5rem);
+  }
+
+  .mainContent {
+    gap: 1rem;
+  }
+
+  .planCard {
+    padding: 1rem;
+    max-width: 320px;
+  }
+
+  .planName {
+    font-size: 1.4rem;
+  }
+
+  .currentPrice {
+    font-size: 1.8rem;
+  }
+
+  .originalPrice {
+    font-size: 0.9rem;
+  }
+
+  .planBenefits li {
+    font-size: 0.85rem;
+    margin: 0.5rem 0;
+  }
+
+  .welcomeMessage p {
+    font-size: 0.8rem;
+  }
+
+  .loading,
+  .authRequired,
+  .error {
+    font-size: 1.1rem;
+    padding: 0.8rem 1rem;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 100%;
+
+    p {
+      font-size: 1rem;
+    }
+  }
+
+  .loginButton,
+  .retryButton {
+    font-size: 1.1rem;
+    padding: 0.3rem 0.6rem;
+    border-radius: 6px;
+  }
+}

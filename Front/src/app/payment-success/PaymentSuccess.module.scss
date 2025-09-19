@@ -1,0 +1,355 @@
+@use "../../styles/utils.scss" as utils;
+
+.container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.mainContent {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  max-width: 1200px;
+  width: 100%;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.loading {
+  @include utils.ClassFlexCenter;
+  flex-direction: column;
+  color: white;
+  font-size: 1.2rem;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top: 4px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+// Panel izquierdo - Información principal
+.leftSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 1rem;
+}
+
+.successIcon {
+  margin-bottom: 1.5rem;
+}
+
+.checkmark {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto;
+}
+
+.checkmarkCircle {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: #27ae60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.checkmarkStem {
+  position: absolute;
+  width: 4px;
+  height: 25px;
+  background: white;
+  border-radius: 2px;
+  transform: rotate(45deg);
+  left: 35px;
+  top: 20px;
+}
+
+.checkmarkKick {
+  position: absolute;
+  width: 4px;
+  height: 15px;
+  background: white;
+  border-radius: 2px;
+  transform: rotate(-45deg);
+  left: 30px;
+  top: 35px;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+  font-family: "Arial", sans-serif;
+}
+
+.message {
+  font-size: 1.1rem;
+  color: #7f8c8d;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+  max-width: 400px;
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.primaryButton {
+  background: linear-gradient(135deg, #27ae60, #229954);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+}
+
+.primaryButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(39, 174, 96, 0.4);
+}
+
+.secondaryButton {
+  background: transparent;
+  color: #7f8c8d;
+  border: 2px solid #bdc3c7;
+  border-radius: 12px;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.secondaryButton:hover {
+  background: #f8f9fa;
+  border-color: #95a5a6;
+  transform: translateY(-2px);
+}
+
+// Panel derecho - Información adicional
+.rightSection {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem;
+}
+
+.paymentDetails {
+  background: rgba(39, 174, 96, 0.1);
+  border-radius: 15px;
+  padding: 1.5rem;
+  border: 1px solid rgba(39, 174, 96, 0.2);
+}
+
+.paymentDetails h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+}
+
+.detailItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.detailItem:last-child {
+  border-bottom: none;
+}
+
+.label {
+  font-weight: 600;
+  color: #7f8c8d;
+  font-size: 0.95rem;
+}
+
+.value {
+  color: #2c3e50;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.status {
+  background: #27ae60;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.nextSteps {
+  background: rgba(52, 152, 219, 0.1);
+  border-radius: 15px;
+  padding: 1.5rem;
+  border: 1px solid rgba(52, 152, 219, 0.2);
+}
+
+.nextSteps h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+}
+
+.stepsList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.stepsList li {
+  padding: 0.5rem 0;
+  color: #7f8c8d;
+  font-size: 0.95rem;
+}
+
+.support {
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 15px;
+  padding: 1.5rem;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  text-align: center;
+}
+
+.support p {
+  color: #7f8c8d;
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.supportLink {
+  color: #3498db;
+  text-decoration: none;
+  font-weight: 500;
+  margin-left: 0.5rem;
+}
+
+.supportLink:hover {
+  text-decoration: underline;
+}
+
+// Responsive design
+@media (max-width: 1024px) {
+  .mainContent {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding: 1.5rem;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .primaryButton,
+  .secondaryButton {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .mainContent {
+    padding: 1rem;
+  }
+
+  .title {
+    font-size: 1.8rem;
+  }
+
+  .message {
+    font-size: 1rem;
+  }
+
+  .checkmark {
+    width: 60px;
+    height: 60px;
+  }
+
+  .checkmarkCircle {
+    width: 60px;
+    height: 60px;
+  }
+
+  .checkmarkStem {
+    width: 3px;
+    height: 20px;
+    left: 28px;
+    top: 15px;
+  }
+
+  .checkmarkKick {
+    width: 3px;
+    height: 12px;
+    left: 24px;
+    top: 28px;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .message {
+    font-size: 0.95rem;
+  }
+
+  .paymentDetails,
+  .nextSteps,
+  .support {
+    padding: 1rem;
+  }
+
+  .detailItem {
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
+}

@@ -1,0 +1,63 @@
+.container {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 12px;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 16px;
+  color: #333;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.table th {
+  background-color: #f0f0f0;
+  text-align: left;
+  padding: 10px;
+  border-bottom: 2px solid #ddd;
+}
+
+.table td {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.roleButton {
+  @extend .button;
+  background-color: #007bff;
+  color: #fff;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+}
+
+.statusButton {
+  @extend .button;
+  background-color: #dc3545;
+  color: #fff;
+
+  &:hover {
+    background-color: #a71d2a;
+  }
+}

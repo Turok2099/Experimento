@@ -1,0 +1,30 @@
+.train-panel {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f5f5f5;
+  padding: 2rem;
+
+  .train-card {
+    background-color: #fff; // contenedor blanco
+    color: #000; // letras negras
+    border-radius: 1rem;
+    padding: 2.5rem;
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(255, 223, 0, 0.6); // sombra amarilla
+
+    h2 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      font-size: 1rem;
+    }
+  }
+}

@@ -1,0 +1,346 @@
+// Estilos para el componente de pago con Stripe
+.stripePayment {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.paymentHeader {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e5e7eb;
+
+  h3 {
+    margin: 0 0 0.5rem 0;
+    color: #1f2937;
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+}
+
+.amount {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #059669;
+  margin-top: 0.5rem;
+}
+
+.productInfo {
+  background: #f9fafb;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+
+  h4 {
+    margin: 0 0 0.5rem 0;
+    color: #374151;
+    font-size: 1.1rem;
+  }
+
+  p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 0.9rem;
+  }
+}
+
+.paymentForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  label {
+    font-weight: 500;
+    color: #374151;
+    font-size: 0.9rem;
+  }
+
+  input {
+    padding: 0.75rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.2s ease;
+
+    &:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    &:disabled {
+      background-color: #f3f4f6;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.paymentMethods {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.paymentMethodOption {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: #ffffff;
+
+  &:hover {
+    border-color: #3b82f6;
+    background: #f8fafc;
+  }
+
+  &.selected {
+    border-color: #3b82f6;
+    background: #eff6ff;
+  }
+
+  .methodIcon {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  span {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #374151;
+    text-align: center;
+  }
+}
+
+.paymentMethod {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: #f0f9ff;
+  border: 1px solid #0ea5e9;
+  border-radius: 8px;
+  margin-top: 0.5rem;
+
+  .methodIcon {
+    font-size: 1.5rem;
+  }
+
+  .methodInfo {
+    h4 {
+      margin: 0 0 0.25rem 0;
+      color: #0c4a6e;
+      font-size: 1rem;
+    }
+
+    p {
+      margin: 0;
+      color: #0369a1;
+      font-size: 0.8rem;
+    }
+  }
+}
+
+.errors {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.error {
+  padding: 0.75rem;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+  color: #dc2626;
+  font-size: 0.9rem;
+}
+
+.payButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 1rem;
+
+  &:hover:not(:disabled) {
+    background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.securityInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 8px;
+  margin-top: 1rem;
+
+  .securityIcon {
+    font-size: 1.2rem;
+  }
+
+  p {
+    margin: 0;
+    color: #166534;
+    font-size: 0.85rem;
+    line-height: 1.4;
+  }
+}
+
+// Responsive design
+@media (max-width: 640px) {
+  .stripePayment {
+    padding: 1.5rem;
+    margin: 1rem;
+  }
+
+  .paymentMethods {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .amount {
+    font-size: 1.5rem;
+  }
+}
+
+// Dark mode support
+@media (prefers-color-scheme: dark) {
+  .stripePayment {
+    background: #1f2937;
+    color: #f9fafb;
+  }
+
+  .paymentHeader {
+    border-bottom-color: #374151;
+
+    h3 {
+      color: #f9fafb;
+    }
+  }
+
+  .productInfo {
+    background: #374151;
+
+    h4 {
+      color: #f9fafb;
+    }
+
+    p {
+      color: #d1d5db;
+    }
+  }
+
+  .formGroup {
+    label {
+      color: #f9fafb;
+    }
+
+    input {
+      background: #374151;
+      border-color: #4b5563;
+      color: #f9fafb;
+
+      &:focus {
+        border-color: #3b82f6;
+      }
+
+      &:disabled {
+        background-color: #4b5563;
+      }
+    }
+  }
+
+  .paymentMethodOption {
+    background: #374151;
+    border-color: #4b5563;
+
+    &:hover {
+      background: #4b5563;
+    }
+
+    &.selected {
+      background: #1e40af;
+    }
+
+    span {
+      color: #f9fafb;
+    }
+  }
+
+  .paymentMethod {
+    background: #1e3a8a;
+    border-color: #3b82f6;
+
+    .methodInfo {
+      h4 {
+        color: #dbeafe;
+      }
+
+      p {
+        color: #93c5fd;
+      }
+    }
+  }
+
+  .securityInfo {
+    background: #064e3b;
+    border-color: #10b981;
+
+    p {
+      color: #6ee7b7;
+    }
+  }
+}
