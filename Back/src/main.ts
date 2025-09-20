@@ -18,12 +18,14 @@ async function createApp() {
     'https://nuevotrain-frontend-3mqnln0cx-jorge-castros-projects-839066ef.vercel.app',
     'https://nuevotrain-frontend-2xexop7sa-jorge-castros-projects-839066ef.vercel.app',
     'https://nuevotrain-frontend-ajxnvxr2u-jorge-castros-projects-839066ef.vercel.app',
+    // URLs del frontend actual
+    'https://front-amber-tau.vercel.app',
     // URLs dinámicos desde variable de entorno
     ...(process.env.FRONT_ORIGIN?.split(',').map((url) => url.trim()) || []),
     // Patrón flexible para URLs de Vercel del frontend
     ...(process.env.FRONT_ORIGIN?.split(',')
       .map((url) => url.trim())
-      .filter((url) => url.includes('nuevotrain-frontend')) || []),
+      .filter((url) => url.includes('nuevotrain-frontend') || url.includes('front-amber-tau')) || []),
   ];
 
   app.enableCors({
@@ -34,9 +36,9 @@ async function createApp() {
       // Permitir localhost en desarrollo
       if (origin.includes('localhost')) return callback(null, true);
 
-      // Permitir cualquier URL de nuevotrain-frontend en Vercel
+      // Permitir cualquier URL de nuevotrain-frontend o front-amber-tau en Vercel
       if (
-        origin.includes('nuevotrain-frontend') &&
+        (origin.includes('nuevotrain-frontend') || origin.includes('front-amber-tau')) &&
         origin.includes('vercel.app')
       ) {
         return callback(null, true);

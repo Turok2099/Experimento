@@ -8,44 +8,33 @@ const app_module_1 = require("./app.module");
 const common_1 = require("@nestjs/common");
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const swagger_1 = require("@nestjs/swagger");
-/**
- * 🔹 Configuración común de la app Nest
- */
 async function createApp() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
-    // Configuración de CORS para Vercel - Más flexible
     const allowedOrigins = [
         'http://localhost:3000',
-        // URLs específicos del frontend
         'https://nuevotrain-frontend.vercel.app',
         'https://nuevotrain-frontend-3mqnln0cx-jorge-castros-projects-839066ef.vercel.app',
         'https://nuevotrain-frontend-2xexop7sa-jorge-castros-projects-839066ef.vercel.app',
         'https://nuevotrain-frontend-ajxnvxr2u-jorge-castros-projects-839066ef.vercel.app',
-        // URLs dinámicos desde variable de entorno
+        'https://front-amber-tau.vercel.app',
         ...(process.env.FRONT_ORIGIN?.split(',').map((url) => url.trim()) || []),
-        // Patrón flexible para URLs de Vercel del frontend
         ...(process.env.FRONT_ORIGIN?.split(',')
             .map((url) => url.trim())
-            .filter((url) => url.includes('nuevotrain-frontend')) || []),
+            .filter((url) => url.includes('nuevotrain-frontend') || url.includes('front-amber-tau')) || []),
     ];
     app.enableCors({
         origin: (origin, callback) => {
-            // Permitir requests sin origin (mobile apps, Postman, etc.)
             if (!origin)
                 return callback(null, true);
-            // Permitir localhost en desarrollo
             if (origin.includes('localhost'))
                 return callback(null, true);
-            // Permitir cualquier URL de nuevotrain-frontend en Vercel
-            if (origin.includes('nuevotrain-frontend') &&
+            if ((origin.includes('nuevotrain-frontend') || origin.includes('front-amber-tau')) &&
                 origin.includes('vercel.app')) {
                 return callback(null, true);
             }
-            // Verificar si está en la lista de orígenes permitidos
             if (allowedOrigins.includes(origin)) {
                 return callback(null, true);
             }
-            // Rechazar otros orígenes
             callback(new Error('No permitido por CORS'));
         },
         credentials: true,
@@ -69,9 +58,6 @@ async function createApp() {
     swagger_1.SwaggerModule.setup('docs', app, document);
     return app;
 }
-/**
- * 🚀 Bootstrap para desarrollo local
- */
 async function bootstrap() {
     const app = await createApp();
     const port = process.env.PORT || 3001;
@@ -79,9 +65,7 @@ async function bootstrap() {
     console.log(`🚀 Server running on port ${port}`);
     console.log(`📚 Documentation available at http://localhost:${port}/docs`);
 }
-/**
- * Ejecutar localmente solo en desarrollo
- */
 if (process.env.NODE_ENV === 'development') {
     bootstrap();
 }
+//# sourceMappingURL=main.js.map

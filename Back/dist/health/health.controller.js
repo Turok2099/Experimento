@@ -65,7 +65,7 @@ let HealthController = class HealthController {
                 'subscriptions',
                 'payments',
                 'exercises',
-                'subscription_reminders'
+                'subscription_reminders',
             ];
             const tableInfo = [];
             for (const tableName of tables) {
@@ -89,12 +89,12 @@ let HealthController = class HealthController {
                             name: tableName,
                             exists: true,
                             recordCount: parseInt(countResult[0].count),
-                            columns: columns.map(col => ({
+                            columns: columns.map((col) => ({
                                 name: col.column_name,
                                 type: col.data_type,
                                 nullable: col.is_nullable === 'YES',
-                                default: col.column_default
-                            }))
+                                default: col.column_default,
+                            })),
                         });
                     }
                     else {
@@ -102,7 +102,7 @@ let HealthController = class HealthController {
                             name: tableName,
                             exists: false,
                             recordCount: 0,
-                            columns: []
+                            columns: [],
                         });
                     }
                 }
@@ -112,7 +112,7 @@ let HealthController = class HealthController {
                         exists: false,
                         error: tableError.message,
                         recordCount: 0,
-                        columns: []
+                        columns: [],
                     });
                 }
             }
@@ -138,13 +138,13 @@ let HealthController = class HealthController {
                 '-58.3816',
                 true,
                 new Date(),
-                new Date()
+                new Date(),
             ]);
             return {
                 status: 'ok',
                 message: 'Inserción de prueba exitosa',
                 data: testLocation[0],
-                timestamp: new Date().toISOString()
+                timestamp: new Date().toISOString(),
             };
         }
         catch (error) {
@@ -152,7 +152,7 @@ let HealthController = class HealthController {
                 status: 'error',
                 message: 'Error en inserción de prueba',
                 error: error.message,
-                timestamp: new Date().toISOString()
+                timestamp: new Date().toISOString(),
             };
         }
     }
