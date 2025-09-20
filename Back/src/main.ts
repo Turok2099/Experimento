@@ -25,7 +25,11 @@ async function createApp() {
     // Patrón flexible para URLs de Vercel del frontend
     ...(process.env.FRONT_ORIGIN?.split(',')
       .map((url) => url.trim())
-      .filter((url) => url.includes('nuevotrain-frontend') || url.includes('front-amber-tau')) || []),
+      .filter(
+        (url) =>
+          url.includes('nuevotrain-frontend') ||
+          url.includes('front-amber-tau'),
+      ) || []),
   ];
 
   app.enableCors({
@@ -38,7 +42,8 @@ async function createApp() {
 
       // Permitir cualquier URL de nuevotrain-frontend o front-amber-tau en Vercel
       if (
-        (origin.includes('nuevotrain-frontend') || origin.includes('front-amber-tau')) &&
+        (origin.includes('nuevotrain-frontend') ||
+          origin.includes('front-amber-tau')) &&
         origin.includes('vercel.app')
       ) {
         return callback(null, true);

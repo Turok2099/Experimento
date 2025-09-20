@@ -20,7 +20,8 @@ async function createApp() {
         ...(process.env.FRONT_ORIGIN?.split(',').map((url) => url.trim()) || []),
         ...(process.env.FRONT_ORIGIN?.split(',')
             .map((url) => url.trim())
-            .filter((url) => url.includes('nuevotrain-frontend') || url.includes('front-amber-tau')) || []),
+            .filter((url) => url.includes('nuevotrain-frontend') ||
+            url.includes('front-amber-tau')) || []),
     ];
     app.enableCors({
         origin: (origin, callback) => {
@@ -28,7 +29,8 @@ async function createApp() {
                 return callback(null, true);
             if (origin.includes('localhost'))
                 return callback(null, true);
-            if ((origin.includes('nuevotrain-frontend') || origin.includes('front-amber-tau')) &&
+            if ((origin.includes('nuevotrain-frontend') ||
+                origin.includes('front-amber-tau')) &&
                 origin.includes('vercel.app')) {
                 return callback(null, true);
             }
