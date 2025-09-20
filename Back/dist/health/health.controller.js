@@ -282,6 +282,44 @@ let HealthController = class HealthController {
             };
         }
     }
+    async fixPassword(email, newPassword) {
+        try {
+            const user = await this.dataSource.query('SELECT id, name, email FROM users WHERE email = $1', [email]);
+            if (user.length === 0) {
+                return {
+                    status: 'error',
+                    message: 'Usuario no encontrado',
+                    email: email,
+                    timestamp: new Date().toISOString(),
+                };
+            }
+            const salt = await bcrypt.genSalt(10);
+            const newPasswordHash = await bcrypt.hash(newPassword, salt);
+            await this.dataSource.query('UPDATE users SET password_hash = $1, updated_at = NOW() WHERE email = $2', [newPasswordHash, email]);
+            return {
+                status: 'ok',
+                message: 'Contraseña actualizada exitosamente',
+                user: {
+                    id: user[0].id,
+                    name: user[0].name,
+                    email: user[0].email,
+                },
+                password_update: {
+                    new_password: newPassword,
+                    new_hash: newPasswordHash,
+                },
+                timestamp: new Date().toISOString(),
+            };
+        }
+        catch (error) {
+            return {
+                status: 'error',
+                message: 'Error al actualizar contraseña',
+                error: error.message,
+                timestamp: new Date().toISOString(),
+            };
+        }
+    }
 };
 exports.HealthController = HealthController;
 __decorate([
@@ -344,6 +382,16 @@ __decorate([
     __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", Promise)
 ], HealthController.prototype, "testPassword", null);
+__decorate([
+    (0, common_1.Get)('fix-password/:email/:newPassword'),
+    (0, swagger_1.ApiOperation)({ summary: 'Corregir hash de contraseña de un usuario' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Contraseña actualizada' }),
+    __param(0, (0, common_1.Param)('email')),
+    __param(1, (0, common_1.Param)('newPassword')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:returntype", Promise)
+], HealthController.prototype, "fixPassword", null);
 exports.HealthController = HealthController = __decorate([
     (0, swagger_1.ApiTags)('Health'),
     (0, common_1.Controller)('health'),

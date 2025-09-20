@@ -300,4 +300,57 @@ export class HealthController {
       };
     }
   }
+
+  @Get('fix-password/:email/:newPassword')
+  @ApiOperation({ summary: 'Corregir hash de contraseña de un usuario' })
+  @ApiResponse({ status: 200, description: 'Contraseña actualizada' })
+  async fixPassword(@Param('email') email: string, @Param('newPassword') newPassword: string) {
+    try {
+      const user = await this.dataSource.query(
+        'SELECT id, name, email FROM users WHERE email = $1',
+        [email]
+      );
+
+      if (user.length === 0) {
+        return {
+          status: 'error',
+          message: 'Usuario no encontrado',
+          email: email,
+          timestamp: new Date().toISOString(),
+        };
+      }
+
+      // Generar nuevo hash de la contraseña
+      const salt = await bcrypt.genSalt(10);
+      const newPasswordHash = await bcrypt.hash(newPassword, salt);
+
+      // Actualizar en la base de datos
+      await this.dataSource.query(
+        'UPDATE users SET password_hash = $1, updated_at = NOW() WHERE email = $2',
+        [newPasswordHash, email]
+      );
+
+      return {
+        status: 'ok',
+        message: 'Contraseña actualizada exitosamente',
+        user: {
+          id: user[0].id,
+          name: user[0].name,
+          email: user[0].email,
+        },
+        password_update: {
+          new_password: newPassword,
+          new_hash: newPasswordHash,
+        },
+        timestamp: new Date().toISOString(),
+      };
+    } catch (error: any) {
+      return {
+        status: 'error',
+        message: 'Error al actualizar contraseña',
+        error: error.message,
+        timestamp: new Date().toISOString(),
+      };
+    }
+  }
 }
