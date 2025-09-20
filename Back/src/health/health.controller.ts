@@ -151,13 +151,12 @@ export class HealthController {
         // Crear una ubicación de prueba
         const testLocation = await this.dataSource.query(
           `
-          INSERT INTO locations (id, name, country, city, address, lat, lng, "isActive", created_at, updated_at)
-          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+          INSERT INTO locations (name, country, city, address, lat, lng, "isActive", created_at, updated_at)
+          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
           RETURNING *
         `,
           [
-            'test-location-' + Date.now(),
-            'Gimnasio de Prueba',
+            'Gimnasio de Prueba ' + Date.now(),
             'Argentina',
             'Buenos Aires',
             'Av. Test 123',
