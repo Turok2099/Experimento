@@ -2,6 +2,7 @@ import { Controller, Get, Param } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import * as bcrypt from 'bcryptjs';
 
 @ApiTags('Health')
 @Controller('health')
@@ -247,6 +248,53 @@ export class HealthController {
       return {
         status: 'error',
         message: 'Error al obtener usuario',
+        error: error.message,
+        timestamp: new Date().toISOString(),
+      };
+    }
+  }
+
+  @Get('test-password/:email/:password')
+  @ApiOperation({ summary: 'Probar comparación de contraseña' })
+  @ApiResponse({ status: 200, description: 'Resultado de la comparación' })
+  async testPassword(@Param('email') email: string, @Param('password') password: string) {
+    try {
+      const user = await this.dataSource.query(
+        'SELECT id, name, email, password_hash FROM users WHERE email = $1',
+        [email]
+      );
+
+      if (user.length === 0) {
+        return {
+          status: 'error',
+          message: 'Usuario no encontrado',
+          email: email,
+          timestamp: new Date().toISOString(),
+        };
+      }
+
+      const passwordHash = user[0].password_hash;
+      const isValid = await bcrypt.compare(password, passwordHash);
+
+      return {
+        status: 'ok',
+        message: 'Comparación de contraseña completada',
+        user: {
+          id: user[0].id,
+          name: user[0].name,
+          email: user[0].email,
+        },
+        password_test: {
+          provided_password: password,
+          stored_hash: passwordHash,
+          is_valid: isValid,
+        },
+        timestamp: new Date().toISOString(),
+      };
+    } catch (error: any) {
+      return {
+        status: 'error',
+        message: 'Error al probar contraseña',
         error: error.message,
         timestamp: new Date().toISOString(),
       };

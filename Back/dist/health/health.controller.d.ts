@@ -82,4 +82,37 @@ export declare class HealthController {
         email?: undefined;
         user?: undefined;
     }>;
+    testPassword(email: string, password: string): Promise<{
+        status: string;
+        message: string;
+        email: string;
+        timestamp: string;
+        user?: undefined;
+        password_test?: undefined;
+        error?: undefined;
+    } | {
+        status: string;
+        message: string;
+        user: {
+            id: any;
+            name: any;
+            email: any;
+        };
+        password_test: {
+            provided_password: string;
+            stored_hash: any;
+            is_valid: boolean;
+        };
+        timestamp: string;
+        email?: undefined;
+        error?: undefined;
+    } | {
+        status: string;
+        message: string;
+        error: any;
+        timestamp: string;
+        email?: undefined;
+        user?: undefined;
+        password_test?: undefined;
+    }>;
 }
