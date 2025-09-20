@@ -14,18 +14,46 @@ let server: Handler;
 async function createApp() {
   const app = await NestFactory.create(AppModule);
 
-  // Configuración de CORS para Vercel
+  // Configuración de CORS para Vercel - Más flexible
   const allowedOrigins = [
     'http://localhost:3000',
+    // URLs específicos del frontend
     'https://nuevotrain-frontend.vercel.app',
     'https://nuevotrain-frontend-3mqnln0cx-jorge-castros-projects-839066ef.vercel.app',
     'https://nuevotrain-frontend-2xexop7sa-jorge-castros-projects-839066ef.vercel.app',
     'https://nuevotrain-frontend-ajxnvxr2u-jorge-castros-projects-839066ef.vercel.app',
-    ...(process.env.FRONT_ORIGIN?.split(',') || []),
+    // URLs dinámicos desde variable de entorno
+    ...(process.env.FRONT_ORIGIN?.split(',').map((url) => url.trim()) || []),
+    // Patrón flexible para URLs de Vercel del frontend
+    ...(process.env.FRONT_ORIGIN?.split(',')
+      .map((url) => url.trim())
+      .filter((url) => url.includes('nuevotrain-frontend')) || []),
   ];
 
   app.enableCors({
-    origin: allowedOrigins,
+    origin: (origin, callback) => {
+      // Permitir requests sin origin (mobile apps, Postman, etc.)
+      if (!origin) return callback(null, true);
+
+      // Permitir localhost en desarrollo
+      if (origin.includes('localhost')) return callback(null, true);
+
+      // Permitir cualquier URL de nuevotrain-frontend en Vercel
+      if (
+        origin.includes('nuevotrain-frontend') &&
+        origin.includes('vercel.app')
+      ) {
+        return callback(null, true);
+      }
+
+      // Verificar si está en la lista de orígenes permitidos
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      // Rechazar otros orígenes
+      callback(new Error('No permitido por CORS'));
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
