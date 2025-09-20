@@ -15,9 +15,13 @@ async function createApp() {
   const app = await NestFactory.create(AppModule);
 
   // Configuración de CORS para Vercel
-  const allowedOrigins = process.env.FRONT_ORIGIN
-    ? process.env.FRONT_ORIGIN.split(',')
-    : ['http://localhost:3000', 'https://nuevotrain.vercel.app'];
+  const allowedOrigins = [
+    'http://localhost:3000',
+    'https://nuevotrain-frontend.vercel.app',
+    'https://nuevotrain-frontend-3mqnln0cx-jorge-castros-projects-839066ef.vercel.app',
+    'https://nuevotrain-frontend-2xexop7sa-jorge-castros-projects-839066ef.vercel.app',
+    ...(process.env.FRONT_ORIGIN?.split(',') || []),
+  ];
 
   app.enableCors({
     origin: allowedOrigins,

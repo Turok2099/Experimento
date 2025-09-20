@@ -24,7 +24,7 @@ const getDatabaseConfig = () => {
       migrations: ['dist/migrations/*{.ts,.js}'],
       autoLoadEntities: true,
       logging: false,
-      synchronize: false,
+      synchronize: true, // ← Temporalmente para crear tablas
       dropSchema: false,
     };
   } else {
