@@ -39,7 +39,14 @@ async function createApp() {
         },
         credentials: true,
         methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-        allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
+        allowedHeaders: [
+            'Content-Type',
+            'Authorization',
+            'Cookie',
+            'X-Requested-With',
+        ],
+        optionsSuccessStatus: 200,
+        preflightContinue: false,
     });
     app.use((0, cookie_parser_1.default)());
     app.useGlobalPipes(new common_1.ValidationPipe({

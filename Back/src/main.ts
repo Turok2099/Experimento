@@ -55,7 +55,14 @@ async function createApp() {
     },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
+    allowedHeaders: [
+      'Content-Type',
+      'Authorization',
+      'Cookie',
+      'X-Requested-With',
+    ],
+    optionsSuccessStatus: 200,
+    preflightContinue: false,
   });
 
   app.use(cookieParser());
