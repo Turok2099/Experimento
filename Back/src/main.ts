@@ -1,12 +1,8 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
-import * as cookieParser from 'cookie-parser';
+import cookieParser from 'cookie-parser';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import serverlessExpress from '@vendia/serverless-express';
-import { Callback, Context, Handler } from 'aws-lambda';
-
-let server: Handler;
 
 /**
  * 🔹 Configuración común de la app Nest
@@ -83,34 +79,9 @@ async function createApp() {
 }
 
 /**
- * 🔹 Bootstrap para AWS Lambda / Vercel
- */
-async function bootstrapLambda() {
-  const app = await createApp();
-  await app.init();
-
-  const expressApp = app.getHttpAdapter().getInstance();
-  return serverlessExpress({ app: expressApp });
-}
-
-/**
- * ⚡ Handler para Vercel (Lambda)
- */
-export const handler: Handler = async (
-  event: any,
-  context: Context,
-  callback: Callback,
-) => {
-  if (!server) {
-    server = await bootstrapLambda();
-  }
-  return server(event, context, callback);
-};
-
-/**
  * 🚀 Bootstrap para desarrollo local
  */
-async function bootstrapLocal() {
+async function bootstrap() {
   const app = await createApp();
 
   const port = process.env.PORT || 3001;
@@ -124,5 +95,5 @@ async function bootstrapLocal() {
  * Ejecutar localmente solo en desarrollo
  */
 if (process.env.NODE_ENV === 'development') {
-  bootstrapLocal();
+  bootstrap();
 }

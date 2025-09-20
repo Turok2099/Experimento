@@ -3,14 +3,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.handler = void 0;
 const core_1 = require("@nestjs/core");
 const app_module_1 = require("./app.module");
 const common_1 = require("@nestjs/common");
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const swagger_1 = require("@nestjs/swagger");
-const serverless_express_1 = require("@vendia/serverless-express");
-let server;
 async function createApp() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     const allowedOrigins = [
@@ -60,20 +57,7 @@ async function createApp() {
     swagger_1.SwaggerModule.setup('docs', app, document);
     return app;
 }
-async function bootstrapLambda() {
-    const app = await createApp();
-    await app.init();
-    const expressApp = app.getHttpAdapter().getInstance();
-    return (0, serverless_express_1.configure)({ app: expressApp });
-}
-const handler = async (event, context, callback) => {
-    if (!server) {
-        server = await bootstrapLambda();
-    }
-    return server(event, context, callback);
-};
-exports.handler = handler;
-async function bootstrapLocal() {
+async function bootstrap() {
     const app = await createApp();
     const port = process.env.PORT || 3001;
     await app.listen(port);
@@ -81,6 +65,6 @@ async function bootstrapLocal() {
     console.log(`📚 Documentation available at http://localhost:${port}/docs`);
 }
 if (process.env.NODE_ENV === 'development') {
-    bootstrapLocal();
+    bootstrap();
 }
 //# sourceMappingURL=main.js.map
