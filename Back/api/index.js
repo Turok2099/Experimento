@@ -4,18 +4,16 @@ const { AppModule } = require('../dist/app.module');
 let app;
 
 async function bootstrap() {
-  const nestApp = await NestFactory.create(AppModule);
-  await nestApp.init();
-  app = nestApp.getHttpAdapter().getInstance(); // Express instance
+  if (!app) {
+    const nestApp = await NestFactory.create(AppModule);
+    await nestApp.init();
+    app = nestApp.getHttpAdapter().getInstance(); // Express instance
+  }
   return app;
 }
 
-// Inicializar la app una sola vez
-if (!app) {
-  bootstrap().then(expressApp => {
-    app = expressApp;
-  });
-}
-
-// Exportar la app directamente (patrón de Vercel)
-module.exports = app;
+// Exportar función que maneja las requests
+module.exports = async (req, res) => {
+  const expressApp = await bootstrap();
+  return expressApp(req, res);
+};
