@@ -12,11 +12,11 @@ async function createApp() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     const allowedOrigins = [
         'http://localhost:3000',
+        'https://front-amber-tau.vercel.app',
         'https://nuevotrain-frontend.vercel.app',
         'https://nuevotrain-frontend-3mqnln0cx-jorge-castros-projects-839066ef.vercel.app',
         'https://nuevotrain-frontend-2xexop7sa-jorge-castros-projects-839066ef.vercel.app',
         'https://nuevotrain-frontend-ajxnvxr2u-jorge-castros-projects-839066ef.vercel.app',
-        'https://front-amber-tau.vercel.app',
         ...(process.env.FRONT_ORIGIN?.split(',').map((url) => url.trim()) || []),
         ...(process.env.FRONT_ORIGIN?.split(',')
             .map((url) => url.trim())

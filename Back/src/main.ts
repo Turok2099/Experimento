@@ -10,16 +10,16 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 async function createApp() {
   const app = await NestFactory.create(AppModule);
 
-  // Configuración de CORS para Vercel - Más flexible
+  // Configuración de CORS para Vercel - URLs estables de producción
   const allowedOrigins = [
     'http://localhost:3000',
-    // URLs específicos del frontend
+    // URLs estables de producción
+    'https://front-amber-tau.vercel.app', // Frontend estable
+    // URLs específicos del frontend (backup)
     'https://nuevotrain-frontend.vercel.app',
     'https://nuevotrain-frontend-3mqnln0cx-jorge-castros-projects-839066ef.vercel.app',
     'https://nuevotrain-frontend-2xexop7sa-jorge-castros-projects-839066ef.vercel.app',
     'https://nuevotrain-frontend-ajxnvxr2u-jorge-castros-projects-839066ef.vercel.app',
-    // URLs del frontend actual
-    'https://front-amber-tau.vercel.app',
     // URLs dinámicos desde variable de entorno
     ...(process.env.FRONT_ORIGIN?.split(',').map((url) => url.trim()) || []),
     // Patrón flexible para URLs de Vercel del frontend
