@@ -1,5 +1,5 @@
 // Script para probar la conexión a la base de datos de Neon
-require('dotenv').config({ path: '.env.local' });
+require('dotenv').config({ path: '.env.development' });
 const { Client } = require('pg');
 
 async function testDatabaseConnection() {
