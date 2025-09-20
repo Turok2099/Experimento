@@ -24,6 +24,7 @@ const subscriptions_module_1 = require("./subscriptions/subscriptions.module");
 const reviews_module_1 = require("./reviews/reviews.module");
 const stripe_module_1 = require("./stripe/stripe.module");
 const payments_module_1 = require("./payments/payments.module");
+const health_module_1 = require("./health/health.module");
 let AppModule = class AppModule {
     configure(consumer) {
         consumer.apply(logger_middleware_1.LoggerMiddleware).forRoutes('*');
@@ -52,8 +53,10 @@ exports.AppModule = AppModule = __decorate([
             reviews_module_1.ReviewsModule,
             stripe_module_1.StripeModule,
             payments_module_1.PaymentsModule,
+            health_module_1.HealthModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
     })
 ], AppModule);
+//# sourceMappingURL=app.module.js.map

@@ -15,6 +15,7 @@ import { SubscriptionsModule } from './subscriptions/subscriptions.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { StripeModule } from './stripe/stripe.module';
 import { PaymentsModule } from './payments/payments.module';
+import { HealthModule } from './health/health.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -37,6 +38,7 @@ import { PaymentsModule } from './payments/payments.module';
     ReviewsModule,
     StripeModule,
     PaymentsModule,
+    HealthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

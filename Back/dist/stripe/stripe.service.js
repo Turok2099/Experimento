@@ -16,7 +16,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.StripeService = void 0;
 const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
-const stripe_1 = __importDefault(require("stripe"));
+const stripe_1 = __importDefault(require("../../node_modules/stripe"));
 let StripeService = StripeService_1 = class StripeService {
     configService;
     logger = new common_1.Logger(StripeService_1.name);
