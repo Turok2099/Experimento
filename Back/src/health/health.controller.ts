@@ -31,10 +31,10 @@ export class HealthController {
     try {
       // Verificar conexión
       await this.dataSource.query('SELECT 1');
-      
+
       // Obtener información de las tablas
       const tables = await this.getTablesInfo();
-      
+
       return {
         status: 'ok',
         database: 'connected',
@@ -59,7 +59,7 @@ export class HealthController {
     try {
       const tables = [
         'users',
-        'locations', 
+        'locations',
         'classes',
         'class_histories',
         'reservations',
@@ -69,7 +69,7 @@ export class HealthController {
         'subscriptions',
         'payments',
         'exercises',
-        'subscription_reminders'
+        'subscription_reminders',
       ];
 
       const tableInfo: any[] = [];
@@ -77,45 +77,51 @@ export class HealthController {
       for (const tableName of tables) {
         try {
           // Verificar si la tabla existe
-          const tableExists = await this.dataSource.query(`
+          const tableExists = await this.dataSource.query(
+            `
             SELECT EXISTS (
               SELECT FROM information_schema.tables 
               WHERE table_schema = 'public' 
               AND table_name = $1
             );
-          `, [tableName]);
+          `,
+            [tableName],
+          );
 
           if (tableExists[0].exists) {
             // Contar registros
             const countResult = await this.dataSource.query(
-              `SELECT COUNT(*) as count FROM ${tableName}`
+              `SELECT COUNT(*) as count FROM ${tableName}`,
             );
-            
+
             // Obtener estructura de la tabla
-            const columns = await this.dataSource.query(`
+            const columns = await this.dataSource.query(
+              `
               SELECT column_name, data_type, is_nullable, column_default
               FROM information_schema.columns 
               WHERE table_name = $1 
               ORDER BY ordinal_position
-            `, [tableName]);
+            `,
+              [tableName],
+            );
 
             tableInfo.push({
               name: tableName,
               exists: true,
               recordCount: parseInt(countResult[0].count),
-              columns: columns.map(col => ({
+              columns: columns.map((col) => ({
                 name: col.column_name,
                 type: col.data_type,
                 nullable: col.is_nullable === 'YES',
-                default: col.column_default
-              }))
+                default: col.column_default,
+              })),
             });
           } else {
             tableInfo.push({
               name: tableName,
               exists: false,
               recordCount: 0,
-              columns: []
+              columns: [],
             });
           }
         } catch (tableError) {
@@ -124,14 +130,16 @@ export class HealthController {
             exists: false,
             error: tableError.message,
             recordCount: 0,
-            columns: []
+            columns: [],
           });
         }
       }
 
       return tableInfo;
     } catch (error) {
-      throw new Error(`Error al obtener información de tablas: ${error.message}`);
+      throw new Error(
+        `Error al obtener información de tablas: ${error.message}`,
+      );
     }
   }
 
@@ -140,36 +148,39 @@ export class HealthController {
   @ApiResponse({ status: 200, description: 'Inserción de prueba exitosa' })
   async testInsert() {
     try {
-      // Crear una ubicación de prueba
-      const testLocation = await this.dataSource.query(`
-        INSERT INTO locations (id, name, country, city, address, lat, lng, is_active, created_at, updated_at)
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
-        RETURNING *
-      `, [
-        'test-location-' + Date.now(),
-        'Gimnasio de Prueba',
-        'Argentina',
-        'Buenos Aires',
-        'Av. Test 123',
-        '-34.6037',
-        '-58.3816',
-        true,
-        new Date(),
-        new Date()
-      ]);
+        // Crear una ubicación de prueba
+        const testLocation = await this.dataSource.query(
+          `
+          INSERT INTO locations (id, name, country, city, address, lat, lng, "isActive", created_at, updated_at)
+          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+          RETURNING *
+        `,
+          [
+            'test-location-' + Date.now(),
+            'Gimnasio de Prueba',
+            'Argentina',
+            'Buenos Aires',
+            'Av. Test 123',
+            '-34.6037',
+            '-58.3816',
+            true,
+            new Date(),
+            new Date(),
+          ],
+        );
 
       return {
         status: 'ok',
         message: 'Inserción de prueba exitosa',
         data: testLocation[0],
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
     } catch (error) {
       return {
         status: 'error',
         message: 'Error en inserción de prueba',
         error: error.message,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
     }
   }
