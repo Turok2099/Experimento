@@ -65,6 +65,19 @@ async function createApp() {
     preflightContinue: false,
   });
 
+  // Middleware para manejar preflight requests (OPTIONS)
+  app.use((req, res, next) => {
+    if (req.method === 'OPTIONS') {
+      res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
+      res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
+      res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Cookie, X-Requested-With');
+      res.header('Access-Control-Allow-Credentials', 'true');
+      res.header('Access-Control-Max-Age', '86400'); // 24 horas
+      return res.status(200).end();
+    }
+    next();
+  });
+
   app.use(cookieParser());
   app.useGlobalPipes(
     new ValidationPipe({

@@ -48,6 +48,17 @@ async function createApp() {
         optionsSuccessStatus: 200,
         preflightContinue: false,
     });
+    app.use((req, res, next) => {
+        if (req.method === 'OPTIONS') {
+            res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
+            res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
+            res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Cookie, X-Requested-With');
+            res.header('Access-Control-Allow-Credentials', 'true');
+            res.header('Access-Control-Max-Age', '86400');
+            return res.status(200).end();
+        }
+        next();
+    });
     app.use((0, cookie_parser_1.default)());
     app.useGlobalPipes(new common_1.ValidationPipe({
         whitelist: true,
