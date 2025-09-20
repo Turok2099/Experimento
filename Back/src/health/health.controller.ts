@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
@@ -190,7 +190,7 @@ export class HealthController {
   async getUsers() {
     try {
       const users = await this.dataSource.query(
-        'SELECT id, name, email, role, "isBlocked", created_at FROM users ORDER BY created_at DESC'
+        'SELECT id, name, email, role, "isBlocked", created_at FROM users ORDER BY created_at DESC',
       );
 
       return {
@@ -204,6 +204,49 @@ export class HealthController {
       return {
         status: 'error',
         message: 'Error al obtener usuarios',
+        error: error.message,
+        timestamp: new Date().toISOString(),
+      };
+    }
+  }
+
+  @Get('user/:email')
+  @ApiOperation({ summary: 'Verificar hash de contraseña de un usuario' })
+  @ApiResponse({ status: 200, description: 'Información del usuario obtenida' })
+  async getUserPasswordHash(@Param('email') email: string) {
+    try {
+      const user = await this.dataSource.query(
+        'SELECT id, name, email, role, "isBlocked", password_hash, created_at FROM users WHERE email = $1',
+        [email]
+      );
+
+      if (user.length === 0) {
+        return {
+          status: 'error',
+          message: 'Usuario no encontrado',
+          email: email,
+          timestamp: new Date().toISOString(),
+        };
+      }
+
+      return {
+        status: 'ok',
+        message: 'Usuario encontrado',
+        user: {
+          id: user[0].id,
+          name: user[0].name,
+          email: user[0].email,
+          role: user[0].role,
+          isBlocked: user[0].isBlocked,
+          password_hash: user[0].password_hash,
+          created_at: user[0].created_at,
+        },
+        timestamp: new Date().toISOString(),
+      };
+    } catch (error: any) {
+      return {
+        status: 'error',
+        message: 'Error al obtener usuario',
         error: error.message,
         timestamp: new Date().toISOString(),
       };

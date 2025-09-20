@@ -52,4 +52,34 @@ export declare class HealthController {
         count?: undefined;
         users?: undefined;
     }>;
+    getUserPasswordHash(email: string): Promise<{
+        status: string;
+        message: string;
+        email: string;
+        timestamp: string;
+        user?: undefined;
+        error?: undefined;
+    } | {
+        status: string;
+        message: string;
+        user: {
+            id: any;
+            name: any;
+            email: any;
+            role: any;
+            isBlocked: any;
+            password_hash: any;
+            created_at: any;
+        };
+        timestamp: string;
+        email?: undefined;
+        error?: undefined;
+    } | {
+        status: string;
+        message: string;
+        error: any;
+        timestamp: string;
+        email?: undefined;
+        user?: undefined;
+    }>;
 }

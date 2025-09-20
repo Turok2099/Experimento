@@ -175,6 +175,41 @@ let HealthController = class HealthController {
             };
         }
     }
+    async getUserPasswordHash(email) {
+        try {
+            const user = await this.dataSource.query('SELECT id, name, email, role, "isBlocked", password_hash, created_at FROM users WHERE email = $1', [email]);
+            if (user.length === 0) {
+                return {
+                    status: 'error',
+                    message: 'Usuario no encontrado',
+                    email: email,
+                    timestamp: new Date().toISOString(),
+                };
+            }
+            return {
+                status: 'ok',
+                message: 'Usuario encontrado',
+                user: {
+                    id: user[0].id,
+                    name: user[0].name,
+                    email: user[0].email,
+                    role: user[0].role,
+                    isBlocked: user[0].isBlocked,
+                    password_hash: user[0].password_hash,
+                    created_at: user[0].created_at,
+                },
+                timestamp: new Date().toISOString(),
+            };
+        }
+        catch (error) {
+            return {
+                status: 'error',
+                message: 'Error al obtener usuario',
+                error: error.message,
+                timestamp: new Date().toISOString(),
+            };
+        }
+    }
 };
 exports.HealthController = HealthController;
 __decorate([
@@ -218,6 +253,15 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], HealthController.prototype, "getUsers", null);
+__decorate([
+    (0, common_1.Get)('user/:email'),
+    (0, swagger_1.ApiOperation)({ summary: 'Verificar hash de contraseña de un usuario' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Información del usuario obtenida' }),
+    __param(0, (0, common_1.Param)('email')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], HealthController.prototype, "getUserPasswordHash", null);
 exports.HealthController = HealthController = __decorate([
     (0, swagger_1.ApiTags)('Health'),
     (0, common_1.Controller)('health'),
