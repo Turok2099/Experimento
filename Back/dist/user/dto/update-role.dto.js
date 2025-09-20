@@ -21,4 +21,3 @@ __decorate([
     (0, class_validator_1.IsIn)(['member', 'trainer', 'admin']),
     __metadata("design:type", String)
 ], UpdateRoleDto.prototype, "role", void 0);
-//# sourceMappingURL=update-role.dto.js.map

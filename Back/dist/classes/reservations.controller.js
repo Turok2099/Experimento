@@ -35,12 +35,15 @@ let ReservationsController = class ReservationsController {
     constructor(reservations) {
         this.reservations = reservations;
     }
+    // Reservar (usuario autenticado + suscripción activa)
     async book(user, classId) {
         return this.reservations.book(user.userId, classId);
     }
+    // Cancelar mi reserva
     async cancelMine(user, classId) {
         return this.reservations.cancelMine(user.userId, classId);
     }
+    // Cambiar estado (trainer dueño o admin)
     async setStatus(user, classId, reservationId, dto) {
         return this.reservations.setStatusAsTrainerOrAdmin(user, classId, reservationId, dto.status);
     }
@@ -91,4 +94,3 @@ exports.ReservationsController = ReservationsController = __decorate([
     (0, common_1.Controller)('classes'),
     __metadata("design:paramtypes", [reservations_service_1.ReservationsService])
 ], ReservationsController);
-//# sourceMappingURL=reservations.controller.js.map

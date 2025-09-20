@@ -37,4 +37,3 @@ __decorate([
     (0, class_validator_1.IsEmpty)(),
     __metadata("design:type", void 0)
 ], UpdateUserDto.prototype, "email", void 0);
-//# sourceMappingURL=update-user.dto.js.map

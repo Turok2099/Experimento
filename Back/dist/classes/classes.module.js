@@ -35,4 +35,3 @@ exports.ClassesModule = ClassesModule = __decorate([
         exports: [reservations_service_1.ReservationsService, classes_service_1.ClassesService],
     })
 ], ClassesModule);
-//# sourceMappingURL=classes.module.js.map

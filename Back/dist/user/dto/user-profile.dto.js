@@ -9,4 +9,3 @@ class UserProfileDto {
     phone;
 }
 exports.UserProfileDto = UserProfileDto;
-//# sourceMappingURL=user-profile.dto.js.map

@@ -11,12 +11,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AdminPatchSubscriptionStatusDto = exports.AdminListSubscriptionsDto = void 0;
 const class_validator_1 = require("class-validator");
+// ⚠️ SIN class-transformer. Aceptamos strings y luego parseamos en el service.
 class AdminListSubscriptionsDto {
     status;
     userId;
     planId;
-    page;
-    limit;
+    // 👉 Swagger envía "1", "20" como strings
+    page; // "1"
+    limit; // "20"
     sort = 'createdAt:DESC';
 }
 exports.AdminListSubscriptionsDto = AdminListSubscriptionsDto;
@@ -68,4 +70,3 @@ __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], AdminPatchSubscriptionStatusDto.prototype, "reason", void 0);
-//# sourceMappingURL=admin-subscriptions.dto.js.map

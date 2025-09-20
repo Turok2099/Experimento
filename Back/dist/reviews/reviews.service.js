@@ -28,6 +28,7 @@ let ReviewsService = class ReviewsService {
         this.reservations = reservations;
         this.subs = subs;
     }
+    // Debe tener al menos una reserva (booked o attended)
     async assertUserCanReview(userId) {
         const count = await this.reservations.count({
             where: [
@@ -41,6 +42,7 @@ let ReviewsService = class ReviewsService {
     }
     async create(userId, dto) {
         await this.assertUserCanReview(userId);
+        // Exigir suscripción activa al momento de reseñar
         const hasActive = await this.subs.hasActive(userId);
         if (!hasActive) {
             throw new common_1.ForbiddenException('Necesitas una suscripción activa para reseñar');
@@ -51,7 +53,7 @@ let ReviewsService = class ReviewsService {
             comment: dto.comment ?? null,
             classId: dto.classId ?? null,
             trainerId: dto.trainerId ?? null,
-            status: 'approved',
+            status: 'approved', // Cambia a 'pending' si quieres moderación manual
             isActive: true,
         });
         return this.reviews.save(entity);
@@ -65,14 +67,14 @@ let ReviewsService = class ReviewsService {
             where.rating = q.rating;
         const [items, total] = await this.reviews.findAndCount({
             where,
-            relations: { user: true },
+            relations: { user: true }, // ✅ NEW
             select: {
                 id: true,
                 userId: true,
                 rating: true,
                 comment: true,
                 createdAt: true,
-                user: { id: true, name: true },
+                user: { id: true, name: true }, // ✅ sólo lo necesario
             },
             order: q.order === 'top'
                 ? { rating: 'DESC', createdAt: 'DESC' }
@@ -122,6 +124,7 @@ let ReviewsService = class ReviewsService {
         r.isActive = false;
         return this.reviews.save(r);
     }
+    // ---------- Admin ----------
     async adminList(q) {
         const page = q.page ?? 1;
         const take = Math.min(q.limit ?? 10, 100);
@@ -157,7 +160,9 @@ let ReviewsService = class ReviewsService {
         r.status = status;
         return this.reviews.save(r);
     }
+    // ---------- Stats públicas ----------
     async stats() {
+        // Promedio y total (getRawOne puede devolver undefined; se protege con ??)
         const base = (await this.reviews
             .createQueryBuilder('r')
             .select('COALESCE(AVG(r.rating), 0)', 'avg')
@@ -168,6 +173,7 @@ let ReviewsService = class ReviewsService {
             { avg: null, total: null };
         const total = Number(base.total ?? 0);
         const average = total ? Number(Number(base.avg ?? 0).toFixed(2)) : 0;
+        // Distribución 1..5
         const rows = await this.reviews
             .createQueryBuilder('r')
             .select('r.rating', 'rating')
@@ -192,4 +198,3 @@ exports.ReviewsService = ReviewsService = __decorate([
         typeorm_2.Repository,
         subscriptions_service_1.SubscriptionsService])
 ], ReviewsService);
-//# sourceMappingURL=reviews.service.js.map

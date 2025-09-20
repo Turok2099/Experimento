@@ -75,7 +75,7 @@ let AuthController = class AuthController {
                 secret: process.env.JWT_REFRESH_SECRET,
             });
             const tokens = await this.auth.refresh(payload.sub, refreshToken);
-            this.setRefreshCookie(res, tokens.refreshToken);
+            this.setRefreshCookie(res, tokens.refreshToken); // rotate
             return { accessToken: tokens.accessToken };
         }
         catch {
@@ -186,4 +186,3 @@ exports.AuthController = AuthController = __decorate([
     __metadata("design:paramtypes", [auth_service_1.AuthService,
         jwt_1.JwtService])
 ], AuthController);
-//# sourceMappingURL=auth.controller.js.map

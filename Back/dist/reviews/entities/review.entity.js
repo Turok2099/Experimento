@@ -16,10 +16,12 @@ let Review = class Review {
     id;
     user;
     userId;
+    // Campos opcionales por si luego reseñan clase/entrenador específico
     classId;
     trainerId;
-    rating;
+    rating; // 1..5
     comment;
+    // Moderación y borrado lógico
     status;
     isActive;
     createdAt;
@@ -41,11 +43,11 @@ __decorate([
 ], Review.prototype, "userId", void 0);
 __decorate([
     (0, typeorm_1.Column)({ name: 'class_id', type: 'uuid', nullable: true }),
-    __metadata("design:type", Object)
+    __metadata("design:type", String)
 ], Review.prototype, "classId", void 0);
 __decorate([
     (0, typeorm_1.Column)({ name: 'trainer_id', type: 'uuid', nullable: true }),
-    __metadata("design:type", Object)
+    __metadata("design:type", String)
 ], Review.prototype, "trainerId", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'int' }),
@@ -53,7 +55,7 @@ __decorate([
 ], Review.prototype, "rating", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'varchar', length: 500, nullable: true }),
-    __metadata("design:type", Object)
+    __metadata("design:type", String)
 ], Review.prototype, "comment", void 0);
 __decorate([
     (0, typeorm_1.Column)({ name: 'status', type: 'varchar', length: 10, default: 'approved' }),
@@ -76,4 +78,3 @@ exports.Review = Review = __decorate([
     (0, typeorm_1.Index)(['userId', 'createdAt']),
     (0, typeorm_1.Index)(['isActive', 'status'])
 ], Review);
-//# sourceMappingURL=review.entity.js.map

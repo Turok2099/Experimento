@@ -15,8 +15,10 @@ const class_entity_1 = require("./class.entity");
 const user_entity_1 = require("../../user/entities/user.entity");
 let ClassHistory = class ClassHistory {
     id;
+    // Relación a la clase
     class;
     classId;
+    // Relación al usuario (sin inverso para no exigir user.classHistories)
     user;
     userId;
     status;
@@ -62,4 +64,3 @@ __decorate([
 exports.ClassHistory = ClassHistory = __decorate([
     (0, typeorm_1.Entity)({ name: 'class_histories' })
 ], ClassHistory);
-//# sourceMappingURL=class-history.entity.js.map

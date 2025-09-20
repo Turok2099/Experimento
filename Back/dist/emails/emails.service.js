@@ -49,6 +49,7 @@ const Handlebars = __importStar(require("handlebars"));
 const juice_1 = __importDefault(require("juice"));
 let EmailsService = class EmailsService {
     transporter = null;
+    // Registro simple de plantillas en memoria
     templates = {
         welcome: {
             subject: '¡Bienvenido/a a {{appName}}!',
@@ -142,7 +143,7 @@ let EmailsService = class EmailsService {
         this.transporter = nodemailer.createTransport({
             host,
             port,
-            secure: port === 465,
+            secure: port === 465, // 465 SSL, 587 STARTTLS
             auth: { user, pass },
             pool: true,
             maxConnections: 5,
@@ -164,7 +165,7 @@ let EmailsService = class EmailsService {
                 from,
                 to,
                 subject,
-                html: (0, juice_1.default)(html),
+                html: (0, juice_1.default)(html), // estilos inline para mejor render
                 attachments,
             });
             return { ok: true, messageId: info.messageId };
@@ -205,4 +206,3 @@ exports.EmailsService = EmailsService;
 exports.EmailsService = EmailsService = __decorate([
     (0, common_1.Injectable)()
 ], EmailsService);
-//# sourceMappingURL=emails.service.js.map

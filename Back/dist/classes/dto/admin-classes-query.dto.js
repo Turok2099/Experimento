@@ -14,7 +14,7 @@ const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 const schedule_query_dto_1 = require("./schedule-query.dto");
 class AdminClassesQueryDto extends schedule_query_dto_1.ScheduleQueryDto {
-    includeInactive;
+    includeInactive; // 'true' | 'false'
 }
 exports.AdminClassesQueryDto = AdminClassesQueryDto;
 __decorate([
@@ -23,4 +23,3 @@ __decorate([
     (0, class_validator_1.IsBooleanString)(),
     __metadata("design:type", String)
 ], AdminClassesQueryDto.prototype, "includeInactive", void 0);
-//# sourceMappingURL=admin-classes-query.dto.js.map

@@ -10,6 +10,7 @@ exports.StripeModule = void 0;
 const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
 const stripe_service_1 = require("./stripe.service");
+// import { StripeController } from './stripe.controller';
 let StripeModule = class StripeModule {
 };
 exports.StripeModule = StripeModule;
@@ -17,7 +18,7 @@ exports.StripeModule = StripeModule = __decorate([
     (0, common_1.Module)({
         imports: [config_1.ConfigModule],
         providers: [stripe_service_1.StripeService],
+        // controllers: [StripeController],
         exports: [stripe_service_1.StripeService],
     })
 ], StripeModule);
-//# sourceMappingURL=stripe.module.js.map

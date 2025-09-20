@@ -12,6 +12,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AdminCreateSubscriptionDto = exports.CreateSubscriptionDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
+/**
+ * DTO para que el USUARIO cree su suscripción a partir de un plan.
+ * Solo necesita el planId; el userId sale del token.
+ */
 class CreateSubscriptionDto {
     planId;
 }
@@ -21,6 +25,10 @@ __decorate([
     (0, class_validator_1.IsUUID)(),
     __metadata("design:type", String)
 ], CreateSubscriptionDto.prototype, "planId", void 0);
+/**
+ * DTO para que el ADMIN cree/extend suscripciones arbitrarias (webhooks, soporte).
+ * userId obligatorio; durationDays opcional; planId opcional.
+ */
 const swagger_2 = require("@nestjs/swagger");
 const class_validator_2 = require("class-validator");
 class AdminCreateSubscriptionDto {
@@ -47,4 +55,3 @@ __decorate([
     (0, class_validator_2.Min)(1),
     __metadata("design:type", Number)
 ], AdminCreateSubscriptionDto.prototype, "durationDays", void 0);
-//# sourceMappingURL=create-subscription.dto.js.map

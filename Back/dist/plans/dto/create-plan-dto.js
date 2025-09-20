@@ -40,4 +40,3 @@ __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], CreatePlanDto.prototype, "description", void 0);
-//# sourceMappingURL=create-plan-dto.js.map

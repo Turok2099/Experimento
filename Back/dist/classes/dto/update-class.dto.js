@@ -59,4 +59,3 @@ __decorate([
     (0, class_validator_1.IsIn)(['weight_loss', 'definition', 'muscle_gain', 'mobility', 'cardio']),
     __metadata("design:type", String)
 ], UpdateClassDto.prototype, "goalTag", void 0);
-//# sourceMappingURL=update-class.dto.js.map

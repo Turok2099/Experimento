@@ -68,12 +68,21 @@ let SubscriptionsService = class SubscriptionsService {
             },
         };
     }
+    /**
+     * Usuario: crea/ajusta su suscripción en base a un planId.
+     * Usa plan.durationDays para calcular la extensión (o creación).
+     */
     async createFromPlan(userId, planId) {
         const plan = await this.plans.findOne(planId);
         if (!plan)
             throw new common_1.NotFoundException('Plan not found');
         return this.extendOrCreate(userId, plan.durationDays, plan.id);
     }
+    /**
+     * Admin/webhook: crea o extiende para cualquier user.
+     * Si viene planId y no viene durationDays, usa la duración del plan.
+     * Si no viene nada, default 30 días.
+     */
     async createAdmin(dto) {
         let duration = dto.durationDays;
         let effectivePlanId = dto.planId ?? null;
@@ -141,7 +150,10 @@ let SubscriptionsService = class SubscriptionsService {
         const sub = await this.subsRepo.findOne({ where: { id } });
         if (!sub)
             throw new common_1.NotFoundException('Subscripción no encontrada');
+        // Si tu enum de la entidad NO incluye 'paused' o 'expired', limita aquí:
+        // if (!['active','cancelled'].includes(dto.status)) throw new BadRequestException('Status inválido');
         sub.status = dto.status;
+        // TODO opcional: guardar dto.reason en un campo de auditoría o disparar email/evento
         return this.subsRepo.save(sub);
     }
 };
@@ -152,4 +164,3 @@ exports.SubscriptionsService = SubscriptionsService = __decorate([
     __metadata("design:paramtypes", [typeorm_2.Repository,
         plans_service_1.PlansService])
 ], SubscriptionsService);
-//# sourceMappingURL=subscriptions.service.js.map

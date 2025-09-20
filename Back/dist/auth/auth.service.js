@@ -169,12 +169,13 @@ let AuthService = AuthService_1 = class AuthService {
     }
     async forgotPassword(dto) {
         const user = await this.usersRepo.findOne({ where: { email: dto.email } });
+        // No revelar si existe o no
         if (!user)
             return { accepted: true };
         const raw = (0, crypto_1.randomBytes)(32).toString('hex');
         const hash = (0, crypto_1.createHash)('sha256').update(raw).digest('hex');
         user.resetTokenHash = hash;
-        user.resetTokenExpiresAt = new Date(Date.now() + 1000 * 60 * 30);
+        user.resetTokenExpiresAt = new Date(Date.now() + 1000 * 60 * 30); // 30 min
         await this.usersRepo.save(user);
         const base = process.env.FRONT_RESET_URL ||
             'http://localhost:3000/reset-password?token=';
@@ -232,8 +233,8 @@ let AuthService = AuthService_1 = class AuthService {
                 googleId,
                 passwordHash: await this.hash(randomPass),
                 role: 'member',
-                address: null,
-                phone: null,
+                address: null, //modificación
+                phone: null, //modificación
             });
             await this.usersRepo.save(user);
             console.log('Usuario creado exitosamente✅');
@@ -313,4 +314,3 @@ exports.AuthService = AuthService = AuthService_1 = __decorate([
         jwt_1.JwtService,
         emails_service_1.EmailsService])
 ], AuthService);
-//# sourceMappingURL=auth.service.js.map

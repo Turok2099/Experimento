@@ -34,6 +34,13 @@ let UsersController = class UsersController {
     async myHistory(user, page, limit) {
         return this.reservationsService.userHistory(user.userId, Number(page) || 1, Number(limit) || 10);
     }
+    // @Get('me')
+    // @UseGuards(JwtAuthGuard)
+    // @ApiBearerAuth()
+    // @ApiOperation({ summary: 'Perfil del usuario autenticado' })
+    // async me(@GetUser() user: { userId: string }) {
+    //   return this.users.findMe(user.userId);
+    // }
     async getProfile(req) {
         const profile = await this.users.getProfile(req.user.userId);
         return {
@@ -144,4 +151,3 @@ exports.UsersController = UsersController = __decorate([
     __metadata("design:paramtypes", [users_service_1.UsersService,
         reservations_service_1.ReservationsService])
 ], UsersController);
-//# sourceMappingURL=users.controller.js.map

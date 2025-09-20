@@ -16,7 +16,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.StripeService = void 0;
 const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
-const stripe_1 = __importDefault(require("../../node_modules/stripe"));
+const stripe_1 = __importDefault(require("stripe"));
 let StripeService = StripeService_1 = class StripeService {
     configService;
     logger = new common_1.Logger(StripeService_1.name);
@@ -33,8 +33,12 @@ let StripeService = StripeService_1 = class StripeService {
         });
         this.logger.log('Stripe service inicializado correctamente');
     }
+    /**
+     * Verifica la conectividad con Stripe
+     */
     async testConnection() {
         try {
+            // Intentar obtener el balance de la cuenta
             const balance = await this.stripe.balance.retrieve();
             this.logger.log('✅ Conectividad con Stripe verificada');
             this.logger.log(`Balance disponible: ${balance.available[0]?.amount || 0} ${balance.available[0]?.currency || 'usd'}`);
@@ -45,6 +49,9 @@ let StripeService = StripeService_1 = class StripeService {
             return false;
         }
     }
+    /**
+     * Crea un producto en Stripe
+     */
     async createProduct(name, description) {
         try {
             const product = await this.stripe.products.create({
@@ -60,11 +67,14 @@ let StripeService = StripeService_1 = class StripeService {
             throw error;
         }
     }
+    /**
+     * Crea un precio para un producto
+     */
     async createPrice(productId, amount, currency = 'usd') {
         try {
             const price = await this.stripe.prices.create({
                 product: productId,
-                unit_amount: amount * 100,
+                unit_amount: amount * 100, // Stripe usa centavos
                 currency,
                 recurring: {
                     interval: 'month',
@@ -78,6 +88,9 @@ let StripeService = StripeService_1 = class StripeService {
             throw error;
         }
     }
+    /**
+     * Crea una sesión de checkout
+     */
     async createCheckoutSession(priceId, successUrl, cancelUrl) {
         try {
             const session = await this.stripe.checkout.sessions.create({
@@ -100,6 +113,9 @@ let StripeService = StripeService_1 = class StripeService {
             throw error;
         }
     }
+    /**
+     * Obtiene el cliente de Stripe
+     */
     getStripeClient() {
         return this.stripe;
     }
@@ -109,4 +125,3 @@ exports.StripeService = StripeService = StripeService_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [config_1.ConfigService])
 ], StripeService);
-//# sourceMappingURL=stripe.service.js.map

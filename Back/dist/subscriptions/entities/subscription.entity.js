@@ -39,7 +39,7 @@ __decorate([
 ], Subscription.prototype, "userId", void 0);
 __decorate([
     (0, typeorm_1.Column)({ name: 'plan_id', type: 'uuid', nullable: true }),
-    __metadata("design:type", Object)
+    __metadata("design:type", String)
 ], Subscription.prototype, "planId", void 0);
 __decorate([
     (0, typeorm_1.Column)({ name: 'start_at', type: 'timestamptz' }),
@@ -65,4 +65,3 @@ exports.Subscription = Subscription = __decorate([
     (0, typeorm_1.Entity)({ name: 'subscriptions' }),
     (0, typeorm_1.Index)(['userId', 'status', 'endAt'])
 ], Subscription);
-//# sourceMappingURL=subscription.entity.js.map

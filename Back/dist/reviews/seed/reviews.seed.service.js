@@ -30,6 +30,7 @@ let ReviewsSeedService = class ReviewsSeedService {
         this.reservationsRepo = reservationsRepo;
     }
     async run(maxTotal = 30) {
+        //Usuarios con reservas válidas
         const reservations = await this.reservationsRepo.find({
             where: [{ status: 'booked' }, { status: 'attended' }],
             take: 500,
@@ -46,6 +47,7 @@ let ReviewsSeedService = class ReviewsSeedService {
             byUser.get(r.userId).push(r);
         }
         const userIds = Array.from(byUser.keys());
+        // 2) ¿Quién ya tiene reseñas activas?
         const existing = await this.reviewsRepo.find({
             where: { userId: (0, typeorm_2.In)(userIds), isActive: true },
             select: ['id', 'userId'],
@@ -68,7 +70,7 @@ let ReviewsSeedService = class ReviewsSeedService {
                 comment: sample.comment,
                 classId: anyRes.classId,
                 trainerId: null,
-                status: 'approved',
+                status: 'approved', // para que salga en público
                 isActive: true,
             });
             await this.reviewsRepo.save(entity);
@@ -86,4 +88,3 @@ exports.ReviewsSeedService = ReviewsSeedService = __decorate([
     __metadata("design:paramtypes", [typeorm_2.Repository,
         typeorm_2.Repository])
 ], ReviewsSeedService);
-//# sourceMappingURL=reviews.seed.service.js.map

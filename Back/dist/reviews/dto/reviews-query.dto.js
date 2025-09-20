@@ -53,4 +53,3 @@ __decorate([
     (0, class_validator_1.Min)(1),
     __metadata("design:type", Number)
 ], ReviewsQueryDto.prototype, "limit", void 0);
-//# sourceMappingURL=reviews-query.dto.js.map

@@ -44,4 +44,3 @@ __decorate([
     (0, class_validator_1.IsUUID)(),
     __metadata("design:type", String)
 ], CreateReviewDto.prototype, "trainerId", void 0);
-//# sourceMappingURL=create-review.dto.js.map

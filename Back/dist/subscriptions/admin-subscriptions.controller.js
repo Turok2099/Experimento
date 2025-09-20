@@ -94,4 +94,3 @@ exports.AdminSubscriptionsController = AdminSubscriptionsController = __decorate
     (0, roles_decorator_1.Roles)('admin'),
     __metadata("design:paramtypes", [subscriptions_service_1.SubscriptionsService])
 ], AdminSubscriptionsController);
-//# sourceMappingURL=admin-subscriptions.controller.js.map

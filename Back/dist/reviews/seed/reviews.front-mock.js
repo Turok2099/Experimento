@@ -18,4 +18,3 @@ exports.reviewSamples = [
     { rating: 5, comment: 'Excelente relación precio/calidad.' },
     { rating: 4, comment: 'App sencilla de usar, buen diseño.' }
 ];
-//# sourceMappingURL=reviews.front-mock.js.map

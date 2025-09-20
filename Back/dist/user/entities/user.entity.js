@@ -22,6 +22,7 @@ let User = class User {
     role;
     isBlocked;
     googleId;
+    // Datos opcionales alineados con el front
     address;
     phone;
     refreshTokenHash;
@@ -61,15 +62,15 @@ __decorate([
 ], User.prototype, "isBlocked", void 0);
 __decorate([
     (0, typeorm_1.Column)({ name: 'google_id', type: 'varchar', length: 64, nullable: true }),
-    __metadata("design:type", Object)
+    __metadata("design:type", String)
 ], User.prototype, "googleId", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'varchar', length: 120, nullable: true }),
-    __metadata("design:type", Object)
+    __metadata("design:type", String)
 ], User.prototype, "address", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'varchar', length: 20, nullable: true }),
-    __metadata("design:type", Object)
+    __metadata("design:type", String)
 ], User.prototype, "phone", void 0);
 __decorate([
     (0, typeorm_1.Column)({
@@ -78,7 +79,7 @@ __decorate([
         nullable: true,
         select: false,
     }),
-    __metadata("design:type", Object)
+    __metadata("design:type", String)
 ], User.prototype, "refreshTokenHash", void 0);
 __decorate([
     (0, typeorm_1.Column)({
@@ -87,7 +88,7 @@ __decorate([
         nullable: true,
         select: false,
     }),
-    __metadata("design:type", Object)
+    __metadata("design:type", String)
 ], User.prototype, "resetTokenHash", void 0);
 __decorate([
     (0, typeorm_1.Column)({
@@ -95,7 +96,7 @@ __decorate([
         type: 'timestamptz',
         nullable: true,
     }),
-    __metadata("design:type", Object)
+    __metadata("design:type", Date)
 ], User.prototype, "resetTokenExpiresAt", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)({ name: 'created_at' }),
@@ -120,4 +121,3 @@ __decorate([
 exports.User = User = __decorate([
     (0, typeorm_1.Entity)({ name: 'users' })
 ], User);
-//# sourceMappingURL=user.entity.js.map

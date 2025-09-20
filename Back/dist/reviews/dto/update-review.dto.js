@@ -35,4 +35,3 @@ __decorate([
     (0, class_validator_1.IsIn)(['approved', 'rejected']),
     __metadata("design:type", String)
 ], ModerateReviewDto.prototype, "status", void 0);
-//# sourceMappingURL=update-review.dto.js.map

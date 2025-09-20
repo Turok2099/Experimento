@@ -28,12 +28,15 @@ let ReviewsController = class ReviewsController {
     constructor(reviews) {
         this.reviews = reviews;
     }
+    // Público: listado (aprobadas + activas)
     async list(q) {
         return this.reviews.listPublic(q);
     }
+    // Usuario: mis reseñas
     async my(user, q) {
         return this.reviews.myReviews(user.userId, q);
     }
+    // Usuario: crear / actualizar / borrar (lógico)
     async create(user, dto) {
         return this.reviews.create(user.userId, dto);
     }
@@ -43,6 +46,7 @@ let ReviewsController = class ReviewsController {
     async remove(user, id) {
         return this.reviews.softDelete(user.userId, id);
     }
+    // Admin: moderación y vista
     async adminList(q) {
         return this.reviews.adminList(q);
     }
@@ -167,4 +171,3 @@ exports.ReviewsController = ReviewsController = __decorate([
     (0, common_1.Controller)('reviews'),
     __metadata("design:paramtypes", [reviews_service_1.ReviewsService])
 ], ReviewsController);
-//# sourceMappingURL=reviews.controller.js.map

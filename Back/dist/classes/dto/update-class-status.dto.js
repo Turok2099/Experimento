@@ -21,4 +21,3 @@ __decorate([
     (0, class_validator_1.IsBoolean)(),
     __metadata("design:type", Boolean)
 ], UpdateClassStatusDto.prototype, "isActive", void 0);
-//# sourceMappingURL=update-class-status.dto.js.map

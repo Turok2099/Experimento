@@ -31,4 +31,3 @@ exports.PaymentsModule = PaymentsModule = __decorate([
         exports: [payments_service_1.PaymentsService],
     })
 ], PaymentsModule);
-//# sourceMappingURL=payments.module.js.map

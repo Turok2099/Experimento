@@ -23,4 +23,3 @@ exports.PlansModule = PlansModule = __decorate([
         exports: [plans_service_1.PlansService]
     })
 ], PlansModule);
-//# sourceMappingURL=plans.module.js.map

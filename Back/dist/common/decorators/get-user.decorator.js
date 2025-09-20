@@ -6,4 +6,3 @@ exports.GetUser = (0, common_1.createParamDecorator)((_data, ctx) => {
     const req = ctx.switchToHttp().getRequest();
     return req.user;
 });
-//# sourceMappingURL=get-user.decorator.js.map

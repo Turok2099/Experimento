@@ -21,4 +21,3 @@ __decorate([
     (0, class_validator_1.IsBoolean)(),
     __metadata("design:type", Boolean)
 ], UpdateStatusDto.prototype, "isBlocked", void 0);
-//# sourceMappingURL=update-status.dto.js.map

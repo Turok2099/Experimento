@@ -71,4 +71,3 @@ __decorate([
     (0, class_validator_1.Min)(1),
     __metadata("design:type", Number)
 ], ScheduleQueryDto.prototype, "limit", void 0);
-//# sourceMappingURL=schedule-query.dto.js.map

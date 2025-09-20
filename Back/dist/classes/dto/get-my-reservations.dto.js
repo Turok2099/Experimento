@@ -41,4 +41,3 @@ __decorate([
     (0, class_validator_1.IsIn)(['booked', 'attended', 'cancelled', 'no_show']),
     __metadata("design:type", String)
 ], GetMyReservationsDto.prototype, "status", void 0);
-//# sourceMappingURL=get-my-reservations.dto.js.map

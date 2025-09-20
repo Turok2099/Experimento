@@ -22,4 +22,3 @@ __decorate([
     (0, class_validator_1.MaxLength)(120),
     __metadata("design:type", String)
 ], ForgotPasswordDto.prototype, "email", void 0);
-//# sourceMappingURL=forgot-password.dto.js.map

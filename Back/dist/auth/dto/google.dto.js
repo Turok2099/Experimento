@@ -21,4 +21,3 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], GoogleTokenDto.prototype, "idToken", void 0);
-//# sourceMappingURL=google.dto.js.map

@@ -37,4 +37,3 @@ exports.AuthModule = AuthModule = __decorate([
         exports: [auth_service_1.AuthService, jwt_1.JwtModule, passport_1.PassportModule],
     })
 ], AuthModule);
-//# sourceMappingURL=auth.module.js.map

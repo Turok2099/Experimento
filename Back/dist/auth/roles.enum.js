@@ -8,4 +8,3 @@ var Role;
     Role["Admin"] = "admin";
     Role["Member"] = "member";
 })(Role || (exports.Role = Role = {}));
-//# sourceMappingURL=roles.enum.js.map

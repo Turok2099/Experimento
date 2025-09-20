@@ -27,4 +27,3 @@ exports.SubscriptionsModule = SubscriptionsModule = __decorate([
         exports: [subscriptions_service_1.SubscriptionsService, active_subscription_guard_1.ActiveSubscriptionGuard],
     })
 ], SubscriptionsModule);
-//# sourceMappingURL=subscriptions.module.js.map

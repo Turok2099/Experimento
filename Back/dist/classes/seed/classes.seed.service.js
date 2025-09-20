@@ -118,7 +118,7 @@ let ClassesSeedService = ClassesSeedService_1 = class ClassesSeedService {
     offsetDate(daysFromToday) {
         const d = new Date();
         d.setDate(d.getDate() + daysFromToday);
-        return d.toISOString().slice(0, 10);
+        return d.toISOString().slice(0, 10); // YYYY-MM-DD
     }
 };
 exports.ClassesSeedService = ClassesSeedService;
@@ -129,4 +129,3 @@ exports.ClassesSeedService = ClassesSeedService = ClassesSeedService_1 = __decor
     __metadata("design:paramtypes", [typeorm_2.Repository,
         typeorm_2.Repository])
 ], ClassesSeedService);
-//# sourceMappingURL=classes.seed.service.js.map

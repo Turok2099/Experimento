@@ -18,8 +18,8 @@ let Class = class Class {
     trainer;
     trainerId;
     title;
-    date;
-    startTime;
+    date; // yyyy-mm-dd
+    startTime; // HH:mm
     endTime;
     dayOfWeek;
     capacity;
@@ -78,7 +78,7 @@ __decorate([
         length: 10,
         nullable: true
     }),
-    __metadata("design:type", Object)
+    __metadata("design:type", String)
 ], Class.prototype, "dayOfWeek", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'int', default: 20 }),
@@ -86,15 +86,16 @@ __decorate([
 ], Class.prototype, "capacity", void 0);
 __decorate([
     (0, typeorm_1.Column)({ name: 'goal_tag', type: 'varchar', length: 20, nullable: true }),
-    __metadata("design:type", Object)
+    __metadata("design:type", String)
 ], Class.prototype, "goalTag", void 0);
 __decorate([
     (0, typeorm_1.Column)({ name: 'is_active', type: 'boolean', default: true }),
     __metadata("design:type", Boolean)
 ], Class.prototype, "isActive", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'simple-json', nullable: true }),
-    __metadata("design:type", Object)
+    (0, typeorm_1.Column)({ type: 'simple-json', nullable: true }) // Añadido: Columna para el array de coaches
+    ,
+    __metadata("design:type", Array)
 ], Class.prototype, "coach", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)({ name: 'created_at' }),
@@ -112,4 +113,3 @@ exports.Class = Class = __decorate([
     (0, typeorm_1.Entity)({ name: 'classes' }),
     (0, typeorm_1.Index)(['date', 'startTime'])
 ], Class);
-//# sourceMappingURL=class.entity.js.map

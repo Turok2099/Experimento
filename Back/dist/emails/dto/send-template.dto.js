@@ -76,4 +76,3 @@ __decorate([
     (0, class_transformer_1.Type)(() => EmailAttachmentDto),
     __metadata("design:type", Array)
 ], SendTemplateDto.prototype, "attachments", void 0);
-//# sourceMappingURL=send-template.dto.js.map

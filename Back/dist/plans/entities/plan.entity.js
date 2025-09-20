@@ -33,7 +33,7 @@ __decorate([
 ], Plan.prototype, "name", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'text', nullable: true }),
-    __metadata("design:type", Object)
+    __metadata("design:type", String)
 ], Plan.prototype, "description", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'decimal', precision: 10, scale: 2 }),
@@ -62,4 +62,3 @@ __decorate([
 exports.Plan = Plan = __decorate([
     (0, typeorm_1.Entity)({ name: 'plans' })
 ], Plan);
-//# sourceMappingURL=plan.entity.js.map

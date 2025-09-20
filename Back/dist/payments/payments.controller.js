@@ -46,6 +46,7 @@ let PaymentsController = PaymentsController_1 = class PaymentsController {
         try {
             this.logger.log(`🔍 Usuario ${req.user?.email} (ID: ${req.user?.id}) creando PaymentIntent`);
             this.logger.log(`📊 Datos del pago: ${dto.amount} ${dto.currency}`);
+            // Validar que el usuario esté autenticado
             if (!req.user?.id) {
                 this.logger.error('❌ Usuario no autenticado');
                 return {
@@ -53,6 +54,7 @@ let PaymentsController = PaymentsController_1 = class PaymentsController {
                     message: 'Usuario no autenticado',
                 };
             }
+            // Crear el DTO completo con userId del JWT
             const paymentData = {
                 ...dto,
                 userId: req.user.id,
@@ -149,6 +151,7 @@ let PaymentsController = PaymentsController_1 = class PaymentsController {
         try {
             this.logger.log(`🔍 Usuario ${req.user?.email} (ID: ${req.user?.id}) creando pago con confirmación automática`);
             this.logger.log(`📊 Datos del pago: ${dto.amount} ${dto.currency} - Plan: ${dto.planId}`);
+            // Validar que el usuario esté autenticado
             if (!req.user?.id) {
                 this.logger.error('❌ Usuario no autenticado');
                 return {
@@ -156,6 +159,7 @@ let PaymentsController = PaymentsController_1 = class PaymentsController {
                     message: 'Usuario no autenticado',
                 };
             }
+            // Crear el DTO completo con userId del JWT
             const paymentData = {
                 ...dto,
                 userId: req.user.id,
@@ -320,4 +324,3 @@ exports.PaymentsController = PaymentsController = PaymentsController_1 = __decor
     (0, common_1.Controller)('payments'),
     __metadata("design:paramtypes", [payments_service_1.PaymentsService])
 ], PaymentsController);
-//# sourceMappingURL=payments.controller.js.map

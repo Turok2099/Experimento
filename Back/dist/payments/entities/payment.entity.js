@@ -73,11 +73,11 @@ __decorate([
 ], Payment.prototype, "paymentType", void 0);
 __decorate([
     (0, typeorm_1.Column)({ name: 'plan_id', type: 'uuid', nullable: true }),
-    __metadata("design:type", Object)
+    __metadata("design:type", String)
 ], Payment.prototype, "planId", void 0);
 __decorate([
     (0, typeorm_1.Column)({ name: 'subscription_id', type: 'uuid', nullable: true }),
-    __metadata("design:type", Object)
+    __metadata("design:type", String)
 ], Payment.prototype, "subscriptionId", void 0);
 __decorate([
     (0, typeorm_1.Column)({ name: 'stripe_metadata', type: 'jsonb', nullable: true }),
@@ -96,4 +96,3 @@ exports.Payment = Payment = __decorate([
     (0, typeorm_1.Index)(['userId', 'status', 'createdAt']),
     (0, typeorm_1.Index)(['stripePaymentIntentId'], { unique: true })
 ], Payment);
-//# sourceMappingURL=payment.entity.js.map

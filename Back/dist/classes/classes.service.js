@@ -46,10 +46,11 @@ function toGoalTag(input) {
         return n;
     return GOAL_ALIASES[n];
 }
+// --- FIX: asegurar formato HH:mm:ss para columnas TIME ---
 function toPgTime(s) {
     if (!s)
         return undefined;
-    return s.length === 5 ? `${s}:00` : s;
+    return s.length === 5 ? `${s}:00` : s; // '09:00' -> '09:00:00'
 }
 let ClassesService = class ClassesService {
     classesRepo;
@@ -60,6 +61,7 @@ let ClassesService = class ClassesService {
         this.resRepo = resRepo;
         this.usersRepo = usersRepo;
     }
+    // ---------- Crear clase (admin) ----------
     async create(dto) {
         if (dto.startTime && dto.endTime && dto.startTime >= dto.endTime) {
             throw new common_1.BadRequestException('startTime must be before endTime');
@@ -68,8 +70,8 @@ let ClassesService = class ClassesService {
             title: dto.title,
             trainerId: dto.trainerId,
             date: dto.date,
-            startTime: toPgTime(dto.startTime),
-            endTime: toPgTime(dto.endTime),
+            startTime: toPgTime(dto.startTime), // normaliza
+            endTime: toPgTime(dto.endTime), // normaliza
             capacity: dto.capacity ?? 20,
             goalTag: dto.goalTag ?? null,
             coach: dto.coach ?? null,
@@ -78,10 +80,12 @@ let ClassesService = class ClassesService {
         entity.setDateWithDayOfWeek(dto.date);
         return this.classesRepo.save(entity);
     }
+    // ---------- Listado simple (si lo usas en algún sitio) ----------
     async findAll() {
         const classes = await this.classesRepo.find();
         return classes.map((c) => ({
             id: c.id,
+            // name lo dejamos para compat con front antiguo (igual a title)
             name: c.title,
             title: c.title,
             date: c.date,
@@ -106,6 +110,7 @@ let ClassesService = class ClassesService {
         }
         return classEntity;
     }
+    // ---------- Agenda pública (con filtros) ----------
     async schedule(q) {
         const page = Number(q.page || 1);
         const take = Math.min(Number(q.limit || 10), 50);
@@ -115,9 +120,10 @@ let ClassesService = class ClassesService {
         if (tag)
             where.goalTag = tag;
         if (q.trainerId)
-            where.trainerId = q.trainerId;
+            where.trainerId = q.trainerId; // ojo: aquí va el UUID del usuario entrenador
         if (q.date)
             where.date = q.date;
+        // --- rangos por timeOfDay (normalizados a HH:mm:ss) ---
         let startRange;
         let endRange;
         if (q.timeOfDay === 'morning') {
@@ -138,6 +144,7 @@ let ClassesService = class ClassesService {
             order: { date: 'ASC', startTime: 'ASC' },
             skip, take,
         });
+        // Ocupación por clase
         const ids = items.map((c) => c.id);
         const counts = ids.length
             ? await this.resRepo
@@ -172,6 +179,7 @@ let ClassesService = class ClassesService {
             throw new common_1.BadRequestException('Class not found or inactive');
         return cls;
     }
+    // ---------- Admin ----------
     async adminList(q) {
         const base = await this.schedule({ ...q, goal: q.goal });
         if (q.includeInactive === 'true') {
@@ -257,12 +265,15 @@ let ClassesService = class ClassesService {
         }));
     }
     async adminToggle(id, isActive) {
+        // reuse tu lógica actual
         return this.adminSetStatus(id, isActive);
     }
     async adminAssignTrainer(id, trainerId) {
+        // Si solo guardas el UUID, no necesitas buscar User:
         const ok = await this.classesRepo.update({ id }, { trainerId });
         if (!ok.affected)
             throw new common_1.BadRequestException('Class not found');
+        // devuelve el registro actualizado si quieres
         const updated = await this.classesRepo.findOne({ where: { id } });
         return updated;
     }
@@ -277,4 +288,3 @@ exports.ClassesService = ClassesService = __decorate([
         typeorm_2.Repository,
         typeorm_2.Repository])
 ], ClassesService);
-//# sourceMappingURL=classes.service.js.map

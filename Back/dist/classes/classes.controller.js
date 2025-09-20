@@ -13,6 +13,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ClassesController = void 0;
+// src/classes/classes.controller.ts
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const classes_service_1 = require("./classes.service");
@@ -61,10 +62,13 @@ let ClassesController = class ClassesController {
     async findById(id) {
         return this.classesService.findById(id);
     }
+    // +++ NUEVO: asignar tutor (admin) +++
     async adminAssignTrainer(id, dto) {
         const updated = await this.classesService.adminAssignTrainer(id, dto.trainerId);
         return { ok: true, data: updated };
     }
+    // +++ OPCIONAL: alias de toggle (admin) para front +++
+    // (Hace lo mismo que tu PATCH /classes/:id/status, pero con la ruta que quizá pidieron)
     async adminToggle(id, dto) {
         const res = await this.classesService.adminSetStatus(id, dto.isActive);
         return { ok: true, data: res };
@@ -217,4 +221,3 @@ exports.ClassesController = ClassesController = __decorate([
     (0, common_1.Controller)('classes'),
     __metadata("design:paramtypes", [classes_service_1.ClassesService])
 ], ClassesController);
-//# sourceMappingURL=classes.controller.js.map

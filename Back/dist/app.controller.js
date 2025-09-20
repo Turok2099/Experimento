@@ -32,10 +32,13 @@ let AppController = class AppController {
     }
     async testDatabaseConnection() {
         try {
+            // Verificar si la conexión está activa
             if (!this.dataSource.isInitialized) {
                 throw new Error('Base de datos no inicializada');
             }
+            // Ejecutar una consulta simple para probar la conexión
             const result = await this.dataSource.query('SELECT NOW() as current_time, version() as db_version');
+            // Obtener información sobre las tablas
             const tablesResult = await this.dataSource.query(`
         SELECT table_name 
         FROM information_schema.tables 
@@ -93,4 +96,3 @@ exports.AppController = AppController = __decorate([
     __metadata("design:paramtypes", [app_service_1.AppService,
         typeorm_1.DataSource])
 ], AppController);
-//# sourceMappingURL=app.controller.js.map

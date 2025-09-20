@@ -46,7 +46,8 @@ let EmailsController = class EmailsController {
 };
 exports.EmailsController = EmailsController;
 __decorate([
-    (0, common_1.Get)('ping'),
+    (0, common_1.Get)('ping') //ocultar en producción
+    ,
     (0, swagger_1.ApiOperation)({ summary: 'Verificar conexión SMTP' }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
@@ -78,4 +79,3 @@ exports.EmailsController = EmailsController = __decorate([
     (0, common_1.Controller)('emails'),
     __metadata("design:paramtypes", [emails_service_1.EmailsService])
 ], EmailsController);
-//# sourceMappingURL=emails.controller.js.map

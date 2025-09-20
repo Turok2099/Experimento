@@ -58,4 +58,3 @@ exports.Reservation = Reservation = __decorate([
     (0, typeorm_1.Unique)(['classId', 'userId']),
     (0, typeorm_1.Index)(['userId', 'createdAt'])
 ], Reservation);
-//# sourceMappingURL=reservation.entity.js.map

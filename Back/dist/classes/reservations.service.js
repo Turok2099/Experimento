@@ -29,6 +29,7 @@ let ReservationsService = class ReservationsService {
         this.subs = subs;
     }
     async book(userId, classId) {
+        // 1) Clase activa
         const cls = await this.classesRepo.findOne({
             where: { id: classId, isActive: true },
         });
@@ -162,4 +163,3 @@ exports.ReservationsService = ReservationsService = __decorate([
         typeorm_2.Repository,
         subscriptions_service_1.SubscriptionsService])
 ], ReservationsService);
-//# sourceMappingURL=reservations.service.js.map

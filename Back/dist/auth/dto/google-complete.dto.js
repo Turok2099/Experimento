@@ -45,4 +45,3 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], GoogleCompleteDto.prototype, "phone", void 0);
-//# sourceMappingURL=google-complete.dto.js.map

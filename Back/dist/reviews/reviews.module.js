@@ -29,4 +29,3 @@ exports.ReviewsModule = ReviewsModule = __decorate([
         exports: [reviews_service_1.ReviewsService, reviews_seed_service_1.ReviewsSeedService],
     })
 ], ReviewsModule);
-//# sourceMappingURL=reviews.module.js.map

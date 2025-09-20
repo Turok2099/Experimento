@@ -29,15 +29,25 @@ let SubscriptionsController = class SubscriptionsController {
     async myStatus(user) {
         return this.subs.statusFor(user.userId);
     }
+    /**
+     * Usuario crea su suscripción a partir de un plan. Body: { planId }
+     * userId sale del token. Duración se toma del plan.
+     */
     async createSelf(user, dto) {
         return this.subs.createFromPlan(user.userId, dto.planId);
     }
+    /**
+     * Admin: crear/extender para cualquier usuario (webhook, soporte).
+     * Puede enviar durationDays o planId (o ambos). Si envía planId y no envía durationDays,
+     * se usa la duración del plan.
+     */
     async createAdmin(dto) {
         return this.subs.createAdmin(dto);
     }
     async cancel(id) {
         return this.subs.cancel(id);
     }
+    // Trial solo en desarrollo (habilitado por ENV)
     async devTrial(user) {
         if (process.env.ENABLE_DEV_TRIAL !== '1' || process.env.NODE_ENV === 'production') {
             throw new common_1.ForbiddenException('Trial dev deshabilitado');
@@ -100,4 +110,3 @@ exports.SubscriptionsController = SubscriptionsController = __decorate([
     (0, common_1.Controller)('subscription'),
     __metadata("design:paramtypes", [subscriptions_service_1.SubscriptionsService])
 ], SubscriptionsController);
-//# sourceMappingURL=subscriptions.controller.js.map
