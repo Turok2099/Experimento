@@ -37,4 +37,19 @@ export declare class HealthController {
         timestamp: string;
         data?: undefined;
     }>;
+    getUsers(): Promise<{
+        status: string;
+        message: string;
+        count: any;
+        users: any;
+        timestamp: string;
+        error?: undefined;
+    } | {
+        status: string;
+        message: string;
+        error: any;
+        timestamp: string;
+        count?: undefined;
+        users?: undefined;
+    }>;
 }

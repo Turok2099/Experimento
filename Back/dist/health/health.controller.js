@@ -155,6 +155,26 @@ let HealthController = class HealthController {
             };
         }
     }
+    async getUsers() {
+        try {
+            const users = await this.dataSource.query('SELECT id, name, email, role, "isBlocked", created_at FROM users ORDER BY created_at DESC');
+            return {
+                status: 'ok',
+                message: 'Usuarios obtenidos exitosamente',
+                count: users.length,
+                users: users,
+                timestamp: new Date().toISOString(),
+            };
+        }
+        catch (error) {
+            return {
+                status: 'error',
+                message: 'Error al obtener usuarios',
+                error: error.message,
+                timestamp: new Date().toISOString(),
+            };
+        }
+    }
 };
 exports.HealthController = HealthController;
 __decorate([
@@ -190,6 +210,14 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], HealthController.prototype, "testInsert", null);
+__decorate([
+    (0, common_1.Get)('users'),
+    (0, swagger_1.ApiOperation)({ summary: 'Listar todos los usuarios registrados' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Lista de usuarios obtenida' }),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], HealthController.prototype, "getUsers", null);
 exports.HealthController = HealthController = __decorate([
     (0, swagger_1.ApiTags)('Health'),
     (0, common_1.Controller)('health'),

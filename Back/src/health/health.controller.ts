@@ -183,4 +183,30 @@ export class HealthController {
       };
     }
   }
+
+  @Get('users')
+  @ApiOperation({ summary: 'Listar todos los usuarios registrados' })
+  @ApiResponse({ status: 200, description: 'Lista de usuarios obtenida' })
+  async getUsers() {
+    try {
+      const users = await this.dataSource.query(
+        'SELECT id, name, email, role, "isBlocked", created_at FROM users ORDER BY created_at DESC'
+      );
+
+      return {
+        status: 'ok',
+        message: 'Usuarios obtenidos exitosamente',
+        count: users.length,
+        users: users,
+        timestamp: new Date().toISOString(),
+      };
+    } catch (error: any) {
+      return {
+        status: 'error',
+        message: 'Error al obtener usuarios',
+        error: error.message,
+        timestamp: new Date().toISOString(),
+      };
+    }
+  }
 }
