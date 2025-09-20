@@ -7,13 +7,15 @@ async function bootstrap() {
   const nestApp = await NestFactory.create(AppModule);
   await nestApp.init();
   app = nestApp.getHttpAdapter().getInstance(); // Express instance
+  return app;
 }
 
-async function handler(req, res) {
-  if (!app) {
-    await bootstrap();
-  }
-  return app(req, res); // Express sabe manejar req/res directo
+// Inicializar la app una sola vez
+if (!app) {
+  bootstrap().then(expressApp => {
+    app = expressApp;
+  });
 }
 
-module.exports = handler;
+// Exportar la app directamente (patrón de Vercel)
+module.exports = app;
