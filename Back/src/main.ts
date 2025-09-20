@@ -20,6 +20,7 @@ async function createApp() {
     'https://nuevotrain-frontend.vercel.app',
     'https://nuevotrain-frontend-3mqnln0cx-jorge-castros-projects-839066ef.vercel.app',
     'https://nuevotrain-frontend-2xexop7sa-jorge-castros-projects-839066ef.vercel.app',
+    'https://nuevotrain-frontend-ajxnvxr2u-jorge-castros-projects-839066ef.vercel.app',
     ...(process.env.FRONT_ORIGIN?.split(',') || []),
   ];
 
