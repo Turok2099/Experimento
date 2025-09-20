@@ -218,7 +218,7 @@ export class HealthController {
     try {
       const user = await this.dataSource.query(
         'SELECT id, name, email, role, "isBlocked", password_hash, created_at FROM users WHERE email = $1',
-        [email]
+        [email],
       );
 
       if (user.length === 0) {
@@ -257,11 +257,14 @@ export class HealthController {
   @Get('test-password/:email/:password')
   @ApiOperation({ summary: 'Probar comparación de contraseña' })
   @ApiResponse({ status: 200, description: 'Resultado de la comparación' })
-  async testPassword(@Param('email') email: string, @Param('password') password: string) {
+  async testPassword(
+    @Param('email') email: string,
+    @Param('password') password: string,
+  ) {
     try {
       const user = await this.dataSource.query(
         'SELECT id, name, email, password_hash FROM users WHERE email = $1',
-        [email]
+        [email],
       );
 
       if (user.length === 0) {
@@ -304,11 +307,14 @@ export class HealthController {
   @Get('fix-password/:email/:newPassword')
   @ApiOperation({ summary: 'Corregir hash de contraseña de un usuario' })
   @ApiResponse({ status: 200, description: 'Contraseña actualizada' })
-  async fixPassword(@Param('email') email: string, @Param('newPassword') newPassword: string) {
+  async fixPassword(
+    @Param('email') email: string,
+    @Param('newPassword') newPassword: string,
+  ) {
     try {
       const user = await this.dataSource.query(
         'SELECT id, name, email FROM users WHERE email = $1',
-        [email]
+        [email],
       );
 
       if (user.length === 0) {
@@ -327,7 +333,7 @@ export class HealthController {
       // Actualizar en la base de datos
       await this.dataSource.query(
         'UPDATE users SET password_hash = $1, updated_at = NOW() WHERE email = $2',
-        [newPasswordHash, email]
+        [newPasswordHash, email],
       );
 
       return {

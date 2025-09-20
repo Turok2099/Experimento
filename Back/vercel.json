@@ -16,9 +16,18 @@
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "Access-Control-Allow-Origin", "value": "https://front-amber-tau.vercel.app" },
-        { "key": "Access-Control-Allow-Methods", "value": "GET, POST, PUT, PATCH, DELETE, OPTIONS" },
-        { "key": "Access-Control-Allow-Headers", "value": "Content-Type, Accept, Authorization, Cookie, X-Requested-With" },
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "https://front-amber-tau.vercel.app"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET, POST, PUT, PATCH, DELETE, OPTIONS"
+        },
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "Content-Type, Accept, Authorization, Cookie, X-Requested-With"
+        },
         { "key": "Access-Control-Allow-Credentials", "value": "true" }
       ]
     }
