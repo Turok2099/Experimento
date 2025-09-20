@@ -1,7 +1,7 @@
-import { ClassHistoryResponseDto } from "src/classes/dto/class-history-response.dto";
-import { ClassAvailableDto } from "src/classes/dto/classes-available.dto";
-import { CommentResponseDto } from "src/comments/dto/comment-response.dto";
-import { UserProfileDto } from "src/user/dto/user-profile.dto";
+import { ClassHistoryResponseDto } from '../../classes/dto/class-history-response.dto';
+import { ClassAvailableDto } from '../../classes/dto/classes-available.dto';
+import { CommentResponseDto } from '../../comments/dto/comment-response.dto';
+import { UserProfileDto } from '../../user/dto/user-profile.dto';
 
 export class DashboardDataDto {
   profile: UserProfileDto;

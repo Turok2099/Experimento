@@ -1,4 +1,4 @@
-import { UserRole } from "src/user/entities/user.entity"; 
+import { UserRole } from '../user/entities/user.entity';
 
 export type PublicUser = {
   id: string;

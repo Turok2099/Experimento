@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, Patch, Query, UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard'; 
-import { RolesGuard } from 'src/common/guards/roles.guard'; 
-import { Roles } from 'src/common/decorators/roles.decorator';
+import { JwtAuthGuard } from '../common/guards/jwt-auth.guard'; 
+import { RolesGuard } from '../common/guards/roles.guard'; 
+import { Roles } from '../common/decorators/roles.decorator';
 import { SubscriptionsService } from './subscriptions.service';
 import { AdminListSubscriptionsDto, AdminPatchSubscriptionStatusDto } from './dto/admin-subscriptions.dto';
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';

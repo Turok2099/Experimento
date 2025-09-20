@@ -148,25 +148,25 @@ export class HealthController {
   @ApiResponse({ status: 200, description: 'Inserción de prueba exitosa' })
   async testInsert() {
     try {
-        // Crear una ubicación de prueba
-        const testLocation = await this.dataSource.query(
-          `
+      // Crear una ubicación de prueba
+      const testLocation = await this.dataSource.query(
+        `
           INSERT INTO locations (name, country, city, address, lat, lng, "isActive", created_at, updated_at)
           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
           RETURNING *
         `,
-          [
-            'Gimnasio de Prueba ' + Date.now(),
-            'Argentina',
-            'Buenos Aires',
-            'Av. Test 123',
-            '-34.6037',
-            '-58.3816',
-            true,
-            new Date(),
-            new Date(),
-          ],
-        );
+        [
+          'Gimnasio de Prueba ' + Date.now(),
+          'Argentina',
+          'Buenos Aires',
+          'Av. Test 123',
+          '-34.6037',
+          '-58.3816',
+          true,
+          new Date(),
+          new Date(),
+        ],
+      );
 
       return {
         status: 'ok',

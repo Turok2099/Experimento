@@ -7,7 +7,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Subscription } from 'src/subscriptions/entities/subscription.entity';
+import { Subscription } from '../../subscriptions/entities/subscription.entity';
 
 @Entity('subscription_reminders')
 export class SubscriptionReminder {

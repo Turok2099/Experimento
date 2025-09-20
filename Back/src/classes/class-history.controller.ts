@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, UseGuards, Request } from '@nestjs/common'
 import { ClassHistoryService } from './class-history.service';
 import { ClassHistoryResponseDto } from './dto/class-history-response.dto';
 import { CreateClassHistoryDto } from './dto/create-class-history.dto';
-import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
+import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 import { ApiTags, ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 @ApiTags('class-history')

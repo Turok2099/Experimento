@@ -7,7 +7,7 @@ import { GetUser } from '../common/decorators/get-user.decorator';
 import { ApiBearerAuth, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UpdateStatusDto } from './dto/update-status.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
-import { ReservationsService } from 'src/classes/reservations.service';
+import { ReservationsService } from '../classes/reservations.service';
 import { UserProfileDto } from './dto/user-profile.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 

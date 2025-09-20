@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { FindOptionsWhere, LessThan, MoreThan, Repository } from 'typeorm';
 import { Subscription } from './entities/subscription.entity';
 import { AdminCreateSubscriptionDto } from './dto/create-subscription.dto';
-import { PlansService } from 'src/plans/plans.service';
+import { PlansService } from '../plans/plans.service';
 import { AdminListSubscriptionsDto, AdminPatchSubscriptionStatusDto } from './dto/admin-subscriptions.dto';
 
 @Injectable()

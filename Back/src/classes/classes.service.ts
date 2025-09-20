@@ -7,7 +7,7 @@ import { ScheduleQueryDto } from './dto/schedule-query.dto';
 import { AdminClassesQueryDto } from './dto/admin-classes-query.dto';
 import { UpdateClassDto } from './dto/update-class.dto';
 import { CreateClassDto } from './dto/create-class.dto';
-import { User } from 'src/user/entities/user.entity';
+import { User } from '../user/entities/user.entity';
 
 const GOAL_ALIASES: Record<string, 'weight_loss'|'definition'|'muscle_gain'|'mobility'|'cardio'> = {
   'perder peso': 'weight_loss',

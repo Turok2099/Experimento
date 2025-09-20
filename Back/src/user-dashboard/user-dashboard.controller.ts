@@ -1,10 +1,10 @@
 import { Controller, Get, UseGuards, Request } from '@nestjs/common';
-import { UsersService } from 'src/user/users.service';
-import { CommentService } from 'src/comments/comments.service';
-import { ClassesService } from 'src/classes/classes.service';
-import { ClassHistoryService } from 'src/classes/class-history.service';
+import { UsersService } from '../user/users.service';
+import { CommentService } from '../comments/comments.service';
+import { ClassesService } from '../classes/classes.service';
+import { ClassHistoryService } from '../classes/class-history.service';
 import { DashboardDataDto } from './dto/user-dashboard-data.dto';
-import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
+import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 import { ApiTags, ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 @ApiTags('dashboard')

@@ -4,8 +4,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, MoreThan } from 'typeorm';
 import { DateTime } from 'luxon';
 
-import { EmailsService } from 'src/emails/emails.service';
-import { Subscription } from 'src/subscriptions/entities/subscription.entity';
+import { EmailsService } from '../emails/emails.service';
+import { Subscription } from '../subscriptions/entities/subscription.entity';
 import { SubscriptionReminder } from './entities/subscription-reminder.entity';
 
 @Injectable()

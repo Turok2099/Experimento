@@ -1,6 +1,6 @@
-import { ClassHistory } from 'src/classes/entities/class-history.entity';
-import { Review } from 'src/reviews/entities/review.entity';
-import { Payment } from 'src/payments/entities/payment.entity';
+import { ClassHistory } from '../../classes/entities/class-history.entity';
+import { Review } from '../../reviews/entities/review.entity';
+import { Payment } from '../../payments/entities/payment.entity';
 
 import {
   Entity,

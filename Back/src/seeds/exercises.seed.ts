@@ -1,5 +1,5 @@
 import { DataSource } from 'typeorm';
-import { Exercise } from 'src/exercises/entities/exercise.entity';
+import { Exercise } from '../exercises/entities/exercise.entity';
 import { muscleGroupsMax, muscleGroupsHyper, cardioActivities } from './exercise-mocks';
 
 export async function seedExercises(dataSource: DataSource) {

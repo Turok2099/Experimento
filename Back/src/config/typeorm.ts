@@ -2,22 +2,25 @@ import { DataSource, DataSourceOptions } from 'typeorm';
 import { config as dotenvConfig } from 'dotenv';
 import { registerAs } from '@nestjs/config';
 
-// Cargar variables de entorno específicamente para desarrollo
-dotenvConfig({ path: '.env.development' });
+// Cargar variables de entorno
+dotenvConfig();
 
-// Configuración para PostgreSQL con Neon
+// Configuración para PostgreSQL - usa DATABASE_URL (Neon)
 const config: DataSourceOptions = {
   type: 'postgres',
   url: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false }, // SSL obligatorio para Neon
   entities: ['dist/**/*.entity{.ts,.js}'],
   migrations: ['dist/migrations/*{.ts,.js}'],
   logging: process.env.NODE_ENV === 'development',
-  synchronize: process.env.NODE_ENV === 'development', // Solo en desarrollo
+  synchronize: process.env.NODE_ENV === 'development',
   dropSchema: false,
-  // Para Neon, usar la configuración SSL correcta
-  ssl: process.env.DATABASE_URL?.includes('neon.tech') 
-    ? { rejectUnauthorized: false } 
-    : false,
+  extra: {
+    max: 20,
+    min: 5,
+    acquire: 30000,
+    idle: 10000,
+  },
 };
 
 export const typeOrmConfig = registerAs('typeorm', () => config);
