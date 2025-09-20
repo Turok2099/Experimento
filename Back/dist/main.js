@@ -29,9 +29,7 @@ async function createApp() {
                 return callback(null, true);
             if (origin.includes('localhost'))
                 return callback(null, true);
-            if ((origin.includes('nuevotrain-frontend') ||
-                origin.includes('front-amber-tau')) &&
-                origin.includes('vercel.app')) {
+            if (origin.includes('vercel.app') && origin.includes('front')) {
                 return callback(null, true);
             }
             if (allowedOrigins.includes(origin)) {

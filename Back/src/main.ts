@@ -40,12 +40,8 @@ async function createApp() {
       // Permitir localhost en desarrollo
       if (origin.includes('localhost')) return callback(null, true);
 
-      // Permitir cualquier URL de nuevotrain-frontend o front-amber-tau en Vercel
-      if (
-        (origin.includes('nuevotrain-frontend') ||
-          origin.includes('front-amber-tau')) &&
-        origin.includes('vercel.app')
-      ) {
+      // Permitir cualquier URL de Vercel del frontend
+      if (origin.includes('vercel.app') && origin.includes('front')) {
         return callback(null, true);
       }
 
