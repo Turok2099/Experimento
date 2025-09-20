@@ -5,7 +5,10 @@ const { Client } = require('pg');
 async function testDatabaseConnection() {
   const client = new Client({
     connectionString: process.env.DATABASE_URL,
-    ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+    ssl:
+      process.env.NODE_ENV === 'production'
+        ? { rejectUnauthorized: false }
+        : false,
   });
 
   try {
@@ -14,7 +17,9 @@ async function testDatabaseConnection() {
     console.log('✅ Conexión exitosa a la base de datos!');
 
     // Probar una consulta simple
-    const result = await client.query('SELECT NOW() as current_time, version() as db_version');
+    const result = await client.query(
+      'SELECT NOW() as current_time, version() as db_version',
+    );
     console.log('📊 Información de la base de datos:');
     console.log(`   - Tiempo actual: ${result.rows[0].current_time}`);
     console.log(`   - Versión: ${result.rows[0].db_version}`);
@@ -26,10 +31,10 @@ async function testDatabaseConnection() {
       WHERE table_schema = 'public'
       ORDER BY table_name
     `);
-    
+
     console.log('📋 Tablas encontradas:');
     if (tablesResult.rows.length > 0) {
-      tablesResult.rows.forEach(row => {
+      tablesResult.rows.forEach((row) => {
         console.log(`   - ${row.table_name}`);
       });
     } else {
@@ -42,7 +47,7 @@ async function testDatabaseConnection() {
     console.error(`   - Mensaje: ${error.message}`);
     console.error(`   - Código: ${error.code}`);
     console.error(`   - Detalle: ${error.detail || 'N/A'}`);
-    
+
     return { success: false, error: error.message };
   } finally {
     await client.end();
@@ -53,7 +58,7 @@ async function testDatabaseConnection() {
 // Ejecutar si se llama directamente
 if (require.main === module) {
   testDatabaseConnection()
-    .then(result => {
+    .then((result) => {
       if (result.success) {
         console.log('\n🎉 ¡Prueba de conexión completada exitosamente!');
         process.exit(0);
@@ -62,7 +67,7 @@ if (require.main === module) {
         process.exit(1);
       }
     })
-    .catch(error => {
+    .catch((error) => {
       console.error('\n💥 Error inesperado:', error);
       process.exit(1);
     });
