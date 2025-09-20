@@ -147,4 +147,37 @@ export declare class HealthController {
         user?: undefined;
         password_update?: undefined;
     }>;
+    createAdmin(createAdminDto: {
+        name: string;
+        email: string;
+        password: string;
+    }): Promise<{
+        status: string;
+        message: string;
+        email: string;
+        timestamp: string;
+        user?: undefined;
+        error?: undefined;
+    } | {
+        status: string;
+        message: string;
+        user: {
+            id: any;
+            name: any;
+            email: any;
+            role: any;
+            isBlocked: any;
+            created_at: any;
+        };
+        timestamp: string;
+        email?: undefined;
+        error?: undefined;
+    } | {
+        status: string;
+        message: string;
+        error: any;
+        timestamp: string;
+        email?: undefined;
+        user?: undefined;
+    }>;
 }

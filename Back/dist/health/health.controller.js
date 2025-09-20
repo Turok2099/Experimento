@@ -320,6 +320,48 @@ let HealthController = class HealthController {
             };
         }
     }
+    async createAdmin(createAdminDto) {
+        try {
+            const { name, email, password } = createAdminDto;
+            const existingUser = await this.dataSource.query('SELECT id FROM users WHERE email = $1', [email]);
+            if (existingUser.length > 0) {
+                return {
+                    status: 'error',
+                    message: 'El usuario ya existe',
+                    email: email,
+                    timestamp: new Date().toISOString(),
+                };
+            }
+            const salt = await bcrypt.genSalt(10);
+            const passwordHash = await bcrypt.hash(password, salt);
+            const newUser = await this.dataSource.query(`
+        INSERT INTO users (id, name, email, password_hash, role, "isBlocked", created_at, updated_at)
+        VALUES (gen_random_uuid(), $1, $2, $3, $4, $5, NOW(), NOW())
+        RETURNING id, name, email, role, "isBlocked", created_at
+        `, [name, email, passwordHash, 'admin', false]);
+            return {
+                status: 'ok',
+                message: 'Usuario administrador creado exitosamente',
+                user: {
+                    id: newUser[0].id,
+                    name: newUser[0].name,
+                    email: newUser[0].email,
+                    role: newUser[0].role,
+                    isBlocked: newUser[0].isBlocked,
+                    created_at: newUser[0].created_at,
+                },
+                timestamp: new Date().toISOString(),
+            };
+        }
+        catch (error) {
+            return {
+                status: 'error',
+                message: 'Error al crear usuario administrador',
+                error: error.message,
+                timestamp: new Date().toISOString(),
+            };
+        }
+    }
 };
 exports.HealthController = HealthController;
 __decorate([
@@ -392,6 +434,15 @@ __decorate([
     __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", Promise)
 ], HealthController.prototype, "fixPassword", null);
+__decorate([
+    (0, common_1.Post)('create-admin'),
+    (0, swagger_1.ApiOperation)({ summary: 'Crear usuario administrador' }),
+    (0, swagger_1.ApiResponse)({ status: 201, description: 'Usuario admin creado exitosamente' }),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], HealthController.prototype, "createAdmin", null);
 exports.HealthController = HealthController = __decorate([
     (0, swagger_1.ApiTags)('Health'),
     (0, common_1.Controller)('health'),

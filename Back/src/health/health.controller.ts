@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
@@ -354,6 +354,65 @@ export class HealthController {
       return {
         status: 'error',
         message: 'Error al actualizar contraseña',
+        error: error.message,
+        timestamp: new Date().toISOString(),
+      };
+    }
+  }
+
+  @Post('create-admin')
+  @ApiOperation({ summary: 'Crear usuario administrador' })
+  @ApiResponse({ status: 201, description: 'Usuario admin creado exitosamente' })
+  async createAdmin(@Body() createAdminDto: { name: string; email: string; password: string }) {
+    try {
+      const { name, email, password } = createAdminDto;
+
+      // Verificar si el usuario ya existe
+      const existingUser = await this.dataSource.query(
+        'SELECT id FROM users WHERE email = $1',
+        [email],
+      );
+
+      if (existingUser.length > 0) {
+        return {
+          status: 'error',
+          message: 'El usuario ya existe',
+          email: email,
+          timestamp: new Date().toISOString(),
+        };
+      }
+
+      // Generar hash de la contraseña
+      const salt = await bcrypt.genSalt(10);
+      const passwordHash = await bcrypt.hash(password, salt);
+
+      // Crear el usuario admin
+      const newUser = await this.dataSource.query(
+        `
+        INSERT INTO users (id, name, email, password_hash, role, "isBlocked", created_at, updated_at)
+        VALUES (gen_random_uuid(), $1, $2, $3, $4, $5, NOW(), NOW())
+        RETURNING id, name, email, role, "isBlocked", created_at
+        `,
+        [name, email, passwordHash, 'admin', false],
+      );
+
+      return {
+        status: 'ok',
+        message: 'Usuario administrador creado exitosamente',
+        user: {
+          id: newUser[0].id,
+          name: newUser[0].name,
+          email: newUser[0].email,
+          role: newUser[0].role,
+          isBlocked: newUser[0].isBlocked,
+          created_at: newUser[0].created_at,
+        },
+        timestamp: new Date().toISOString(),
+      };
+    } catch (error: any) {
+      return {
+        status: 'error',
+        message: 'Error al crear usuario administrador',
         error: error.message,
         timestamp: new Date().toISOString(),
       };
