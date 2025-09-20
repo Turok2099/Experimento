@@ -20,6 +20,16 @@ async function createApp() {
         credentials: true,
         optionsSuccessStatus: 200,
     });
+    app.use((req, res, next) => {
+        if (req.method === 'OPTIONS') {
+            res.header('Access-Control-Allow-Origin', 'https://front-amber-tau.vercel.app');
+            res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS');
+            res.header('Access-Control-Allow-Headers', 'Content-Type, Accept, Authorization, Cookie, X-Requested-With');
+            res.header('Access-Control-Allow-Credentials', 'true');
+            return res.status(200).end();
+        }
+        next();
+    });
     app.use((0, cookie_parser_1.default)());
     app.useGlobalPipes(new common_1.ValidationPipe({
         whitelist: true,
