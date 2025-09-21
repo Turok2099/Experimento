@@ -18,7 +18,7 @@
       "headers": [
         {
           "key": "Access-Control-Allow-Origin",
-          "value": "https://front-amber-tau.vercel.app"
+          "value": "https://front-amber-tau.vercel.app, http://localhost:3000"
         },
         {
           "key": "Access-Control-Allow-Methods",
