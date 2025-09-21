@@ -362,6 +362,40 @@ let HealthController = class HealthController {
             };
         }
     }
+    async getUserPaymentInfo(email) {
+        try {
+            const user = await this.dataSource.query('SELECT id, name, email, role, created_at FROM users WHERE email = $1', [email]);
+            if (user.length === 0) {
+                return {
+                    status: 'error',
+                    message: 'Usuario no encontrado',
+                    email: email,
+                    timestamp: new Date().toISOString(),
+                };
+            }
+            const userId = user[0].id;
+            const payments = await this.dataSource.query('SELECT id, amount, status, payment_method, created_at FROM payments WHERE user_id = $1 ORDER BY created_at DESC', [userId]);
+            const subscriptions = await this.dataSource.query('SELECT id, plan_id, status, start_date, end_date, created_at FROM subscriptions WHERE user_id = $1 ORDER BY created_at DESC', [userId]);
+            const plans = await this.dataSource.query('SELECT id, name, price, duration_months FROM plans');
+            return {
+                status: 'ok',
+                message: 'Información de pago y suscripción obtenida',
+                user: user[0],
+                payments: payments,
+                subscriptions: subscriptions,
+                plans: plans,
+                timestamp: new Date().toISOString(),
+            };
+        }
+        catch (error) {
+            return {
+                status: 'error',
+                message: 'Error al obtener información de pago y suscripción',
+                error: error.message,
+                timestamp: new Date().toISOString(),
+            };
+        }
+    }
 };
 exports.HealthController = HealthController;
 __decorate([
@@ -437,12 +471,24 @@ __decorate([
 __decorate([
     (0, common_1.Post)('create-admin'),
     (0, swagger_1.ApiOperation)({ summary: 'Crear usuario administrador' }),
-    (0, swagger_1.ApiResponse)({ status: 201, description: 'Usuario admin creado exitosamente' }),
+    (0, swagger_1.ApiResponse)({
+        status: 201,
+        description: 'Usuario admin creado exitosamente',
+    }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], HealthController.prototype, "createAdmin", null);
+__decorate([
+    (0, common_1.Get)('user-payment/:email'),
+    (0, swagger_1.ApiOperation)({ summary: 'Verificar pago y suscripción de un usuario' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Información de pago y suscripción' }),
+    __param(0, (0, common_1.Param)('email')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], HealthController.prototype, "getUserPaymentInfo", null);
 exports.HealthController = HealthController = __decorate([
     (0, swagger_1.ApiTags)('Health'),
     (0, common_1.Controller)('health'),

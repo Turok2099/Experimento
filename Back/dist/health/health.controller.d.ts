@@ -180,4 +180,35 @@ export declare class HealthController {
         email?: undefined;
         user?: undefined;
     }>;
+    getUserPaymentInfo(email: string): Promise<{
+        status: string;
+        message: string;
+        email: string;
+        timestamp: string;
+        user?: undefined;
+        payments?: undefined;
+        subscriptions?: undefined;
+        plans?: undefined;
+        error?: undefined;
+    } | {
+        status: string;
+        message: string;
+        user: any;
+        payments: any;
+        subscriptions: any;
+        plans: any;
+        timestamp: string;
+        email?: undefined;
+        error?: undefined;
+    } | {
+        status: string;
+        message: string;
+        error: any;
+        timestamp: string;
+        email?: undefined;
+        user?: undefined;
+        payments?: undefined;
+        subscriptions?: undefined;
+        plans?: undefined;
+    }>;
 }
