@@ -14,28 +14,30 @@ async function bootstrap() {
 
 // Exportar función que maneja las requests
 module.exports = async (req, res) => {
+  const origin = req.headers.origin;
+  const allowedOrigins = [
+    'https://front-amber-tau.vercel.app',
+    'http://localhost:3000',
+  ];
+
+  // Configurar CORS para TODAS las requests
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
+
+  res.setHeader(
+    'Access-Control-Allow-Methods',
+    'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+  );
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'Content-Type, Accept, Authorization, Cookie, X-Requested-With',
+  );
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Max-Age', '86400');
+
   // Manejar preflight requests (OPTIONS) antes de NestJS
   if (req.method === 'OPTIONS') {
-    const origin = req.headers.origin;
-    const allowedOrigins = [
-      'https://front-amber-tau.vercel.app',
-      'http://localhost:3000',
-    ];
-
-    if (allowedOrigins.includes(origin)) {
-      res.setHeader('Access-Control-Allow-Origin', origin);
-    }
-
-    res.setHeader(
-      'Access-Control-Allow-Methods',
-      'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    );
-    res.setHeader(
-      'Access-Control-Allow-Headers',
-      'Content-Type, Accept, Authorization, Cookie, X-Requested-With',
-    );
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
-    res.setHeader('Access-Control-Max-Age', '86400');
     return res.status(200).end();
   }
 
