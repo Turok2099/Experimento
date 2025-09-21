@@ -16,10 +16,16 @@ async function bootstrap() {
 module.exports = async (req, res) => {
   // Manejar preflight requests (OPTIONS) antes de NestJS
   if (req.method === 'OPTIONS') {
-    res.setHeader(
-      'Access-Control-Allow-Origin',
+    const origin = req.headers.origin;
+    const allowedOrigins = [
       'https://front-amber-tau.vercel.app',
-    );
+      'http://localhost:3000',
+    ];
+
+    if (allowedOrigins.includes(origin)) {
+      res.setHeader('Access-Control-Allow-Origin', origin);
+    }
+
     res.setHeader(
       'Access-Control-Allow-Methods',
       'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
