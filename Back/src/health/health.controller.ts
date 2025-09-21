@@ -448,19 +448,19 @@ export class HealthController {
 
       // Buscar pagos del usuario
       const payments = await this.dataSource.query(
-        'SELECT id, amount, status, payment_method, created_at FROM payments WHERE user_id = $1 ORDER BY created_at DESC',
+        'SELECT id, amount, status, payment_type, currency, stripe_payment_intent_id, created_at FROM payments WHERE user_id = $1 ORDER BY created_at DESC',
         [userId],
       );
 
       // Buscar suscripciones del usuario
       const subscriptions = await this.dataSource.query(
-        'SELECT id, plan_id, status, start_date, end_date, created_at FROM subscriptions WHERE user_id = $1 ORDER BY created_at DESC',
+        'SELECT id, plan_id, status, start_at, end_at, created_at FROM subscriptions WHERE user_id = $1 ORDER BY created_at DESC',
         [userId],
       );
 
       // Buscar planes
       const plans = await this.dataSource.query(
-        'SELECT id, name, price, duration_months FROM plans',
+        'SELECT id, name, price, durationDays FROM plans',
       );
 
       return {

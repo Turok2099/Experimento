@@ -374,9 +374,9 @@ let HealthController = class HealthController {
                 };
             }
             const userId = user[0].id;
-            const payments = await this.dataSource.query('SELECT id, amount, status, payment_method, created_at FROM payments WHERE user_id = $1 ORDER BY created_at DESC', [userId]);
-            const subscriptions = await this.dataSource.query('SELECT id, plan_id, status, start_date, end_date, created_at FROM subscriptions WHERE user_id = $1 ORDER BY created_at DESC', [userId]);
-            const plans = await this.dataSource.query('SELECT id, name, price, duration_months FROM plans');
+            const payments = await this.dataSource.query('SELECT id, amount, status, payment_type, currency, stripe_payment_intent_id, created_at FROM payments WHERE user_id = $1 ORDER BY created_at DESC', [userId]);
+            const subscriptions = await this.dataSource.query('SELECT id, plan_id, status, start_at, end_at, created_at FROM subscriptions WHERE user_id = $1 ORDER BY created_at DESC', [userId]);
+            const plans = await this.dataSource.query('SELECT id, name, price, durationDays FROM plans');
             return {
                 status: 'ok',
                 message: 'Información de pago y suscripción obtenida',
