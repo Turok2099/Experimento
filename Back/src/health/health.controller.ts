@@ -426,7 +426,10 @@ export class HealthController {
 
   @Get('user-payment/:email')
   @ApiOperation({ summary: 'Verificar pago y suscripción de un usuario' })
-  @ApiResponse({ status: 200, description: 'Información de pago y suscripción' })
+  @ApiResponse({
+    status: 200,
+    description: 'Información de pago y suscripción',
+  })
   async getUserPaymentInfo(@Param('email') email: string) {
     try {
       // Buscar el usuario
@@ -460,7 +463,7 @@ export class HealthController {
 
       // Buscar planes
       const plans = await this.dataSource.query(
-        'SELECT id, name, price, durationDays FROM plans',
+        'SELECT id, name, price, "durationDays" FROM plans',
       );
 
       return {
