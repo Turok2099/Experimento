@@ -9,6 +9,7 @@ import { login } from "@/services/authService";
 import { FcGoogle } from "react-icons/fc";
 import { useSession, signIn } from "next-auth/react";
 import Link from "next/link";
+import { Eye, EyeOff } from "lucide-react";
 
 const LoginForm = () => {
   const { setUserData } = useAuth();
@@ -18,6 +19,7 @@ const LoginForm = () => {
   const [values, setValues] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState<ILoginErrors>({});
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   // Si ya hay sesión, redirige
   useEffect(() => {
@@ -101,15 +103,24 @@ const LoginForm = () => {
           <label className={styles.label} htmlFor="password">
             Contraseña
           </label>
-          <input
-            className={styles.input}
-            type="password"
-            id="password"
-            name="password"
-            placeholder=""
-            value={values.password}
-            onChange={handleChange}
-          />
+          <div className={styles.passwordContainer}>
+            <input
+              className={styles.input}
+              type={showPassword ? "text" : "password"}
+              id="password"
+              name="password"
+              placeholder=""
+              value={values.password}
+              onChange={handleChange}
+            />
+            <button
+              type="button"
+              className={styles.passwordToggle}
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </button>
+          </div>
           {errors.password && <p className={styles.error}>{errors.password}</p>}
         </div>
 

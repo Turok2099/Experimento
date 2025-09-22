@@ -50,6 +50,7 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const swagger_1 = require("@nestjs/swagger");
+const jwt_auth_guard_1 = require("../common/guards/jwt-auth.guard");
 const bcrypt = __importStar(require("bcryptjs"));
 let HealthController = class HealthController {
     dataSource;
@@ -396,6 +397,129 @@ let HealthController = class HealthController {
             };
         }
     }
+    async getSubscriptionInfoTest(email) {
+        try {
+            const user = await this.dataSource.query('SELECT id, name, email FROM users WHERE email = $1', [email]);
+            if (user.length === 0) {
+                return {
+                    status: 'error',
+                    message: 'Usuario no encontrado',
+                    email: email,
+                    timestamp: new Date().toISOString(),
+                };
+            }
+            const userId = user[0].id;
+            const activeSubscription = await this.dataSource.query(`
+        SELECT 
+          s.id,
+          s.status,
+          s.start_at,
+          s.end_at,
+          s.created_at,
+          p.name as plan_name,
+          p.price,
+          p.currency,
+          p."durationDays"
+        FROM subscriptions s
+        LEFT JOIN plans p ON s.plan_id = p.id
+        WHERE s.user_id = $1 AND s.status = 'active'
+        ORDER BY s.created_at DESC
+        LIMIT 1
+        `, [userId]);
+            if (activeSubscription.length === 0) {
+                return {
+                    status: 'error',
+                    message: 'No se encontró una suscripción activa',
+                    timestamp: new Date().toISOString(),
+                };
+            }
+            const subscription = activeSubscription[0];
+            return {
+                status: 'ok',
+                message: 'Información de vigencia del plan obtenida',
+                subscription: {
+                    id: subscription.id,
+                    plan_name: subscription.plan_name,
+                    price: subscription.price,
+                    currency: subscription.currency,
+                    duration_days: subscription.durationDays,
+                    status: subscription.status,
+                    start_at: subscription.start_at,
+                    end_at: subscription.end_at,
+                },
+                timestamp: new Date().toISOString(),
+            };
+        }
+        catch (error) {
+            return {
+                status: 'error',
+                message: 'Error al obtener información de vigencia del plan',
+                error: error.message,
+                timestamp: new Date().toISOString(),
+            };
+        }
+    }
+    async getSubscriptionInfo(req) {
+        try {
+            const userId = req.user.id;
+            const activeSubscription = await this.dataSource.query(`
+        SELECT 
+          s.id,
+          s.status,
+          s.start_at,
+          s.end_at,
+          s.created_at,
+          p.name as plan_name,
+          p.price,
+          p.currency,
+          p."durationDays"
+        FROM subscriptions s
+        LEFT JOIN plans p ON s.plan_id = p.id
+        WHERE s.user_id = $1 AND s.status = 'active'
+        ORDER BY s.created_at DESC
+        LIMIT 1
+        `, [userId]);
+            if (activeSubscription.length === 0) {
+                return {
+                    status: 'error',
+                    message: 'No se encontró una suscripción activa',
+                    timestamp: new Date().toISOString(),
+                };
+            }
+            const subscription = activeSubscription[0];
+            const now = new Date();
+            const endDate = new Date(subscription.end_at);
+            const startDate = new Date(subscription.start_at);
+            const daysRemaining = Math.ceil((endDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+            const daysElapsed = Math.ceil((now.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+            return {
+                status: 'ok',
+                message: 'Información de vigencia del plan obtenida',
+                subscription: {
+                    id: subscription.id,
+                    plan_name: subscription.plan_name,
+                    price: subscription.price,
+                    currency: subscription.currency,
+                    duration_days: subscription.durationDays,
+                    status: subscription.status,
+                    start_at: subscription.start_at,
+                    end_at: subscription.end_at,
+                    days_remaining: daysRemaining,
+                    days_elapsed: daysElapsed,
+                    is_active: daysRemaining > 0,
+                },
+                timestamp: new Date().toISOString(),
+            };
+        }
+        catch (error) {
+            return {
+                status: 'error',
+                message: 'Error al obtener información de vigencia del plan',
+                error: error.message,
+                timestamp: new Date().toISOString(),
+            };
+        }
+    }
 };
 exports.HealthController = HealthController;
 __decorate([
@@ -492,6 +616,36 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], HealthController.prototype, "getUserPaymentInfo", null);
+__decorate([
+    (0, common_1.Get)('subscription-info-test/:email'),
+    (0, swagger_1.ApiOperation)({
+        summary: 'Obtener información de vigencia del plan (sin autenticación para pruebas)',
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: 'Información de vigencia del plan obtenida',
+    }),
+    __param(0, (0, common_1.Param)('email')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], HealthController.prototype, "getSubscriptionInfoTest", null);
+__decorate([
+    (0, common_1.Get)('subscription-info'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiOperation)({
+        summary: 'Obtener información de vigencia del plan del usuario autenticado',
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: 'Información de vigencia del plan obtenida',
+    }),
+    __param(0, (0, common_1.Request)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], HealthController.prototype, "getSubscriptionInfo", null);
 exports.HealthController = HealthController = __decorate([
     (0, swagger_1.ApiTags)('Health'),
     (0, common_1.Controller)('health'),

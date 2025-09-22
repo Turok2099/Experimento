@@ -1,0 +1,157 @@
+
+.container {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+  h2 {
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: #333;
+  }
+}
+
+/* Formulario de crear/editar plan */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: #f9fafb;
+  border-radius: 8px;
+
+  h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #444;
+  }
+
+  input,
+  textarea {
+    padding: 0.6rem 0.8rem;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    transition: border 0.2s ease-in-out;
+
+    &:focus {
+      border-color: #2563eb;
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+    }
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+
+  button {
+    align-self: flex-start;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s ease-in-out;
+    margin-top: 0.5rem;
+  }
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th,
+  td {
+    padding: 0.8rem;
+    border-bottom: 1px solid #eaeaea;
+    text-align: left;
+    font-size: 0.95rem;
+  }
+
+  th {
+    background: #f3f4f6;
+    font-weight: 600;
+    color: #444;
+  }
+
+  tbody tr:hover {
+    background: #f9fafb;
+  }
+}
+
+/* Botones de acción */
+.editBtn,
+.deleteBtn,
+.saveBtn,
+.cancelBtn {
+  margin-right: 0.5rem;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+}
+
+.editBtn {
+  background: #2563eb;
+  color: #fff;
+
+  &:hover {
+    background: #1d4ed8;
+  }
+}
+
+.deleteBtn {
+  background: #dc2626;
+  color: #fff;
+
+  &:hover {
+    background: #b91c1c;
+  }
+}
+
+.saveBtn {
+  background: #16a34a;
+  color: #fff;
+
+  &:hover {
+    background: #15803d;
+  }
+}
+
+.cancelBtn {
+  background: #9ca3af;
+  color: #fff;
+
+  &:hover {
+    background: #6b7280;
+  }
+}
+
+.contbuttons{
+display: flex;
+gap: .5rem;
+ .desactivarbtn{
+  padding: .4rem;
+ }
+}
+
+.iconButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-left: 8px;
+  color: #555;
+
+  &:hover {
+    color: #000;
+  }
+}

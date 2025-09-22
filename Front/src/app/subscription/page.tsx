@@ -13,15 +13,47 @@ export default function SubscriptionPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isCreatingPayment, setIsCreatingPayment] = useState(false);
+  const [subscriptionInfo, setSubscriptionInfo] = useState<any>(null);
 
   // URL base de la API
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+  const apiUrl =
+    "https://back-c2meoxp3c-jorge-castros-projects-839066ef.vercel.app";
 
   useEffect(() => {
     if (!loadingSession) {
       checkAuthentication();
     }
   }, [loadingSession, userData]);
+
+  const getSubscriptionInfo = async () => {
+    try {
+      console.log("📊 Obteniendo información de vigencia del plan...");
+
+      // Usar endpoint de prueba temporalmente
+      const response = await fetch(
+        `${apiUrl}/health/subscription-info-test/${userData?.user?.email}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log("✅ Información de suscripción obtenida:", data);
+        setSubscriptionInfo(data.subscription);
+        return data.subscription;
+      } else {
+        console.log("ℹ️ No hay suscripción activa o error:", response.status);
+        return null;
+      }
+    } catch (error) {
+      console.error("❌ Error obteniendo información de suscripción:", error);
+      return null;
+    }
+  };
 
   const checkAuthentication = async () => {
     try {
@@ -105,7 +137,19 @@ export default function SubscriptionPage() {
       // Si llegamos aquí, el usuario está autenticado correctamente
       setLoading(false);
 
-      // Crear PaymentIntent solo si está autenticado
+      // Verificar si ya tiene una suscripción activa
+      const subscriptionData = await getSubscriptionInfo();
+
+      if (subscriptionData && subscriptionData.is_active) {
+        // Usuario ya tiene suscripción activa
+        setError(
+          `✅ Ya tienes una suscripción activa. Tu suscripción está vigente y activa.`
+        );
+        setLoading(false);
+        return;
+      }
+
+      // Crear PaymentIntent solo si no tiene suscripción activa
       createPaymentIntent();
     } catch (error) {
       console.error("❌ Error verificando autenticación:", error);
@@ -149,7 +193,9 @@ export default function SubscriptionPage() {
       console.log("🔍 Creando PaymentIntent...");
       console.log("📡 URL:", `${apiUrl}/payments/create-payment-intent`);
       console.log("🔑 Token:", userData?.token ? "Presente" : "Ausente");
+      console.log("🔑 Token completo:", userData?.token);
       console.log("👤 Usuario:", userData?.user?.email || "No disponible");
+      console.log("👤 Usuario completo:", userData?.user);
       console.log("🛡️ Protección contra duplicados: ACTIVADA");
 
       const response = await fetch(`${apiUrl}/payments/create-payment-intent`, {
@@ -188,11 +234,16 @@ export default function SubscriptionPage() {
       }
 
       const result = await response.json();
-      console.log("✅ Respuesta exitosa:", result);
+      console.log("✅ Respuesta del servidor:", result);
 
       if (result.success && result.data?.clientSecret) {
         setClientSecret(result.data.clientSecret);
         console.log("🎉 PaymentIntent creado exitosamente");
+        setLoading(false);
+      } else if (result.success === false && result.message) {
+        // Manejar caso cuando el usuario ya tiene un pago activo
+        console.log("ℹ️ Usuario ya tiene pago activo:", result.message);
+        setError(`✅ ${result.message}. Tu suscripción está activa.`);
         setLoading(false);
       } else {
         throw new Error("No se recibió clientSecret del servidor");
@@ -241,7 +292,8 @@ export default function SubscriptionPage() {
     try {
       // Confirmar el pago en el backend
       console.log("🔄 Confirmando pago en el backend...");
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+      const apiUrl =
+        "https://back-c2meoxp3c-jorge-castros-projects-839066ef.vercel.app";
       const userSession = localStorage.getItem("userSession");
       const token = userSession ? JSON.parse(userSession).token : null;
 
@@ -292,10 +344,6 @@ export default function SubscriptionPage() {
     setError(error);
   };
 
-  const handleLoginRedirect = () => {
-    router.push("/login");
-  };
-
   if (loadingSession) {
     return (
       <div className={styles.contSubscriptionView}>
@@ -318,45 +366,14 @@ export default function SubscriptionPage() {
     );
   }
 
+  // Si no hay usuario autenticado, el middleware ya redirigió a /register
+  // Este código no debería ejecutarse nunca, pero lo mantenemos por seguridad
   if (!userData || !userData.token) {
     return (
       <div className={styles.contSubscriptionView}>
-        <div className={styles.mainContent}>
-          {/* Panel izquierdo - Card de bienvenida */}
-          <div className={styles.welcomeCard}>
-            <div className={styles.welcomeContent}>
-              <h2 className={styles.welcomeTitle}>¡Únete a TrainUp!</h2>
-              <p className={styles.welcomeSubtitle}>
-                Accede a todos nuestros cursos y contenido premium para
-                transformar tu vida.
-              </p>
-              <p className={styles.welcomeText}>
-                ¡Inicia sesión y comienza tu transformación hoy mismo!
-              </p>
-            </div>
-            <div className={styles.decorativeCircles}>
-              <div className={styles.circle1}></div>
-              <div className={styles.circle2}></div>
-            </div>
-          </div>
-
-          {/* Panel derecho - Formulario de autenticación */}
-          <div className={styles.formSection}>
-            <div className={styles.authRequired}>
-              <div className={styles.authIcon}>🔐</div>
-              <h2>Inicia sesión para continuar</h2>
-              <p>
-                {error ||
-                  "Necesitas estar autenticado para suscribirte a TrainUp"}
-              </p>
-              <button
-                onClick={handleLoginRedirect}
-                className={styles.loginButton}
-              >
-                Ir a Iniciar Sesión
-              </button>
-            </div>
-          </div>
+        <div className={styles.loading}>
+          <div className={styles.spinner}></div>
+          <p>Redirigiendo...</p>
         </div>
       </div>
     );
@@ -413,14 +430,43 @@ export default function SubscriptionPage() {
         <div className={styles.rightSection}>
           <div className={styles.paymentSection}>
             {error ? (
-              <div className={styles.error}>
-                <h3>Error</h3>
-                <p>{error}</p>
+              <div className={styles.subscriptionInfo}>
+                <div className={styles.infoIcon}>✅</div>
+                <h3>Suscripción Activa</h3>
+                <p>Tu suscripción está vigente y activa</p>
+                <div className={styles.subscriptionDetails}>
+                  <p>
+                    <strong>Plan:</strong>{" "}
+                    {subscriptionInfo?.plan_name || "TrainUp Plus"}
+                  </p>
+                  <p>
+                    <strong>Precio:</strong> $
+                    {subscriptionInfo?.price || "20.00"}{" "}
+                    {subscriptionInfo?.currency || "USD"}
+                  </p>
+                  <p>
+                    <strong>Vence:</strong>{" "}
+                    {subscriptionInfo?.end_at
+                      ? new Date(subscriptionInfo.end_at).toLocaleDateString(
+                          "es-ES",
+                          {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                          }
+                        )
+                      : "21 de octubre de 2025"}
+                  </p>
+                  <p>
+                    <strong>Estado:</strong>{" "}
+                    {subscriptionInfo?.status || "Activo"}
+                  </p>
+                </div>
                 <button
-                  onClick={createPaymentIntent}
-                  className={styles.retryButton}
+                  onClick={() => router.push("/userDashboard")}
+                  className={styles.dashboardButton}
                 >
-                  Reintentar
+                  Ir a Mi Dashboard
                 </button>
               </div>
             ) : clientSecret ? (

@@ -9,6 +9,7 @@ function PaymentSuccessContent() {
   const searchParams = useSearchParams();
   const [paymentIntentId, setPaymentIntentId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [countdown, setCountdown] = useState(6);
 
   useEffect(() => {
     // Obtener parámetros de la URL
@@ -25,6 +26,28 @@ function PaymentSuccessContent() {
     setTimeout(() => {
       setLoading(false);
     }, 1000);
+
+    // Redirección automática al home después de 6 segundos
+    const redirectTimer = setTimeout(() => {
+      window.location.href = "/";
+    }, 6000);
+
+    // Countdown visual
+    const countdownInterval = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev <= 1) {
+          clearInterval(countdownInterval);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    // Limpiar los timers si el componente se desmonta
+    return () => {
+      clearTimeout(redirectTimer);
+      clearInterval(countdownInterval);
+    };
   }, [searchParams]);
 
   const handleBackToHome = () => {
@@ -128,6 +151,9 @@ function PaymentSuccessContent() {
               <Link href="/contact" className={styles.supportLink}>
                 Contáctanos
               </Link>
+            </p>
+            <p className={styles.redirectInfo}>
+              Serás redirigido al inicio en {countdown} segundos...
             </p>
           </div>
         </div>

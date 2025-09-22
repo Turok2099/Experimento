@@ -9,7 +9,7 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
-  ) { }
+  ) {}
 
   async findMe(id: string) {
     const user = await this.usersRepository.findOne({ where: { id } });
@@ -80,12 +80,27 @@ export class UsersService {
       name: user.name,
       email: user.email,
       address: user.address,
-      phone: user.phone
+      phone: user.phone,
     };
   }
 
   async updateProfile(userId: string, updateUserDto: UpdateUserDto) {
     await this.usersRepository.update(userId, updateUserDto);
     return await this.getProfile(userId);
+  }
+
+  async updateUser(
+    id: string,
+    updateUserDto: Partial<{
+      name: string;
+      email: string;
+      phone: string;
+      address: string;
+    }>,
+  ) {
+    await this.ensureExists(id);
+    await this.usersRepository.update({ id }, updateUserDto);
+    const user = await this.usersRepository.findOne({ where: { id } });
+    return this.publicUser(user!);
   }
 }

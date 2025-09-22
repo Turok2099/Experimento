@@ -1,10 +1,8 @@
-@use '../../../styles/utils.scss' as utils;
+@use "../../../styles/utils.scss" as utils;
 
-
-
-.mensaje{
-    @include utils.ClassStyleTitle;
-    margin-bottom: 2rem;
+.mensaje {
+  @include utils.ClassStyleTitle;
+  margin-bottom: 2rem;
 }
 
 .sectionComentary {
@@ -28,7 +26,6 @@
     margin: 0 -1rem;
   }
 }
-
 
 .card {
   background: #1a1a1a;
@@ -91,4 +88,104 @@
 
 .starActive {
   color: var(--colorAmarillo);
+}
+
+// Responsive Design
+@media (max-width: 1024px) {
+  .sectionComentary {
+    padding: 1.5rem;
+  }
+
+  .card {
+    padding: 1.5rem;
+    min-height: 180px;
+  }
+
+  .userName {
+    font-size: 1.3rem;
+  }
+
+  .text {
+    font-size: 1.3rem;
+  }
+
+  .date {
+    font-size: 1rem;
+  }
+
+  .stars {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .sectionComentary {
+    padding: 1rem;
+  }
+
+  .card {
+    padding: 1.25rem;
+    min-height: 160px;
+  }
+
+  .userName {
+    font-size: 1.2rem;
+  }
+
+  .text {
+    font-size: 1.2rem;
+  }
+
+  .date {
+    font-size: 0.9rem;
+  }
+
+  .stars {
+    font-size: 0.9rem;
+  }
+
+  .sliderWrapper {
+    .slick-slide {
+      padding: 0 0.5rem;
+    }
+    .slick-list {
+      margin: 0 -0.5rem;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .sectionComentary {
+    padding: 0.5rem;
+  }
+
+  .card {
+    padding: 1rem;
+    min-height: 140px;
+  }
+
+  .userName {
+    font-size: 1.1rem;
+  }
+
+  .text {
+    font-size: 1.1rem;
+  }
+
+  .date {
+    font-size: 0.8rem;
+  }
+
+  .stars {
+    font-size: 0.8rem;
+  }
+
+  .sliderWrapper {
+    .slick-slide {
+      padding: 0 0.25rem;
+    }
+    .slick-list {
+      margin: 0 -0.25rem;
+    }
+  }
 }

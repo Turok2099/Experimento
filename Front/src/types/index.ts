@@ -70,7 +70,7 @@ export interface Comentary {
     id: string | number;
     name: string;
   };
-  status?: 'pending' | 'approved' | 'rejected'; 
+  status?: "pending" | "approved" | "rejected";
 }
 
 export interface Class {
@@ -110,4 +110,15 @@ export interface StatsCardProps {
   title: string;
   value: string | number;
   icon: React.ReactNode;
+}
+
+//plans
+export interface PlanDto {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  durationDays: number; // en días
+  isActive: boolean;
+  status: "active" | "inactive";
 }

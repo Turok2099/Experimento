@@ -9,6 +9,18 @@
 
 .mensaje {
   @include utils.ClassStyleTitle;
+
+  h2 {
+    font-size: 2.5rem;
+
+    @media (max-width: 768px) {
+      font-size: 2rem;
+    }
+
+    @media (max-width: 480px) {
+      font-size: 1.5rem;
+    }
+  }
 }
 
 .carouselContainer {
@@ -23,30 +35,27 @@
   align-items: center;
 }
 
-.carousel {
+.swiper {
   width: 100%;
-  max-width: 1400px;
   height: 700px;
-  overflow: hidden;
-  will-change: transform;
-  backface-visibility: hidden;
-  margin: 0 auto;
+  padding: 0 20px;
+
+  // Desactivar cualquier animación automática
+  .swiper-wrapper {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  .swiper-slide {
+    transition: none !important;
+    animation: none !important;
+  }
 }
 
-.carouselTrack {
-  display: flex;
+.swiperSlide {
+  width: 350px !important;
   height: 100%;
-  animation: infiniteSlide 30s linear infinite;
-}
-
-// Animación para movimiento infinito constante
-@keyframes infiniteSlide {
-  0% {
-    transform: translateX(0%);
-  }
-  100% {
-    transform: translateX(-66.666%);
-  }
+  flex-shrink: 0;
 }
 
 .navButton {
@@ -78,7 +87,7 @@
 
 .contImages {
   position: relative;
-  width: 400px;
+  width: 350px;
   height: 100%;
   flex-shrink: 0;
   cursor: pointer;
@@ -88,6 +97,10 @@
   image-rendering: crisp-edges;
   backface-visibility: hidden;
   transform: translateZ(0);
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 
   &:hover {
     transform: scale(1.02) translateZ(0);
@@ -132,6 +145,8 @@
   align-items: center;
   z-index: 999;
   cursor: pointer;
+  padding: 20px;
+
   img {
     max-width: 90%;
     max-height: 90vh;
@@ -150,7 +165,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  pointer-events: auto; /* 👈 importante */
+  pointer-events: auto;
   cursor: default;
 
   img {
@@ -160,41 +175,148 @@
   }
 }
 
+.closeButton {
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  background: var(--colorAmarillo);
+  color: #000;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+
+  &:hover {
+    background: #e6ac02;
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
 .modalOverlay > * {
   pointer-events: auto; /* asegura que solo el modal reciba eventos */
 }
 
+// tablets grandes
+@media (max-width: 1200px) {
+  .swiper {
+    height: 500px;
+    padding: 0 15px;
+  }
+
+  .swiperSlide {
+    width: 320px !important;
+  }
+}
+
 // tablets
 @media (max-width: 1024px) {
-  .carousel {
-    max-width: 1000px;
-    height: 420px;
+  .swiper {
+    height: 450px;
+    padding: 0 10px;
   }
 
-  .contImages {
-    width: 320px;
+  .swiperSlide {
+    width: 280px !important;
   }
 }
 
-// móviles
+// tablets pequeñas
 @media (max-width: 768px) {
-  .carousel {
-    max-width: 800px;
-    height: 360px;
+  .swiper {
+    height: 400px;
+    padding: 0 8px;
   }
 
-  .contImages {
-    width: 280px;
+  .swiperSlide {
+    width: 250px !important;
   }
 }
 
-@media (max-width: 430px) {
-  .carousel {
-    max-width: 100%;
-    height: 300px;
+// móviles grandes
+@media (max-width: 600px) {
+  .swiper {
+    height: 350px;
+    padding: 0 5px;
   }
 
-  .contImages {
-    width: 250px;
+  .swiperSlide {
+    width: 220px !important;
+  }
+}
+
+// móviles medianos
+@media (max-width: 480px) {
+  .swiper {
+    height: 300px;
+    padding: 0 3px;
+  }
+
+  .swiperSlide {
+    width: 200px !important;
+  }
+}
+
+// móviles pequeños
+@media (max-width: 360px) {
+  .swiper {
+    height: 280px;
+    padding: 0 2px;
+  }
+
+  .swiperSlide {
+    width: 180px !important;
+  }
+}
+
+// Modal responsive
+@media (max-width: 768px) {
+  .modalOverlay {
+    padding: 10px;
+  }
+
+  .modalContent {
+    max-width: 95%;
+    max-height: 95%;
+  }
+
+  .closeButton {
+    width: 35px;
+    height: 35px;
+    font-size: 20px;
+    top: -10px;
+    right: -10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .modalOverlay {
+    padding: 5px;
+  }
+
+  .modalContent {
+    max-width: 98%;
+    max-height: 98%;
+  }
+
+  .closeButton {
+    width: 30px;
+    height: 30px;
+    font-size: 18px;
+    top: -8px;
+    right: -8px;
   }
 }

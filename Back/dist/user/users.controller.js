@@ -24,6 +24,7 @@ const update_status_dto_1 = require("./dto/update-status.dto");
 const update_role_dto_1 = require("./dto/update-role.dto");
 const reservations_service_1 = require("../classes/reservations.service");
 const update_user_dto_1 = require("./dto/update-user.dto");
+const admin_update_user_dto_1 = require("./dto/admin-update-user.dto");
 let UsersController = class UsersController {
     users;
     reservationsService;
@@ -34,13 +35,6 @@ let UsersController = class UsersController {
     async myHistory(user, page, limit) {
         return this.reservationsService.userHistory(user.userId, Number(page) || 1, Number(limit) || 10);
     }
-    // @Get('me')
-    // @UseGuards(JwtAuthGuard)
-    // @ApiBearerAuth()
-    // @ApiOperation({ summary: 'Perfil del usuario autenticado' })
-    // async me(@GetUser() user: { userId: string }) {
-    //   return this.users.findMe(user.userId);
-    // }
     async getProfile(req) {
         const profile = await this.users.getProfile(req.user.userId);
         return {
@@ -65,6 +59,9 @@ let UsersController = class UsersController {
     }
     async updateStatus(id, dto) {
         return this.users.updateStatus(id, dto.isBlocked);
+    }
+    async updateUser(id, dto) {
+        return this.users.updateUser(id, dto);
     }
 };
 exports.UsersController = UsersController;
@@ -145,9 +142,23 @@ __decorate([
     __metadata("design:paramtypes", [String, update_status_dto_1.UpdateStatusDto]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "updateStatus", null);
+__decorate([
+    (0, common_1.Put)(':id'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('admin'),
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiParam)({ name: 'id', format: 'uuid' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Actualizar usuario (admin)' }),
+    __param(0, (0, common_1.Param)('id', common_1.ParseUUIDPipe)),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, admin_update_user_dto_1.AdminUpdateUserDto]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "updateUser", null);
 exports.UsersController = UsersController = __decorate([
     (0, swagger_1.ApiTags)('users'),
     (0, common_1.Controller)('users'),
     __metadata("design:paramtypes", [users_service_1.UsersService,
         reservations_service_1.ReservationsService])
 ], UsersController);
+//# sourceMappingURL=users.controller.js.map

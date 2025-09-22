@@ -91,6 +91,12 @@ let UsersService = class UsersService {
         await this.usersRepository.update(userId, updateUserDto);
         return await this.getProfile(userId);
     }
+    async updateUser(id, updateUserDto) {
+        await this.ensureExists(id);
+        await this.usersRepository.update({ id }, updateUserDto);
+        const user = await this.usersRepository.findOne({ where: { id } });
+        return this.publicUser(user);
+    }
 };
 exports.UsersService = UsersService;
 exports.UsersService = UsersService = __decorate([
@@ -98,3 +104,4 @@ exports.UsersService = UsersService = __decorate([
     __param(0, (0, typeorm_1.InjectRepository)(user_entity_1.User)),
     __metadata("design:paramtypes", [typeorm_2.Repository])
 ], UsersService);
+//# sourceMappingURL=users.service.js.map

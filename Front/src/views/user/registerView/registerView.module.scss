@@ -24,10 +24,10 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
-  max-width: 1200px;
+  max-width: 800px;
   width: 100%;
   align-items: start;
-  margin-bottom: 2rem;
+  margin: 0 auto 2rem auto;
 }
 
 // Panel izquierdo - Card de bienvenida
@@ -41,6 +41,8 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  width: 100%;
+  max-width: 800px;
 }
 
 .welcomeContent {
@@ -164,6 +166,11 @@
   .mainContent {
     grid-template-columns: 1fr;
     gap: 2rem;
+    max-width: 700px;
+  }
+
+  .welcomeCard {
+    max-width: 700px;
   }
 
   .welcomeCard {
@@ -196,16 +203,32 @@
   .contRegisterView {
     padding: 4rem 1rem 1rem 1rem;
     gap: 1.2rem;
-    background-attachment: scroll; // Mejor rendimiento en móvil
+    background-attachment: scroll;
   }
 
   .mainContent {
     gap: 1.5rem;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
   }
 
   .welcomeCard {
     min-height: 250px;
     padding: 1.25rem;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+  }
+
+  .formSection {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+  }
+
+  .formSection .contRegister {
+    max-width: 100%;
   }
 
   .welcomeTitle {
@@ -243,12 +266,28 @@
 
   .mainContent {
     gap: 1rem;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
   }
 
   .welcomeCard {
     min-height: 200px;
     padding: 1rem;
     border-radius: 15px;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+  }
+
+  .formSection {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+  }
+
+  .formSection .contRegister {
+    max-width: 100%;
   }
 
   .welcomeTitle {

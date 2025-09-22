@@ -1,0 +1,132 @@
+.container {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 12px;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 16px;
+  color: #333;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.table th {
+  background-color: #f0f0f0;
+  text-align: left;
+  padding: 10px;
+  border-bottom: 2px solid #ddd;
+}
+
+.table td {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.roleButton {
+  @extend .button;
+  background-color: #007bff;
+  color: #fff;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+}
+
+.statusButton {
+  @extend .button;
+  background-color: #dc3545;
+  color: #fff;
+
+  &:hover {
+    background-color: #a71d2a;
+  }
+}
+
+.roleEditor {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  select {
+    padding: 6px 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    background-color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+
+    &:focus {
+      outline: none;
+      border-color: #2563eb;
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.3);
+    }
+  }
+
+  .saveBtn {
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #fff;
+    background-color: #16a34a;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+
+    &:hover {
+      background-color: #15803d; 
+    }
+  }
+}
+
+.roleDisplay {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  span {
+    font-size: 14px;
+    font-weight: 500;
+    color: #374151;
+  }
+
+  .editBtn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 6px;
+    transition: background 0.2s ease;
+
+    svg {
+      color: #6b7280;
+    }
+
+    &:hover {
+      background: #f3f4f6;
+      svg {
+        color: #111827;
+      }
+    }
+  }
+}

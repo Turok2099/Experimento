@@ -1,7 +1,21 @@
-import { Controller, Get, Param, Post, Body } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  Post,
+  Body,
+  UseGuards,
+  Request,
+} from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
+import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 import * as bcrypt from 'bcryptjs';
 
 @ApiTags('Health')
@@ -479,6 +493,178 @@ export class HealthController {
       return {
         status: 'error',
         message: 'Error al obtener información de pago y suscripción',
+        error: error.message,
+        timestamp: new Date().toISOString(),
+      };
+    }
+  }
+
+  @Get('subscription-info-test/:email')
+  @ApiOperation({
+    summary:
+      'Obtener información de vigencia del plan (sin autenticación para pruebas)',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Información de vigencia del plan obtenida',
+  })
+  async getSubscriptionInfoTest(@Param('email') email: string) {
+    try {
+      // Buscar el usuario por email
+      const user = await this.dataSource.query(
+        'SELECT id, name, email FROM users WHERE email = $1',
+        [email],
+      );
+
+      if (user.length === 0) {
+        return {
+          status: 'error',
+          message: 'Usuario no encontrado',
+          email: email,
+          timestamp: new Date().toISOString(),
+        };
+      }
+
+      const userId = user[0].id;
+
+      // Buscar la suscripción activa del usuario
+      const activeSubscription = await this.dataSource.query(
+        `
+        SELECT 
+          s.id,
+          s.status,
+          s.start_at,
+          s.end_at,
+          s.created_at,
+          p.name as plan_name,
+          p.price,
+          p.currency,
+          p."durationDays"
+        FROM subscriptions s
+        LEFT JOIN plans p ON s.plan_id = p.id
+        WHERE s.user_id = $1 AND s.status = 'active'
+        ORDER BY s.created_at DESC
+        LIMIT 1
+        `,
+        [userId],
+      );
+
+      if (activeSubscription.length === 0) {
+        return {
+          status: 'error',
+          message: 'No se encontró una suscripción activa',
+          timestamp: new Date().toISOString(),
+        };
+      }
+
+      const subscription = activeSubscription[0];
+
+      return {
+        status: 'ok',
+        message: 'Información de vigencia del plan obtenida',
+        subscription: {
+          id: subscription.id,
+          plan_name: subscription.plan_name,
+          price: subscription.price,
+          currency: subscription.currency,
+          duration_days: subscription.durationDays,
+          status: subscription.status,
+          start_at: subscription.start_at,
+          end_at: subscription.end_at,
+        },
+        timestamp: new Date().toISOString(),
+      };
+    } catch (error: any) {
+      return {
+        status: 'error',
+        message: 'Error al obtener información de vigencia del plan',
+        error: error.message,
+        timestamp: new Date().toISOString(),
+      };
+    }
+  }
+
+  @Get('subscription-info')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Obtener información de vigencia del plan del usuario autenticado',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Información de vigencia del plan obtenida',
+  })
+  async getSubscriptionInfo(@Request() req: any) {
+    try {
+      const userId = req.user.id;
+
+      // Buscar la suscripción activa del usuario
+      const activeSubscription = await this.dataSource.query(
+        `
+        SELECT 
+          s.id,
+          s.status,
+          s.start_at,
+          s.end_at,
+          s.created_at,
+          p.name as plan_name,
+          p.price,
+          p.currency,
+          p."durationDays"
+        FROM subscriptions s
+        LEFT JOIN plans p ON s.plan_id = p.id
+        WHERE s.user_id = $1 AND s.status = 'active'
+        ORDER BY s.created_at DESC
+        LIMIT 1
+        `,
+        [userId],
+      );
+
+      if (activeSubscription.length === 0) {
+        return {
+          status: 'error',
+          message: 'No se encontró una suscripción activa',
+          timestamp: new Date().toISOString(),
+        };
+      }
+
+      const subscription = activeSubscription[0];
+      const now = new Date();
+      const endDate = new Date(subscription.end_at);
+      const startDate = new Date(subscription.start_at);
+
+      // Calcular días restantes
+      const daysRemaining = Math.ceil(
+        (endDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24),
+      );
+
+      // Calcular días transcurridos
+      const daysElapsed = Math.ceil(
+        (now.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24),
+      );
+
+      return {
+        status: 'ok',
+        message: 'Información de vigencia del plan obtenida',
+        subscription: {
+          id: subscription.id,
+          plan_name: subscription.plan_name,
+          price: subscription.price,
+          currency: subscription.currency,
+          duration_days: subscription.durationDays,
+          status: subscription.status,
+          start_at: subscription.start_at,
+          end_at: subscription.end_at,
+          days_remaining: daysRemaining,
+          days_elapsed: daysElapsed,
+          is_active: daysRemaining > 0,
+        },
+        timestamp: new Date().toISOString(),
+      };
+    } catch (error: any) {
+      return {
+        status: 'error',
+        message: 'Error al obtener información de vigencia del plan',
         error: error.message,
         timestamp: new Date().toISOString(),
       };

@@ -2,6 +2,7 @@
 import styles from "./hero.module.scss";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 
 const Hero = () => {
@@ -33,9 +34,15 @@ const Hero = () => {
             </div>
 
             <div className={styles.buttonGroup}>
-              <button className={styles.ctaButton} onClick={handleClick}>
-              ¡Únete y siente la diferencia!
-              </button>
+              {userData ? (
+                <button className={styles.ctaButton} onClick={() => router.push("/")}>
+                  ¡Únete y siente la diferencia!
+                </button>
+              ) : (
+                <Link href="/register" className={styles.ctaButton}>
+                  ¡Únete y siente la diferencia!
+                </Link>
+              )}
             </div>
           </div>
         </div>

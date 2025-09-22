@@ -23,6 +23,13 @@
   backdrop-filter: blur(10px);
 }
 
+.leftSection,
+.rightSection {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
 .loading {
   @include utils.ClassFlexCenter;
   flex-direction: column;
@@ -267,6 +274,18 @@
   text-decoration: underline;
 }
 
+.redirectInfo {
+  margin-top: 1rem;
+  color: #667eea;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-align: center;
+  background: rgba(102, 126, 234, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: 1px solid rgba(102, 126, 234, 0.2);
+}
+
 // Responsive design
 @media (max-width: 1024px) {
   .mainContent {
@@ -292,11 +311,21 @@
 
 @media (max-width: 768px) {
   .container {
-    padding: 1rem;
+    padding: 0.5rem;
   }
 
   .mainContent {
     padding: 1rem;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+  }
+
+  .leftSection,
+  .rightSection {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
   }
 
   .title {
@@ -333,6 +362,24 @@
 }
 
 @media (max-width: 480px) {
+  .container {
+    padding: 0.25rem;
+  }
+
+  .mainContent {
+    padding: 0.75rem;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+  }
+
+  .leftSection,
+  .rightSection {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
   .title {
     font-size: 1.5rem;
   }
@@ -345,6 +392,9 @@
   .nextSteps,
   .support {
     padding: 1rem;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
   }
 
   .detailItem {

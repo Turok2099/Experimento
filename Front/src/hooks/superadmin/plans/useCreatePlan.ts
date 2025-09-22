@@ -1,23 +1,50 @@
-"use client";
-
-import { PlanDto } from "./useGetPlans";
+// hooks/superadmin/plans/useCreatePlan.ts
+import { useState } from "react";
 
 export function useCreatePlan(token?: string) {
-  const createPlan = async (payload: Partial<PlanDto>) => {
-    if (!token) throw new Error("No hay token");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/plans`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(payload),
-    });
+  const createPlan = async (planData: {
+    name: string;
+    price: number;
+    durationDays: number;
+    description?: string;
+    isActive?: boolean;
+  }) => {
+    if (!token) {
+      console.warn("No hay token disponible");
+      return;
+    }
 
-    if (!res.ok) throw new Error("Error al crear plan");
-    return await res.json();
+    try {
+      setLoading(true);
+      setError(null);
+
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/plans`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(planData),
+      });
+
+      if (!res.ok) {
+        throw new Error(`Error ${res.status}: ${res.statusText}`);
+      }
+
+      const data = await res.json();
+      console.log("✅ Plan creado:", data);
+      return data;
+    } catch (err: any) {
+      console.error("❌ Error al crear plan:", err);
+      setError(err.message || "Error desconocido");
+      throw err;
+    } finally {
+      setLoading(false);
+    }
   };
 
-  return { createPlan };
+  return { createPlan, loading, error };
 }

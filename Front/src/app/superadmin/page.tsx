@@ -1,9 +1,8 @@
-import SuperAdminView from "@/components/superAdmin/SuperAdminView";
+import SuperAdminView from "@/views/admin/SuperAdminView";
 import React from "react";
 
-
 const SuperAdmin: React.FC = () => {
-  return <SuperAdminView/>;
+  return <SuperAdminView />;
 };
 
 export default SuperAdmin;

@@ -25,12 +25,23 @@ export function middleware(request: NextRequest) {
 
   //Usuario NO logueado → bloquear rutas privadas
   if (
-    ["/userDashboard", "/routine", "/admindashboard", "/superadmin"].includes(
-      pathname
-    ) &&
+    [
+      "/userDashboard",
+      "/routine",
+      "/admindashboard",
+      "/superadmin",
+      "/subscription",
+    ].includes(pathname) &&
     !user
   ) {
-    return NextResponse.redirect(new URL("/login", request.url));
+    // Redirigir a /register con parámetro si es /subscription, sino a /login
+    if (pathname === "/subscription") {
+      const redirectUrl = new URL("/register", request.url);
+      redirectUrl.searchParams.set("from", "subscription");
+      return NextResponse.redirect(redirectUrl);
+    } else {
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
   }
 
   //Usuario logueado → bloquear register y login
@@ -43,7 +54,10 @@ export function middleware(request: NextRequest) {
     const role = user.user?.role; // ✅ ya está tipado
     const allowedRoutes = role ? roleRoutes[role] ?? [] : [];
 
-    if (!allowedRoutes.includes(pathname) && pathname !== "/") {
+    // Rutas permitidas para todos los usuarios logueados
+    const commonRoutes = ["/", "/subscription"];
+
+    if (!allowedRoutes.includes(pathname) && !commonRoutes.includes(pathname)) {
       return NextResponse.redirect(new URL("/", request.url));
     }
   }
@@ -58,6 +72,7 @@ export const config = {
     "/routine",
     "/admindashboard",
     "/superadmin",
+    "/subscription",
     "/register",
     "/login",
   ],

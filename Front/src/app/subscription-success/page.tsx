@@ -60,34 +60,6 @@ export default function SubscriptionSuccessPage() {
                 <li>✅ Participar en eventos exclusivos</li>
               </ul>
             </div>
-
-            <div className={styles.actions}>
-              <button
-                onClick={handleGoToCourses}
-                className={styles.primaryButton}
-              >
-                Explorar Cursos
-              </button>
-              <button
-                onClick={handleGoToDashboard}
-                className={styles.secondaryButton}
-              >
-                Ir al Dashboard
-              </button>
-            </div>
-
-            <div className={styles.supportInfo}>
-              <p>
-                ¿Tienes alguna pregunta? Nuestro equipo de soporte está aquí
-                para ayudarte.
-              </p>
-              <a
-                href="mailto:support@trainup.com"
-                className={styles.supportLink}
-              >
-                Contactar Soporte
-              </a>
-            </div>
           </div>
         </div>
       </div>

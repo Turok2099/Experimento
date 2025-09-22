@@ -1,9 +1,41 @@
+"use client";
+
 // RegisterView
 import RegisterForm from "@/components/authentication/registerForm/RegisterForm";
-import React from "react";
+import React, { useEffect, useRef } from "react";
+import { useSearchParams } from "next/navigation";
 import styles from "./registerView.module.scss";
 
 const RegisterView = () => {
+  const searchParams = useSearchParams();
+  const alertShown = useRef(false);
+
+  useEffect(() => {
+    // Verificar si viene de /subscription y mostrar alert DESPUÉS de cargar
+    const fromSubscription = searchParams.get("from") === "subscription";
+
+    console.log("🔍 RegisterView useEffect:", {
+      fromSubscription,
+      searchParams: searchParams.toString(),
+      url: window.location.href,
+      alertShown: alertShown.current,
+    });
+
+    if (fromSubscription && !alertShown.current) {
+      console.log("✅ Mostrando alert...");
+      alertShown.current = true;
+
+      // Delay para que la página se cargue completamente antes del alert
+      setTimeout(() => {
+        console.log("🚨 Ejecutando alert...");
+        alert("Regístrate antes de suscribirte");
+      }, 500);
+    } else if (fromSubscription && alertShown.current) {
+      console.log("⚠️ Alert ya se mostró anteriormente");
+    } else {
+      console.log("❌ No viene de subscription");
+    }
+  }, [searchParams]);
   return (
     <>
       <div className={styles.contRegisterView}>

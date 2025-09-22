@@ -1,7 +1,15 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import styles from "./googleMaps.module.scss";
 
 const ComponentGoogleMaps: React.FC = () => {
+  const [loadedMaps, setLoadedMaps] = useState<Set<number>>(new Set());
+
+  const handleMapLoad = (index: number) => {
+    setLoadedMaps((prev) => new Set(prev).add(index));
+  };
+
   const locations = [
     {
       country: "ARGENTINA",
@@ -27,12 +35,28 @@ const ComponentGoogleMaps: React.FC = () => {
         {locations.map((loc, index) => (
           <div key={index} className={styles.wrapper}>
             <div className={styles.mapContainer}>
+              {!loadedMaps.has(index) && (
+                <div className={styles.loadingOverlay}>
+                  <div className={styles.spinner}></div>
+                  <p>Cargando mapa...</p>
+                </div>
+              )}
               <iframe
                 src={loc.src}
-                style={{ border: 0 }}
+                style={{
+                  border: 0,
+                  width: "100%",
+                  height: "100%",
+                  borderRadius: "8px",
+                  opacity: loadedMaps.has(index) ? 1 : 0,
+                  transition: "opacity 0.5s ease",
+                }}
                 allowFullScreen
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
+                title={`Mapa de ${loc.country}`}
+                aria-label={`Ubicación del gimnasio en ${loc.country}`}
+                onLoad={() => handleMapLoad(index)}
               ></iframe>
             </div>
             <p className={styles.countryLabel}>{loc.country}</p>

@@ -211,4 +211,73 @@ export declare class HealthController {
         subscriptions?: undefined;
         plans?: undefined;
     }>;
+    getSubscriptionInfoTest(email: string): Promise<{
+        status: string;
+        message: string;
+        email: string;
+        timestamp: string;
+        subscription?: undefined;
+        error?: undefined;
+    } | {
+        status: string;
+        message: string;
+        timestamp: string;
+        email?: undefined;
+        subscription?: undefined;
+        error?: undefined;
+    } | {
+        status: string;
+        message: string;
+        subscription: {
+            id: any;
+            plan_name: any;
+            price: any;
+            currency: any;
+            duration_days: any;
+            status: any;
+            start_at: any;
+            end_at: any;
+        };
+        timestamp: string;
+        email?: undefined;
+        error?: undefined;
+    } | {
+        status: string;
+        message: string;
+        error: any;
+        timestamp: string;
+        email?: undefined;
+        subscription?: undefined;
+    }>;
+    getSubscriptionInfo(req: any): Promise<{
+        status: string;
+        message: string;
+        timestamp: string;
+        subscription?: undefined;
+        error?: undefined;
+    } | {
+        status: string;
+        message: string;
+        subscription: {
+            id: any;
+            plan_name: any;
+            price: any;
+            currency: any;
+            duration_days: any;
+            status: any;
+            start_at: any;
+            end_at: any;
+            days_remaining: number;
+            days_elapsed: number;
+            is_active: boolean;
+        };
+        timestamp: string;
+        error?: undefined;
+    } | {
+        status: string;
+        message: string;
+        error: any;
+        timestamp: string;
+        subscription?: undefined;
+    }>;
 }

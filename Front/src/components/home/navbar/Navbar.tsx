@@ -15,10 +15,10 @@ import { useSessionSync } from "@/hooks/useSessionSync";
 const roleLinks: Record<string, { href: string; label: string }[]> = {
   admin: [
     { href: "/routine", label: "Rutina" },
-    { href: "/superadmin", label: "SuperAdmin" },
+    { href: "/superadmin", label: "Consola Administrador" },
   ],
   member: [
-    { href: "/userDashboard", label: "UserDashboard" },
+    { href: "/userDashboard", label: "Prfil Usuario" },
     { href: "/routine", label: "Rutina" },
   ],
 };
@@ -31,12 +31,18 @@ const Navbar = () => {
   // Sincronizar sesión con NextAuth
   useSessionSync();
 
+  // Función para cerrar el menú
+  const closeMenu = () => {
+    setOpen(false);
+  };
+
   const handleLogout = async () => {
     try {
       await signOut({ redirect: false, callbackUrl: "/" });
       setUserData(null);
       localStorage.removeItem("userSession");
       Cookies.remove("userSession");
+      closeMenu(); // Cerrar menú después del logout
       router.push("/");
       alert("Has cerrado sesión exitosamente");
     } catch (error) {
@@ -61,17 +67,20 @@ const Navbar = () => {
         <div></div>
       </div>
 
+      {/* Overlay para cerrar el menú */}
+      {open && <div className={styles.overlay} onClick={closeMenu}></div>}
+
       <nav className={`${styles.contLinks} ${open ? styles.open : ""}`}>
         {/* 🔹 Si no hay sesión → mostrar links públicos */}
         {!userData && (
           <>
-            <Link className={styles.link} href="/contact">
+            <Link className={styles.link} href="/contact" onClick={closeMenu}>
               Contacto
             </Link>
-            <Link className={styles.link} href="/register">
+            <Link className={styles.link} href="/register" onClick={closeMenu}>
               Registrarse
             </Link>
-            <Link className={styles.link} href="/login">
+            <Link className={styles.link} href="/login" onClick={closeMenu}>
               Iniciar Sesión
             </Link>
           </>
@@ -81,7 +90,12 @@ const Navbar = () => {
         {userData && (
           <>
             {roleLinks[userData.user?.role ?? ""]?.map((link) => (
-              <Link key={link.href} className={styles.link} href={link.href}>
+              <Link
+                key={link.href}
+                className={styles.link}
+                href={link.href}
+                onClick={closeMenu}
+              >
                 {link.label}
               </Link>
             ))}
