@@ -26,8 +26,7 @@ const TablaClases: React.FC = () => {
 
         // Filtrar solo las clases donde el entrenador actual está asignado
         const myAssignedClasses = allClases.filter(
-          (clase) =>
-            clase.trainerName === userData.user?.name
+          (clase) => clase.trainerName === userData.user?.name
         );
 
         setTomadas(myAssignedClasses);

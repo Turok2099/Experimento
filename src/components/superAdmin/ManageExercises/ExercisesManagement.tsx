@@ -16,17 +16,41 @@ interface Exercise {
   hipertrofia_repeticiones?: number;
   resistencia_series?: number;
   resistencia_repeticiones?: string;
+  image_url?: string; // Nueva columna para Cloudinary
   created_at: string;
   updated_at: string;
 }
 
+interface Class {
+  id: string;
+  title: string;
+  date: string;
+  startTime: string;
+  endTime: string;
+  capacity: number;
+  trainerName?: string;
+  trainerId?: string;
+  location?: string;
+  description?: string;
+  is_active: boolean;
+  image_url?: string; // Nueva columna para Cloudinary
+  created_at: string;
+  updated_at: string;
+}
+
+type ContentType = "exercises" | "classes";
+
 const ExercisesManagement: React.FC = () => {
   const [exercises, setExercises] = useState<Exercise[]>([]);
+  const [classes, setClasses] = useState<Class[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [editingExercise, setEditingExercise] = useState<Exercise | null>(null);
-  const [formData, setFormData] = useState<Partial<Exercise>>({});
+  const [editingClass, setEditingClass] = useState<Class | null>(null);
+  const [formData, setFormData] = useState<Partial<Exercise & Class>>({});
   const [showAddForm, setShowAddForm] = useState(false);
+  const [contentType, setContentType] = useState<ContentType>("exercises");
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const { userData } = useAuth();
 
   // Cargar ejercicios
@@ -214,89 +238,197 @@ const ExercisesManagement: React.FC = () => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h2>Gestión de Ejercicios</h2>
+        <h2>Gestión de Contenido</h2>
+        
+        {/* Selector de tipo de contenido */}
+        <div className={styles.contentTypeSelector}>
+          <button
+            className={`${styles.typeButton} ${contentType === "exercises" ? styles.active : ""}`}
+            onClick={() => setContentType("exercises")}
+          >
+            Ejercicios
+          </button>
+          <button
+            className={`${styles.typeButton} ${contentType === "classes" ? styles.active : ""}`}
+            onClick={() => setContentType("classes")}
+          >
+            Clases
+          </button>
+        </div>
+        
         <button
           className={styles.addButton}
           onClick={() => setShowAddForm(true)}
         >
-          + Agregar Ejercicio
+          + Agregar {contentType === "exercises" ? "Ejercicio" : "Clase"}
         </button>
       </div>
 
       {/* Formulario de agregar/editar */}
-      {(showAddForm || editingExercise) && (
+      {(showAddForm || editingExercise || editingClass) && (
         <div className={styles.formContainer}>
-          <h3>{editingExercise ? "Editar Ejercicio" : "Agregar Ejercicio"}</h3>
+          <h3>
+            {editingExercise 
+              ? "Editar Ejercicio" 
+              : editingClass 
+              ? "Editar Clase" 
+              : `Agregar ${contentType === "exercises" ? "Ejercicio" : "Clase"}`}
+          </h3>
 
           <div className={styles.formGrid}>
-            <div className={styles.formGroup}>
-              <label>Grupo Muscular:</label>
-              <select
-                value={formData.grupo || ""}
-                onChange={(e) =>
-                  setFormData({ ...formData, grupo: e.target.value })
-                }
-              >
-                <option value="">Seleccionar grupo</option>
-                <option value="PECHO">PECHO</option>
-                <option value="BRAZO">BRAZO</option>
-                <option value="TRICEP">TRICEP</option>
-                <option value="ESPALDA">ESPALDA</option>
-                <option value="PIERNA">PIERNA</option>
-              </select>
-            </div>
+            {/* Campos específicos para Ejercicios */}
+            {contentType === "exercises" && (
+              <>
+                <div className={styles.formGroup}>
+                  <label>Grupo Muscular:</label>
+                  <select
+                    value={formData.grupo || ""}
+                    onChange={(e) =>
+                      setFormData({ ...formData, grupo: e.target.value })
+                    }
+                  >
+                    <option value="">Seleccionar grupo</option>
+                    <option value="PECHO">PECHO</option>
+                    <option value="BRAZO">BRAZO</option>
+                    <option value="TRICEP">TRICEP</option>
+                    <option value="ESPALDA">ESPALDA</option>
+                    <option value="PIERNA">PIERNA</option>
+                  </select>
+                </div>
 
+                <div className={styles.formGroup}>
+                  <label>Nombre del Ejercicio:</label>
+                  <input
+                    type="text"
+                    value={formData.ejercicio || ""}
+                    onChange={(e) =>
+                      setFormData({ ...formData, ejercicio: e.target.value })
+                    }
+                    placeholder="Ej: Press de banca con barra"
+                  />
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label>Categoría:</label>
+                  <select
+                    value={formData.categoria || "muscular"}
+                    onChange={(e) =>
+                      setFormData({ ...formData, categoria: e.target.value })
+                    }
+                  >
+                    <option value="muscular">Muscular</option>
+                    <option value="cardio">Cardio</option>
+                  </select>
+                </div>
+              </>
+            )}
+
+            {/* Campos específicos para Clases */}
+            {contentType === "classes" && (
+              <>
+                <div className={styles.formGroup}>
+                  <label>Título de la Clase:</label>
+                  <input
+                    type="text"
+                    value={formData.title || ""}
+                    onChange={(e) =>
+                      setFormData({ ...formData, title: e.target.value })
+                    }
+                    placeholder="Ej: Yoga Matutino"
+                  />
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label>Fecha:</label>
+                  <input
+                    type="date"
+                    value={formData.date || ""}
+                    onChange={(e) =>
+                      setFormData({ ...formData, date: e.target.value })
+                    }
+                  />
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label>Hora de Inicio:</label>
+                  <input
+                    type="time"
+                    value={formData.startTime || ""}
+                    onChange={(e) =>
+                      setFormData({ ...formData, startTime: e.target.value })
+                    }
+                  />
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label>Hora de Fin:</label>
+                  <input
+                    type="time"
+                    value={formData.endTime || ""}
+                    onChange={(e) =>
+                      setFormData({ ...formData, endTime: e.target.value })
+                    }
+                  />
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label>Capacidad:</label>
+                  <input
+                    type="number"
+                    value={formData.capacity || ""}
+                    onChange={(e) =>
+                      setFormData({ ...formData, capacity: parseInt(e.target.value) })
+                    }
+                    placeholder="Ej: 20"
+                  />
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label>Ubicación:</label>
+                  <input
+                    type="text"
+                    value={formData.location || ""}
+                    onChange={(e) =>
+                      setFormData({ ...formData, location: e.target.value })
+                    }
+                    placeholder="Ej: Sala Principal"
+                  />
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label>Descripción:</label>
+                  <textarea
+                    value={formData.description || ""}
+                    onChange={(e) =>
+                      setFormData({ ...formData, description: e.target.value })
+                    }
+                    placeholder="Descripción de la clase..."
+                    rows={3}
+                  />
+                </div>
+              </>
+            )}
+
+            {/* Campo único para subir imagen */}
             <div className={styles.formGroup}>
-              <label>Nombre del Ejercicio:</label>
+              <label>Imagen:</label>
               <input
-                type="text"
-                value={formData.ejercicio || ""}
-                onChange={(e) =>
-                  setFormData({ ...formData, ejercicio: e.target.value })
-                }
-                placeholder="Ej: Press de banca con barra"
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  setSelectedImage(file || null);
+                }}
               />
+              {selectedImage && (
+                <p className={styles.fileInfo}>
+                  Archivo seleccionado: {selectedImage.name}
+                </p>
+              )}
             </div>
 
-            <div className={styles.formGroup}>
-              <label>Categoría:</label>
-              <select
-                value={formData.categoria || "muscular"}
-                onChange={(e) =>
-                  setFormData({ ...formData, categoria: e.target.value })
-                }
-              >
-                <option value="muscular">Muscular</option>
-                <option value="cardio">Cardio</option>
-              </select>
-            </div>
-
-            <div className={styles.formGroup}>
-              <label>Imagen del Grupo (URL):</label>
-              <input
-                type="text"
-                value={formData.imagen_grupo || ""}
-                onChange={(e) =>
-                  setFormData({ ...formData, imagen_grupo: e.target.value })
-                }
-                placeholder="/rutina/filtro2/pecho.png"
-              />
-            </div>
-
-            <div className={styles.formGroup}>
-              <label>Imagen del Ejercicio (URL):</label>
-              <input
-                type="text"
-                value={formData.imagen_ejercicio || ""}
-                onChange={(e) =>
-                  setFormData({ ...formData, imagen_ejercicio: e.target.value })
-                }
-                placeholder="/rutina/filtro2/Press de banca con barra.png"
-              />
-            </div>
-
-            {/* Campos para ejercicios musculares */}
-            {formData.categoria === "muscular" && (
+            {/* Campos para ejercicios musculares - Solo para ejercicios */}
+            {contentType === "exercises" && formData.categoria === "muscular" && (
               <>
                 <div className={styles.formGroup}>
                   <label>Fuerza - Series:</label>
@@ -356,8 +488,8 @@ const ExercisesManagement: React.FC = () => {
               </>
             )}
 
-            {/* Campos para ejercicios cardiovasculares */}
-            {formData.categoria === "cardio" && (
+            {/* Campos para ejercicios cardiovasculares - Solo para ejercicios */}
+            {contentType === "exercises" && formData.categoria === "cardio" && (
               <>
                 <div className={styles.formGroup}>
                   <label>Resistencia - Series:</label>
@@ -394,16 +526,29 @@ const ExercisesManagement: React.FC = () => {
           <div className={styles.formActions}>
             <button
               className={styles.saveButton}
-              onClick={editingExercise ? handleUpdate : handleCreate}
+              onClick={() => {
+                if (contentType === "exercises") {
+                  if (editingExercise) {
+                    handleUpdate();
+                  } else {
+                    handleCreate();
+                  }
+                } else {
+                  // TODO: Implementar funciones para clases
+                  alert("Funcionalidad para clases en desarrollo");
+                }
+              }}
             >
-              {editingExercise ? "Actualizar" : "Crear"}
+              {editingExercise || editingClass ? "Actualizar" : "Crear"}
             </button>
             <button
               className={styles.cancelButton}
               onClick={() => {
                 setShowAddForm(false);
                 setEditingExercise(null);
+                setEditingClass(null);
                 setFormData({});
+                setSelectedImage(null);
               }}
             >
               Cancelar
