@@ -13,6 +13,7 @@ interface ClaseAPI {
   startTime: string;
   endTime: string;
   trainerName: string;
+  trainerId: string;
   capacity: number;
 }
 
@@ -34,12 +35,16 @@ const TablaClases: React.FC = () => {
         const allClases = await ClasesService.getAllClasses();
         setClases(allClases);
 
+        // Filtrar solo las clases donde el entrenador actual está asignado
+        const myAssignedClasses = allClases.filter(clase => 
+          clase.trainerId === userData.user?.id && 
+          clase.trainerName === userData.user?.name
+        );
         
-        const agenda = await ClasesService.getMyAgenda(userData.token);
-        setTomadas(agenda);
+        setTomadas(myAssignedClasses);
       } catch (err) {
-        console.error("Error al obtener agenda:", err);
-        toast.error("Error al obtener agenda");
+        console.error("Error al obtener clases asignadas:", err);
+        toast.error("Error al obtener clases asignadas");
       } finally {
         setLoading(false);
       }
@@ -56,7 +61,7 @@ const TablaClases: React.FC = () => {
       <Toaster position="top-right" reverseOrder={false} />
 
       <div className="tabla-container">
-        <h2>Mis Clases</h2>
+        <h2>Mis Clases Asignadas</h2>
 
         <table className="tabla-clases">
           <thead>
@@ -65,7 +70,7 @@ const TablaClases: React.FC = () => {
               <th>Fecha</th>
               <th>Hora Inicio</th>
               <th>Hora Fin</th>
-              <th>Trainer</th>
+              <th>Estado</th>
             </tr>
           </thead>
           <tbody>
@@ -76,12 +81,16 @@ const TablaClases: React.FC = () => {
                   <td>{c.date}</td>
                   <td>{c.startTime}</td>
                   <td>{c.endTime}</td>
-                  <td>{c.trainerName}</td>
+                  <td>
+                    <span className="assigned-status">
+                      ✅ Asignado como entrenador
+                    </span>
+                  </td>
                 </tr>
               ))
             ) : (
               <tr className="no-classes">
-                <td colSpan={5}>No tienes clases registradas.</td>
+                <td colSpan={5}>No tienes clases asignadas como entrenador.</td>
               </tr>
             )}
           </tbody>
