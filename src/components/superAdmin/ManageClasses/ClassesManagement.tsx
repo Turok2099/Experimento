@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./ClassesManagement.module.scss";
 import { useClasses, ClassDto } from "@/hooks/superadmin/classes/useClasses";
 import { useUpdateClass } from "@/hooks/superadmin/classes/useUpdateClasses";
@@ -10,6 +10,13 @@ const ClassesManagement: React.FC = () => {
   const [formData, setFormData] = useState<Partial<ClassDto>>({});
   const { updateClass, loading: updating } = useUpdateClass();
   const { userData } = useAuth();
+
+  // Monitorear cambios en las clases
+  useEffect(() => {
+    console.log("🔄 === CLASES CAMBIARON EN EL COMPONENTE ===");
+    console.log("📊 Total de clases:", classes.length);
+    console.log("📊 Estados de las clases:", classes.map(c => ({ id: c.id, title: c.title, status: c.status })));
+  }, [classes]);
 
   // Cambiar estado activo/inactivo
   const handleToggleStatus = async (
@@ -48,10 +55,10 @@ const ClassesManagement: React.FC = () => {
 
       const responseData = await res.json();
       console.log("✅ Success response:", responseData);
-      
+
       // Refrescar la lista de clases con un pequeño delay para asegurar que el backend haya terminado
       console.log("🔄 Refrescando lista de clases...");
-      await new Promise(resolve => setTimeout(resolve, 500)); // Esperar 500ms
+      await new Promise((resolve) => setTimeout(resolve, 500)); // Esperar 500ms
       await fetchClasses(); // Esperar a que termine el refresh
     } catch (err) {
       console.error(err);
