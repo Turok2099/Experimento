@@ -1,0 +1,235 @@
+@use "../../../styles/utils.scss" as utils;
+
+.contLoginView {
+  width: 100%;
+  min-height: calc(100vh - 5rem);
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5)),
+    url("/images/poster10.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+  z-index: 1;
+  padding: 6rem 1rem 2rem 1rem;
+  gap: 2rem;
+}
+
+.mainContent {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  max-width: 800px;
+  width: 100%;
+  align-items: start;
+  margin: 0 auto 2rem auto;
+}
+
+// Panel izquierdo - Card de bienvenida
+.welcomeCard {
+  background: var(--colorAmarillo);
+  border-radius: 20px;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  max-width: 800px;
+}
+
+.welcomeContent {
+  position: relative;
+  z-index: 2;
+}
+
+.welcomeTitle {
+  font-size: 2rem;
+  font-weight: bold;
+  color: black;
+  margin: 0 0 1rem 0;
+  font-family: "Arial", sans-serif;
+}
+
+.welcomeSubtitle {
+  font-size: 1.1rem;
+  color: #333;
+  margin: 0 0 1rem 0;
+  font-family: "Arial", sans-serif;
+  line-height: 1.4;
+}
+
+.welcomeText {
+  font-size: 1rem;
+  color: #555;
+  margin: 0;
+  font-family: "Arial", sans-serif;
+  line-height: 1.4;
+}
+
+.decorativeCircles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+}
+
+.circle1 {
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.circle2 {
+  position: absolute;
+  bottom: -80px;
+  left: -80px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.05);
+}
+
+// Panel derecho - Formulario
+.formSection {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+/* Tablets (≤1024px) */
+@media (max-width: 1024px) {
+  .contLoginView {
+    padding: 5rem 1rem 1.5rem 1rem;
+    gap: 1.5rem;
+  }
+
+  .mainContent {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    max-width: 700px;
+  }
+
+  .welcomeCard {
+    max-width: 700px;
+  }
+
+  .welcomeCard {
+    min-height: 300px;
+    padding: 1.5rem;
+  }
+
+  .welcomeTitle {
+    font-size: 1.8rem;
+  }
+
+  .welcomeSubtitle {
+    font-size: 1rem;
+  }
+}
+
+/* Móvil (≤768px) */
+@media (max-width: 768px) {
+  .contLoginView {
+    padding: 4rem 1rem 1rem 1rem;
+    gap: 1.2rem;
+    background-attachment: scroll;
+  }
+
+  .mainContent {
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .welcomeCard {
+    min-height: 250px;
+    padding: 1.25rem;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+  }
+
+  .formSection {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+  }
+
+  .formSection .contLoginForm {
+    max-width: 100%;
+  }
+
+  .welcomeTitle {
+    font-size: 1.6rem;
+  }
+
+  .welcomeSubtitle {
+    font-size: 0.95rem;
+  }
+
+  .welcomeText {
+    font-size: 0.9rem;
+  }
+}
+
+/* Móvil pequeño (≤480px) */
+@media (max-width: 480px) {
+  .contLoginView {
+    padding: 3rem 1rem 0.8rem 1rem;
+    gap: 1rem;
+    min-height: calc(100vh - 5rem);
+  }
+
+  .mainContent {
+    gap: 1rem;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .welcomeCard {
+    min-height: 200px;
+    padding: 1rem;
+    border-radius: 15px;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+  }
+
+  .formSection {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+  }
+
+  .formSection .contLoginForm {
+    max-width: 100%;
+  }
+
+  .welcomeTitle {
+    font-size: 1.4rem;
+  }
+
+  .welcomeSubtitle {
+    font-size: 0.9rem;
+  }
+
+  .welcomeText {
+    font-size: 0.85rem;
+  }
+}

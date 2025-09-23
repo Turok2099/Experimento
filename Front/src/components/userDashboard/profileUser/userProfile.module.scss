@@ -1,0 +1,94 @@
+@use '../../../styles/utils.scss' as utils;
+.section {
+  max-width: 800px;
+}
+
+.sectionTitle {
+  color: var(--colorAmarillo);
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid #333333;
+  padding-bottom: 0.5rem;
+}
+
+.form {
+  background-color: #1a1a1a;
+  padding: 2rem;
+  border-radius: 8px;
+  border: 1px solid #333333;
+  @include utils.ClassDifuminado;
+}
+
+.formGroup {
+  margin-bottom: 1.5rem;
+  font-size: 1.3rem;
+}
+
+.formGroup label {
+  display: block;
+  color: var(--colorAmarillo);
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.formGroup input {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: white;
+  border: 1px solid #555555;
+  border-radius: 20px;
+  color: black;
+  font-size: 1.3rem;
+  box-sizing: border-box;
+}
+
+.formGroup input:disabled {
+  @include utils.ClassInputNoEditable;
+  width: 100%;
+  text-align: left;
+  align-items: center;
+  cursor: not-allowed;
+}
+
+.formGroup input:focus {
+  outline: none;
+  border-color: var(--colorAmarillo);
+  box-shadow: 0 0 0 2px rgba(255, 255, 0, 0.2);
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 1rem;
+}
+
+.submitButton {
+  @include utils.ClassButton;
+  width: 10rem;
+}
+
+.submitButton:hover {
+  background-color: black;
+  color: var(--colorAmarillo);
+  transform: translateY(-1px);
+}
+
+.cancelButton {
+  @include utils.ClassButton;
+  width: 10rem;
+}
+
+.cancelButton:hover {
+  background-color: black;
+  color: var(--colorAmarillo);
+  transform: translateY(-1px);
+}
+
+.alert {
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  font-weight: bold;
+  background-color: #2d5a2d;
+  color: #90ee90;
+  border: 1px solid #4a7c4a;
+}

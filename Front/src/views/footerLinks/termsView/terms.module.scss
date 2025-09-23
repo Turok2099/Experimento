@@ -1,0 +1,81 @@
+@use '../../../styles/utils.scss' as utils;
+
+.termsView {
+  padding: 3rem 1.5rem;
+  background-color: var(--colorNegro);
+  display: flex;
+  justify-content: center;
+  width: 100%;
+
+  .termsContent {
+    max-width: 900px;
+    width: 100%;
+    text-align: left;
+    color: white;
+
+
+
+    .termsDescription {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+      color: white;
+    }
+
+    .termsList {
+      list-style: disc inside;
+      padding-left: 1rem;
+      margin-bottom: 2rem;
+
+      li {
+        margin-bottom: 1rem;
+        font-size: 1.05rem;
+        line-height: 1.5;
+        color: white;
+
+        strong {
+          color: var(--colorAmarillo);
+        }
+      }
+    }
+
+    .termsFooter {
+      font-size: 1rem;
+      color: #ccc;
+      margin-top: 2rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 1rem;
+    }
+  }
+}
+.termsTitle {
+      font-size: var(--h1-size);
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      color: var(--colorAmarillo);
+      @include utils.ClassStyleTitle;
+      width: 100%;
+      display: flex;
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .termsView {
+    padding: 2rem 1rem;
+  }
+}
+
+/* Móvil */
+@media (max-width: 430px) {
+  .termsView {
+    padding: 1.5rem 1rem;
+    text-align: center;
+
+    .termsContent {
+      .termsList {
+        list-style: none;
+        padding-left: 0;
+      }
+    }
+  }
+}

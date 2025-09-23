@@ -1,0 +1,68 @@
+@use "../../styles/utils.scss" as utils;
+
+.paymentTestPage {
+  min-height: 100vh;
+  background-image: url("/images/poster18.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  position: relative;
+  @include utils.ClassFlexCenter;
+  padding: 2rem 1rem;
+
+  // Overlay oscuro para mejorar legibilidad
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 1;
+  }
+
+  .container {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    @include utils.ClassFlexCenter;
+  }
+}
+
+// Tablet
+@media (max-width: 1024px) {
+  .paymentTestPage {
+    padding: 1.5rem 1rem;
+
+    &::before {
+      background: rgba(0, 0, 0, 0.7);
+    }
+  }
+}
+
+// Móvil
+@media (max-width: 768px) {
+  .paymentTestPage {
+    padding: 1rem 0.75rem;
+    background-attachment: scroll; // Mejor rendimiento en móvil
+
+    &::before {
+      background: rgba(0, 0, 0, 0.75);
+    }
+  }
+}
+
+// Móvil pequeño
+@media (max-width: 480px) {
+  .paymentTestPage {
+    padding: 0.75rem 0.5rem;
+
+    &::before {
+      background: rgba(0, 0, 0, 0.8);
+    }
+  }
+}

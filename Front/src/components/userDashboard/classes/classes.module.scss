@@ -1,0 +1,201 @@
+@use '../../../styles/utils.scss' as utils;
+.section {
+    max-width: 800px;
+}
+
+.sectionTitle {
+    color: var(--colorAmarillo);
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid #333333;
+    padding-bottom: 0.5rem;
+}
+
+.classCard {
+    background-color: #1a1a1a;
+    border: 1px solid #333333;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: .7rem;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+}
+
+.classCard:hover {
+    border-color: var(--colorAmarillo);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(255, 255, 0, 0.1);
+}
+
+.classCard h3 {
+    color:var(--colorAmarillo);
+    margin-bottom: .7rem;
+    font-size: 1,1rem;
+}
+
+.classInfo {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: .7rem;
+    margin-bottom: 1rem;
+}
+
+.infoItem {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.infoLabel {
+    color: #888888;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.infoValue {
+    color: #ffffff;
+    font-size: 1.1rem;
+}
+
+.enrollButton {
+    @include utils.ClassButton;
+    width: 100%;
+}
+
+.enrollButton:hover:not(:disabled) {
+    background-color:var(--colorAmarillo);
+    transform: translateY(-1px);
+}
+
+.enrollButton:disabled {
+    background-color: #666666;
+    color: #888888;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.emptyMessage {
+    color: white;   
+    text-align: center;
+    padding: 2rem;
+    font-weight: bold;
+    font-size: 2rem;
+}
+
+.alert {
+    padding: 1rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    font-weight: bold;
+    background-color: #2d5a2d;
+    color: #90ee90;
+    border: 1px solid #4a7c4a;
+}
+.filterButtons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    width: 60rem;
+
+}
+
+.filterButton {
+    background: transparent;
+    border: 1px solid var(--colorAmarillo);
+    color: var(--colorAmarillo);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 1.3rem;
+    font-weight: bold;
+    @include utils.ClassDifuminado;
+}
+
+.filterButton:hover {
+    background: var(--colorAmarillo);
+    color: #000;
+}
+
+.filterButton.active {
+    background: var(--colorAmarillo);
+    color: #000;
+    font-weight: bold;
+}
+
+
+//    Mobile
+@media (max-width: 430px) {
+    .section {
+        padding: 0 1rem;
+        max-width: 100%;
+    }
+
+    .sectionTitle {
+        font-size: 1.4rem;
+        text-align: center;
+    }
+
+    .classCard {
+        font-size: 0.9rem;
+        padding: 0.8rem;
+    }
+
+    .classInfo {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+    }
+
+    .infoLabel,
+    .infoValue {
+        font-size: 0.9rem;
+    }
+
+    .emptyMessage {
+        font-size: 1.2rem;
+    }
+
+    .filterButtons {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .filterButton {
+        font-size: 1rem;
+        padding: 0.4rem 0.8rem;
+    }
+}
+
+
+//    Tablet 
+@media (max-width: 1024px) {
+    .section {
+        padding: 0 2rem;
+        max-width: 95%;
+    }
+
+    .sectionTitle {
+        font-size: 1.8rem;
+        text-align: center;
+    }
+
+    .classCard {
+        font-size: 1rem;
+        padding: 1rem;
+    }
+
+    .classInfo {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    }
+
+    .filterButtons {
+        width: 100%;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .filterButton {
+        font-size: 1.1rem;
+    }
+}
