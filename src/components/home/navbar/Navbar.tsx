@@ -18,7 +18,7 @@ const roleLinks: Record<string, { href: string; label: string }[]> = {
     { href: "/superadmin", label: "Consola Administrador" },
   ],
   member: [
-    { href: "/userDashboard", label: "Prfil Usuario" },
+    { href: "/userDashboard", label: "Perfil Usuario" },
     { href: "/routine", label: "Rutina" },
   ],
 };
