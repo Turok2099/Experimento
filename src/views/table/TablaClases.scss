@@ -1,26 +1,25 @@
 .tabla-page {
-  width: 100%;
-  min-height: 100vh;
+  height: 100%; /* Altura fija del contenedor padre */
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 2rem 0;
+  flex-direction: column;
+  overflow: hidden;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 1rem 0;
 }
 
 .tabla-container {
-  max-width: 800px;
   width: 100%;
   margin: 0 auto;
-  padding: 2.5rem;
+  padding: 1rem;
   border-radius: 1rem;
-  box-shadow: 0 10px 25px rgba(255, 223, 0, 0.2);
-  background-color: rgba(255, 255, 255, 0.95);
+  background-color: transparent;
 
   h2 {
-    font-size: 1.5rem;
+    font-size: clamp(1.3rem, 3.5vw, 1.8rem);
     font-weight: 700;
     text-align: center;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
     color: #222;
   }
 
@@ -28,21 +27,23 @@
     width: 100%;
     border-collapse: separate;
     border-spacing: 0 8px;
+    font-size: clamp(0.85rem, 2vw, 1rem);
 
-    th, td {
-      padding: 0.75rem 1rem;
+    th,
+    td {
+      padding: clamp(0.5rem, 1vw, 0.75rem) clamp(0.75rem, 2vw, 1rem);
       border-radius: 0.5rem;
       border: none;
-      min-width: 100px;
+      min-width: 80px;
       max-width: 200px;
       word-break: break-word;
+      text-align: center;
     }
 
     th {
-      background-color: #FFD700;
+      background-color: #ffd700;
       color: #222;
       font-weight: 700;
-      text-align: center;
     }
 
     tbody tr {
@@ -51,12 +52,47 @@
 
       &:hover {
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
       }
     }
 
     tbody tr:nth-child(even) {
       background-color: #f7f7f7;
     }
+  }
+
+  .no-classes {
+    text-align: center;
+    color: #888;
+    font-style: italic;
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
+  }
+}
+
+/* Responsive para móviles */
+@media (max-width: 460px) {
+  .tabla-container {
+    padding: clamp(1rem, 3vw, 1.5rem);
+  }
+
+  h2 {
+    font-size: clamp(1.2rem, 4.5vw, 1.5rem);
+  }
+
+  .tabla-clases {
+    font-size: clamp(0.75rem, 2.5vw, 0.9rem);
+    overflow-x: auto;
+    display: block;
+  }
+}
+
+/* Responsive para tablets */
+@media (max-width: 1024px) {
+  .tabla-container {
+    padding: clamp(1rem, 2vw, 2rem);
+  }
+
+  h2 {
+    font-size: clamp(1.3rem, 3vw, 1.6rem);
   }
 }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 import styles from "./ClassesManagement.module.scss";
 import { useClasses, ClassDto } from "@/hooks/superadmin/classes/useClasses";
 import { useUpdateClass } from "@/hooks/superadmin/classes/useUpdateClasses";
@@ -90,69 +90,71 @@ const ClassesManagement: React.FC = () => {
   return (
     <div className={styles.container}>
       <h2>Gestión de Clases</h2>
-      <table className={styles.table}>
-        <thead>
-          <tr>
-            <th>Título</th>
-            <th>Fecha</th>
-            <th>Hora</th>
-            <th>Capacidad</th>
-            <th>Coaches</th>
-            <th>Estado</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {classes.length === 0 ? (
+      <div className={styles.tableContainer}>
+        <table className={styles.table}>
+          <thead>
             <tr>
-              <td colSpan={8} className={styles.empty}>
-                No hay clases registradas.
-              </td>
+              <th>Título</th>
+              <th>Fecha</th>
+              <th>Hora</th>
+              <th>Capacidad</th>
+              <th>Coaches</th>
+              <th>Estado</th>
+              <th>Acciones</th>
             </tr>
-          ) : (
-            classes.map((cls) => (
-              <tr key={cls.id}>
-                <td>{cls.title}</td>
-                <td>{new Date(cls.date).toLocaleDateString()}</td>
-                <td>
-                  {cls.startTime} - {cls.endTime}
-                </td>
-                <td>{cls.capacity}</td>
-                <td>{cls.coach?.join(", ") || "-"}</td>
-                <td>{cls.status}</td>
-                <td className={styles.actions}>
-                  <button
-                    className={styles.buttonEditar}
-                    onClick={() => {
-                      setEditingClass(cls);
-                      setFormData({
-                        title: cls.title,
-                        date: cls.date,
-                        startTime: cls.startTime,
-                        endTime: cls.endTime,
-                        capacity: cls.capacity,
-                        // coach: cls.coach,
-                      });
-                    }}
-                  >
-                    Editar
-                  </button>
-                  <button
-                    onClick={() => handleToggleStatus(cls.id, cls.status)}
-                    className={
-                      cls.status === "active"
-                        ? styles.deactivate
-                        : styles.activate
-                    }
-                  >
-                    {cls.status === "active" ? "Desactivar" : "Activar"}
-                  </button>
+          </thead>
+          <tbody>
+            {classes.length === 0 ? (
+              <tr>
+                <td colSpan={8} className={styles.empty}>
+                  No hay clases registradas.
                 </td>
               </tr>
-            ))
-          )}
-        </tbody>
-      </table>
+            ) : (
+              classes.map((cls) => (
+                <tr key={cls.id}>
+                  <td>{cls.title}</td>
+                  <td>{new Date(cls.date).toLocaleDateString()}</td>
+                  <td>
+                    {cls.startTime} - {cls.endTime}
+                  </td>
+                  <td>{cls.capacity}</td>
+                  <td>{cls.coach?.join(", ") || "-"}</td>
+                  <td>{cls.status}</td>
+                  <td className={styles.actions}>
+                    <button
+                      className={styles.buttonEditar}
+                      onClick={() => {
+                        setEditingClass(cls);
+                        setFormData({
+                          title: cls.title,
+                          date: cls.date,
+                          startTime: cls.startTime,
+                          endTime: cls.endTime,
+                          capacity: cls.capacity,
+                          // coach: cls.coach,
+                        });
+                      }}
+                    >
+                      Editar
+                    </button>
+                    <button
+                      onClick={() => handleToggleStatus(cls.id, cls.status)}
+                      className={
+                        cls.status === "active"
+                          ? styles.deactivate
+                          : styles.activate
+                      }
+                    >
+                      {cls.status === "active" ? "Desactivar" : "Activar"}
+                    </button>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
 
       {editingClass && (
         <div className={styles.modal}>
@@ -239,4 +241,4 @@ const ClassesManagement: React.FC = () => {
   );
 };
 
-export default ClassesManagement;
+export default memo(ClassesManagement);

@@ -13,13 +13,21 @@
 
 .hero {
   min-height: 100vh;
-  width: 100vw;
+  width: 100%;
+  max-width: 100%;
   background-image: url("/images/portadaprincipal.png");
   background-size: cover;
-  background-position: center;
+  background-position: center center;
   background-repeat: no-repeat;
-  background-attachment: fixed;
+  background-origin: border-box;
+  background-clip: border-box;
+  image-rendering: -webkit-optimize-contrast; /* Mejorar calidad de imagen */
+  image-rendering: crisp-edges; /* Bordes más nítidos */
+  image-rendering: pixelated; /* Para imágenes pixeladas */
+  image-rendering: auto; /* Fallback */
   position: relative;
+  overflow: hidden; /* Mejorar el efecto parallax */
+  will-change: transform; /* Optimización para animaciones */
 
   &::before {
     content: "";
@@ -162,7 +170,7 @@
 // Responsive Design
 @media (max-width: 1024px) {
   .hero {
-    background-attachment: scroll;
+    /* El parallax se maneja con JavaScript, no necesitamos background-attachment aquí */
   }
 
   .heroContainer {
@@ -209,6 +217,10 @@
 }
 
 @media (max-width: 768px) {
+  .hero {
+    /* El parallax se maneja con JavaScript, no necesitamos background-attachment aquí */
+  }
+
   .heroContent {
     padding: 2.5rem 1.5rem;
     max-width: 100%;

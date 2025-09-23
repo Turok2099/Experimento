@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useAuth } from "@/context/AuthContext";
-import "./trainerPanelView.module.scss";
+import "./trainerPanelView.scss";
 
 const TrainerPanelView: React.FC = () => {
   const { userData } = useAuth();
@@ -22,12 +22,15 @@ const TrainerPanelView: React.FC = () => {
   return (
     <div className="trainer-wrapper">
       <div className="trainer-card">
-        <h2>Welcome, {name}</h2>
+        <h2 className="bold-black">Bienvenido, {name}</h2>
         <p>
-          <span>Email:</span> {email}
+          <span className="sub">EMAIL:</span> {email}
         </p>
         <p>
-          <span>Address:</span> {address || "No address provided"}
+          <span className="sub">DIRECCION:</span> {address || "No address provided"}
+        </p>
+        <p>
+          <span className="sub">ROL:</span> {userData.user.role}
         </p>
       </div>
     </div>

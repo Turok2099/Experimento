@@ -1,8 +1,11 @@
 .container {
   display: flex;
-  min-height: 100vh;
+  min-height: calc(100vh - 4rem); /* Restar espacio para márgenes */
   background-color: #f9fafb;
   font-family: Arial, sans-serif;
+  margin: 2rem 0; /* Márgenes arriba y abajo */
+  position: relative; /* Evitar re-renders */
+  contain: layout; /* Optimización de renderizado */
 }
 
 .sidebar {
@@ -52,12 +55,19 @@
 .content {
   flex: 1;
   padding: 2rem;
+  position: relative; /* Evitar re-renders */
+  contain: layout; /* Optimización de renderizado */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centrar el dashboard horizontalmente */
 }
 
 .title {
   font-size: 2rem;
   margin-bottom: 1.5rem;
   color: #111827;
+  text-align: center; /* Centrar el título */
+  width: 100%; /* Asegurar que ocupe todo el ancho disponible */
 }
 
 .section {
@@ -65,4 +75,56 @@
   padding: 1.5rem;
   border-radius: 12px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  height: 600px; /* Altura completamente fija */
+  width: 1200px; /* Ancho completamente fijo */
+  overflow-y: auto; /* Scroll vertical si el contenido excede la altura */
+  overflow-x: auto; /* Scroll horizontal si el contenido excede el ancho */
+  display: flex;
+  flex-direction: column;
+  position: relative; /* Evitar re-renders */
+}
+
+// Responsive Design
+@media (max-width: 1024px) {
+  .container {
+    margin: 1.5rem 0; /* Márgenes más pequeños en tablets */
+    min-height: calc(100vh - 3rem);
+  }
+
+  .content {
+    padding: 1.5rem;
+    align-items: center; /* Mantener centrado en tablets */
+  }
+
+  .section {
+    height: 550px; /* Altura completamente fija para tablets */
+    width: 1000px; /* Ancho completamente fijo para tablets */
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    margin: 1rem 0; /* Márgenes más pequeños en móviles */
+    min-height: calc(100vh - 2rem);
+    flex-direction: column; /* Cambiar a layout vertical en móviles */
+  }
+
+  .sidebar {
+    width: 100%;
+    padding: 1rem;
+  }
+
+  .content {
+    padding: 1rem;
+    align-items: center; /* Mantener centrado en móviles */
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .section {
+    height: 500px; /* Altura completamente fija para móviles */
+    width: 100%; /* En móviles usar ancho completo */
+  }
 }

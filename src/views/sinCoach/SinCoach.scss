@@ -1,27 +1,25 @@
 .tabla-page {
-  width: 100%;
-  min-height: 100vh;
+  height: 100%; /* Altura fija del contenedor padre */
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 2rem 0;
+  flex-direction: column;
+  overflow: hidden;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 1rem 0;
 }
 
 .tabla-container {
   width: 100%;
-  max-width: 900px;
-  min-width: 500px;
-  padding: 2.5rem;
+  padding: 1rem;
   border-radius: 1rem;
-  background-color: rgba(255, 255, 255, 0.95);
-  box-shadow: 0 10px 25px rgba(255, 223, 0, 0.2);
+  background-color: transparent;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
 h2 {
-  font-size: 1.5rem;
+  font-size: clamp(1.5rem, 4vw, 2rem);
   font-weight: 700;
   text-align: center;
   margin-bottom: 1rem;
@@ -34,9 +32,9 @@ h2 {
 
   .btn-dia {
     width: 100%;
-    padding: 0.75rem 1rem;
+    padding: clamp(0.5rem, 1.5vw, 0.75rem);
     text-align: left;
-    background-color: #FFD700;
+    background-color: #ffd700;
     border: none;
     border-radius: 0.5rem;
     font-weight: 700;
@@ -52,6 +50,7 @@ h2 {
   .tabla-wrapper {
     width: 100%;
     margin-bottom: 1rem;
+    overflow-x: auto;
   }
 
   .tabla-clases {
@@ -59,10 +58,11 @@ h2 {
     table-layout: fixed;
     border-collapse: separate;
     border-spacing: 0 8px;
+    font-size: clamp(0.85rem, 2vw, 1rem);
 
     th,
     td {
-      padding: 0.75rem 1rem;
+      padding: clamp(0.5rem, 1vw, 0.75rem);
       border-radius: 0.5rem;
       border: none;
       text-align: center;
@@ -70,13 +70,14 @@ h2 {
     }
 
     th {
-      background-color: #FFD700;
+      background-color: #ffd700;
       font-weight: 700;
     }
 
     tbody tr {
       background-color: #fff;
-      transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s;
+      transition: transform 0.2s ease, box-shadow 0.2s ease,
+        background-color 0.3s;
 
       &:hover {
         transform: translateY(-2px);
@@ -84,7 +85,7 @@ h2 {
       }
 
       &.fila-tomada {
-        background-color: #d4edda; /* verde claro */
+        background-color: #d4edda;
       }
     }
 
@@ -100,7 +101,7 @@ h2 {
     }
 
     td:has(button.btn-tomar) {
-      background-color: #FFD700;
+      background-color: #ffd700;
       border-radius: 0.5rem;
     }
 
@@ -108,12 +109,32 @@ h2 {
       background-color: transparent;
       color: #222;
       font-weight: 700;
-      font-size: 1.25rem;
+      font-size: clamp(1rem, 3vw, 1.25rem);
       border: none;
       cursor: pointer;
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.2s ease;
+
+      &:hover {
+        background-color: rgba(255, 215, 0, 0.2);
+      }
+
+      // Estilo especial para entrenadores - usar clase CSS en su lugar
+      &.trainer-btn {
+        background-color: #ffd700;
+        color: #222;
+
+        &:hover {
+          background-color: #ffc107;
+        }
+      }
     }
 
-    /* Cuando ya se tomó la clase */
     td .tomada-usuario {
       display: flex;
       align-items: center;
@@ -122,14 +143,14 @@ h2 {
 
       span {
         font-weight: 600;
-        color: #155724; /* verde oscuro */
+        color: #155724;
       }
 
       .btn-cancelar {
         background: transparent;
         border: none;
-        color: #dc3545; /* rojo */
-        font-size: 1.1rem;
+        color: #dc3545;
+        font-size: clamp(1rem, 2.5vw, 1.1rem);
         font-weight: bold;
         cursor: pointer;
         transition: transform 0.2s;
@@ -138,18 +159,22 @@ h2 {
           transform: scale(1.2);
         }
       }
+
+      .trainer-badge {
+        font-size: clamp(1rem, 2.5vw, 1.1rem);
+        margin-left: 0.5rem;
+      }
     }
   }
 }
 
-/* ---------------------- */
-/* Estilos para react-hot-toast */
+/* Toasts */
 .toast-success {
-  background-color: #FFD700 !important;
+  background-color: #ffd700 !important;
   color: #222 !important;
   font-weight: 600;
   border-radius: 0.5rem;
-  padding: 0.75rem 1rem;
+  padding: clamp(0.5rem, 1.5vw, 0.75rem);
 }
 
 .toast-error {
@@ -157,5 +182,37 @@ h2 {
   color: #fff !important;
   font-weight: 600;
   border-radius: 0.5rem;
-  padding: 0.75rem 1rem;
+  padding: clamp(0.5rem, 1.5vw, 0.75rem);
+}
+
+/* Responsive para móviles */
+@media (max-width: 460px) {
+  .tabla-container {
+    padding: clamp(1rem, 3vw, 1.5rem);
+    min-width: 280px;
+  }
+
+  h2 {
+    font-size: clamp(1.2rem, 5vw, 1.5rem);
+  }
+
+  .tabla-clases {
+    font-size: clamp(0.75rem, 2.5vw, 0.85rem);
+
+    td button.btn-tomar,
+    td .btn-cancelar {
+      font-size: clamp(0.9rem, 3vw, 1rem);
+    }
+  }
+}
+
+/* Responsive para tablets */
+@media (max-width: 1024px) {
+  .tabla-container {
+    padding: clamp(1rem, 2vw, 2rem);
+  }
+
+  h2 {
+    font-size: clamp(1.4rem, 3.5vw, 1.8rem);
+  }
 }

@@ -1,4 +1,4 @@
-@use '../../../styles/utils.scss' as utils;
+@use "../../../styles/utils.scss" as utils;
 
 .section {
   max-width: 800px;
@@ -7,7 +7,6 @@
   margin-bottom: 4rem; /* Margen inferior para separar del footer */
   padding-bottom: 2rem; /* Padding adicional para más espacio */
 }
-
 
 .sectionTitle {
   color: var(--colorAmarillo);
@@ -29,7 +28,6 @@
 
 .formGroup {
   margin-bottom: 1.5rem;
-  
 }
 
 .formGroup label {
@@ -70,7 +68,7 @@
   cursor: pointer;
   transition: color 0.2s ease;
 }
-.select{
+.select {
   height: 3rem;
   width: 15rem;
   font-size: 1.2rem;
@@ -111,7 +109,7 @@
 
 .table th {
   background-color: #333333;
-  color: black  ;
+  color: black;
   padding: 1rem;
   text-align: left;
   font-weight: bold;
@@ -127,7 +125,6 @@
   border-bottom: 1px solid #333333;
   color: #ffffff;
   font-size: 1.3rem;
-
 }
 
 .table tr:hover {
@@ -155,15 +152,14 @@
   border: 1px solid #4a7c4a;
 }
 
-.sectionAddyTabla{
+.sectionAddyTabla {
   display: flex;
   width: 200rem;
   gap: 2rem;
 }
-.contComentarios{
+.contComentarios {
   margin-bottom: 2rem; /* Margen inferior para la tabla de comentarios */
 }
-
 
 /* Tablet (≤ 1024px) */
 @media (max-width: 1024px) {
@@ -228,12 +224,12 @@
     font-size: 1rem;
     padding: 0.8rem;
   }
-  .sectionAddyTabla{
+  .sectionAddyTabla {
     display: flex;
     flex-direction: column;
   }
 
-  .sectionAddyTabla{
+  .sectionAddyTabla {
     width: 20rem;
   }
 }

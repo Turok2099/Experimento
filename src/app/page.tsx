@@ -11,13 +11,27 @@ import Plans from "@/components/home/plans/Plans";
 export default function Home() {
   return (
     <div className={styles.home}>
-      <Hero />
-      <CardsHome />
-      <GaleryHome />
-      <Plans />
-      <ComponentGoogleMaps />
-      <ComponentContact />
-      <ComentaryUser />
+      <div className="home-section-hero">
+        <Hero />
+      </div>
+      <div className="home-section">
+        <CardsHome />
+      </div>
+      <div className="home-section">
+        <GaleryHome />
+      </div>
+      <div className="home-section">
+        <Plans />
+      </div>
+      <div className="home-section">
+        <ComponentGoogleMaps />
+      </div>
+      <div className="home-section">
+        <ComponentContact />
+      </div>
+      <div className="home-section">
+        <ComentaryUser />
+      </div>
     </div>
   );
 }

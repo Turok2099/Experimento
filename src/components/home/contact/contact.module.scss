@@ -1,7 +1,7 @@
 @use "../../../styles/utils.scss" as utils;
 
 .contactContainer {
-  min-height: 100vh;
+  min-height: auto;
   background-color: black;
   padding: 2rem;
   display: flex;

@@ -9,7 +9,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 3rem 1rem;
+  padding: 2rem 1rem;
   color: white;
   width: 100%;
   max-width: 800px;
@@ -18,9 +18,9 @@
 
 .mapsRow {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap; // No wrap para mantener horizontal en PC
   justify-content: center;
-  gap: 2rem;
+  gap: 1.5rem; // Reducir gap para que quepan 3 mapas
   width: 100%;
   max-width: 100%;
 }
@@ -40,8 +40,8 @@
 
 .mapContainer {
   position: relative;
-  width: 400px;
-  height: 400px;
+  width: 350px; // Reducir tamaño para PC
+  height: 350px; // Reducir tamaño para PC
   overflow: hidden;
   border-radius: 12px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
@@ -129,19 +129,35 @@
 }
 
 // Responsive Design
-@media (max-width: 1024px) {
+@media (min-width: 1200px) {
   .container {
-    padding: 2rem 1rem;
-    max-width: 700px;
+    max-width: 1200px; // Contenedor más ancho para pantallas grandes
   }
 
   .mapsRow {
-    gap: 1.5rem;
+    gap: 2rem; // Más espacio en pantallas grandes
   }
 
   .mapContainer {
-    width: 350px;
-    height: 350px;
+    width: 380px; // Un poco más grande en pantallas grandes
+    height: 380px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .container {
+    padding: 2rem 1rem;
+    max-width: 100%;
+  }
+
+  .mapsRow {
+    gap: 1rem; // Reducir gap para tablet
+    flex-wrap: nowrap; // Mantener horizontal en tablet
+  }
+
+  .mapContainer {
+    width: 300px; // Más pequeño para tablet
+    height: 300px; // Más pequeño para tablet
   }
 
   .countryLabel {
@@ -156,10 +172,11 @@
   }
 
   .mapsRow {
-    flex-direction: column;
+    flex-direction: column; // Vertical en móvil
     align-items: center;
     gap: 2.5rem;
     width: 100%;
+    flex-wrap: wrap; // Permitir wrap en móvil
   }
 
   .mapContainer {

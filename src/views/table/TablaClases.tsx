@@ -1,53 +1,88 @@
 'use client';
 
-import React, { useContext } from "react";
-import "./TablaClases.scss";
-import { ClasesContext } from "@/context/ClasesContext";
+import React, { useEffect, useState } from "react";
+import { useAuth } from "@/context/AuthContext";
+import { ClasesService } from "@/services/ClasesService";
+import toast, { Toaster } from "react-hot-toast";
+import "../table/TablaClases.scss"; // Import global SCSS
+
+interface ClaseAPI {
+  id: string;
+  title: string;
+  date: string; 
+  startTime: string;
+  endTime: string;
+  trainerName: string;
+  capacity: number;
+}
 
 const TablaClases: React.FC = () => {
-  const { clases, loaded } = useContext(ClasesContext);
-  const usuarioName = "Carlos Pérez";
+  const { userData } = useAuth();
+  const [clases, setClases] = useState<ClaseAPI[]>([]);
+  const [tomadas, setTomadas] = useState<ClaseAPI[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const originales = [
-    { dia: "Lunes", clase: "Cardio", hora: "08:00 - 09:00" },
-    { dia: "Martes", clase: "Spinning", hora: "18:00 - 19:00" },
-    { dia: "Jueves", clase: "HIIT", hora: "07:00 - 08:00" },
-    { dia: "Viernes", clase: "FullBody", hora: "17:00 - 18:00" },
-  ];
+  useEffect(() => {
+    const fetchClases = async () => {
+      if (!userData?.token) {
+        console.error("No hay token de usuario");
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const allClases = await ClasesService.getAllClasses();
+        setClases(allClases);
+
+        
+        const agenda = await ClasesService.getMyAgenda(userData.token);
+        setTomadas(agenda);
+      } catch (err) {
+        console.error("Error al obtener agenda:", err);
+        toast.error("Error al obtener agenda");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchClases();
+  }, [userData]);
+
+  if (loading) return <p>Cargando clases...</p>;
+  if (!userData) return <p>No hay usuario autenticado</p>;
 
   return (
     <div className="tabla-page">
+      <Toaster position="top-right" reverseOrder={false} />
+
       <div className="tabla-container">
-        <h2>{usuarioName}</h2>
+        <h2>Mis Clases</h2>
+
         <table className="tabla-clases">
           <thead>
             <tr>
-              <th>Día</th>
-              <th>Clase</th>
-              <th>Hora</th>
+              <th>Título</th>
+              <th>Fecha</th>
+              <th>Hora Inicio</th>
+              <th>Hora Fin</th>
+              <th>Trainer</th>
             </tr>
           </thead>
           <tbody>
-            {originales.map((c, index) => (
-              <tr key={`orig-${index}`}>
-                <td>{c.dia}</td>
-                <td>{c.clase}</td>
-                <td>{c.hora}</td>
-              </tr>
-            ))}
-
-            {loaded ? (
-              clases.length > 0 ? clases.map((c, index) => (
-                <tr key={`tomada-${index}`}>
-                  <td>{c.dia}</td>
-                  <td>{c.clase}</td>
-                  <td>{c.hora}</td>
+            {tomadas.length > 0 ? (
+              tomadas.map((c) => (
+                <tr key={c.id}>
+                  <td>{c.title}</td>
+                  <td>{c.date}</td>
+                  <td>{c.startTime}</td>
+                  <td>{c.endTime}</td>
+                  <td>{c.trainerName}</td>
                 </tr>
-              )) : (
-                <tr><td colSpan={3} style={{ textAlign: "center" }}>No hay clases tomadas</td></tr>
-              )
+              ))
             ) : (
-              <tr><td colSpan={3}>&nbsp;</td></tr>
+              <tr className="no-classes">
+                <td colSpan={5}>No tienes clases registradas.</td>
+              </tr>
             )}
           </tbody>
         </table>

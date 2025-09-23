@@ -1,9 +1,8 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
 import "./layout.scss";
 
 interface CoachLayoutProps {
@@ -12,11 +11,27 @@ interface CoachLayoutProps {
 
 export default function CoachLayout({ children }: CoachLayoutProps) {
   const pathname = usePathname();
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const toggleMenu = () => setMenuOpen((prev) => !prev);
 
   return (
     <div className="coach-layout">
-      {/* ✅ Sidebar solo en /coach */}
-      <aside className="sidebar">
+     <div
+        className={`overlay ${menuOpen ? "show" : ""}`}
+        onClick={toggleMenu}
+      ></div>
+
+      {/* Botón hamburguesa solo en móvil */}
+      <button
+        className={`hamburger ${menuOpen ? "open" : ""}`}
+        onClick={toggleMenu}
+      >
+        ☰
+      </button>
+
+      {/* Sidebar lateral */}
+      <aside className={`sidebar ${menuOpen ? "open" : ""}`}>
         <h2 className="sidebar-title">PERFIL COACH</h2>
         <nav className="nav">
           <Link href="/coach" className={pathname === "/coach" ? "active" : ""}>
@@ -37,7 +52,7 @@ export default function CoachLayout({ children }: CoachLayoutProps) {
         </nav>
       </aside>
 
-      {/* ✅ Contenido dinámico */}
+      {/* Contenido principal */}
       <main className="content">{children}</main>
     </div>
   );

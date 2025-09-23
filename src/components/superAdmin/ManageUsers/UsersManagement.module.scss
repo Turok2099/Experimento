@@ -2,6 +2,10 @@
   padding: 20px;
   background-color: #f9f9f9;
   border-radius: 12px;
+  height: 100%; /* Altura fija del contenedor padre */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .title {
@@ -11,10 +15,15 @@
   color: #333;
 }
 
+.tableContainer {
+  flex: 1;
+  overflow-y: auto;
+  margin-top: 10px;
+}
+
 .table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 10px;
 }
 
 .table th {
@@ -94,7 +103,7 @@
     transition: background 0.2s ease;
 
     &:hover {
-      background-color: #15803d; 
+      background-color: #15803d;
     }
   }
 }

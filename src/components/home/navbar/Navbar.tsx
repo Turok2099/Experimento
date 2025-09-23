@@ -21,6 +21,10 @@ const roleLinks: Record<string, { href: string; label: string }[]> = {
     { href: "/userDashboard", label: "Perfil Usuario" },
     { href: "/routine", label: "Rutina" },
   ],
+  trainer: [
+    { href: "/coach", label: "Panel Entrenador" },
+    { href: "/routine", label: "Rutina" },
+  ],
 };
 
 const Navbar = () => {

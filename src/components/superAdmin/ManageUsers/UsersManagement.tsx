@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, memo } from "react";
 import styles from "./UsersManagement.module.scss";
 import { useAllUsers } from "../../../hooks/superadmin/users/AllUsersService";
 import {
@@ -152,183 +152,185 @@ const UsersManagement: React.FC = () => {
   return (
     <div className={styles.container}>
       <h2 className={styles.title}>Gestión de Usuarios</h2>
-      <table className={styles.table}>
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>Email</th>
-            <th>Telefono</th>
-            <th>Rol</th>
-            <th>Estado Subscripcion</th>
-            <th>Fecha Inicio</th>
-            <th>Fecha Finalizada</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((u) => {
-            const subInfo = getSubscriptionStatus(u.id);
-            return (
-              <tr key={u.id}>
-                {/* ====== NAME ====== */}
-                <td>
-                  {editing[String(u.id)]?.field === "name" ? (
-                    <>
-                      <input
-                        type="text"
-                        value={editing[String(u.id)]?.value || ""}
-                        onChange={(e) =>
-                          setEditing((prev) => ({
-                            ...prev,
-                            [u.id]: { field: "name", value: e.target.value },
-                          }))
-                        }
-                      />
-                      <button
-                        onClick={() => handleSave(u.id, "name")}
-                        disabled={updating}
-                      >
-                        {updating ? "Guardando..." : "Guardar"}
-                      </button>
-                    </>
-                  ) : (
-                    <span>
-                      {u.name}{" "}
-                      <Pencil
-                        size={16}
-                        className={styles.editIcon}
-                        onClick={() =>
-                          setEditing((prev) => ({
-                            ...prev,
-                            [u.id]: { field: "name", value: u.name || "" },
-                          }))
-                        }
-                      />
-                    </span>
-                  )}
-                </td>
+      <div className={styles.tableContainer}>
+        <table className={styles.table}>
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Email</th>
+              <th>Telefono</th>
+              <th>Rol</th>
+              <th>Estado Subscripcion</th>
+              <th>Fecha Inicio</th>
+              <th>Fecha Finalizada</th>
+            </tr>
+          </thead>
+          <tbody>
+            {users.map((u) => {
+              const subInfo = getSubscriptionStatus(u.id);
+              return (
+                <tr key={u.id}>
+                  {/* ====== NAME ====== */}
+                  <td>
+                    {editing[String(u.id)]?.field === "name" ? (
+                      <>
+                        <input
+                          type="text"
+                          value={editing[String(u.id)]?.value || ""}
+                          onChange={(e) =>
+                            setEditing((prev) => ({
+                              ...prev,
+                              [u.id]: { field: "name", value: e.target.value },
+                            }))
+                          }
+                        />
+                        <button
+                          onClick={() => handleSave(u.id, "name")}
+                          disabled={updating}
+                        >
+                          {updating ? "Guardando..." : "Guardar"}
+                        </button>
+                      </>
+                    ) : (
+                      <span>
+                        {u.name}{" "}
+                        <Pencil
+                          size={16}
+                          className={styles.editIcon}
+                          onClick={() =>
+                            setEditing((prev) => ({
+                              ...prev,
+                              [u.id]: { field: "name", value: u.name || "" },
+                            }))
+                          }
+                        />
+                      </span>
+                    )}
+                  </td>
 
-                {/* ====== EMAIL ====== */}
-                <td>
-                  {editing[String(u.id)]?.field === "email" ? (
-                    <>
-                      <input
-                        type="text"
-                        value={editing[String(u.id)]?.value || ""}
-                        onChange={(e) =>
-                          setEditing((prev) => ({
-                            ...prev,
-                            [u.id]: { field: "email", value: e.target.value },
-                          }))
-                        }
-                      />
-                      <button
-                        onClick={() => handleSave(u.id, "email")}
-                        disabled={updating}
-                      >
-                        {updating ? "Guardando..." : "Guardar"}
-                      </button>
-                    </>
-                  ) : (
-                    <span>
-                      {u.email}{" "}
-                      <Pencil
-                        size={16}
-                        className={styles.editIcon}
-                        onClick={() =>
-                          setEditing((prev) => ({
-                            ...prev,
-                            [u.id]: { field: "email", value: u.email || "" },
-                          }))
-                        }
-                      />
-                    </span>
-                  )}
-                </td>
+                  {/* ====== EMAIL ====== */}
+                  <td>
+                    {editing[String(u.id)]?.field === "email" ? (
+                      <>
+                        <input
+                          type="text"
+                          value={editing[String(u.id)]?.value || ""}
+                          onChange={(e) =>
+                            setEditing((prev) => ({
+                              ...prev,
+                              [u.id]: { field: "email", value: e.target.value },
+                            }))
+                          }
+                        />
+                        <button
+                          onClick={() => handleSave(u.id, "email")}
+                          disabled={updating}
+                        >
+                          {updating ? "Guardando..." : "Guardar"}
+                        </button>
+                      </>
+                    ) : (
+                      <span>
+                        {u.email}{" "}
+                        <Pencil
+                          size={16}
+                          className={styles.editIcon}
+                          onClick={() =>
+                            setEditing((prev) => ({
+                              ...prev,
+                              [u.id]: { field: "email", value: u.email || "" },
+                            }))
+                          }
+                        />
+                      </span>
+                    )}
+                  </td>
 
-                {/* ====== PHONE ====== */}
-                <td>
-                  {editing[String(u.id)]?.field === "phone" ? (
-                    <>
-                      <input
-                        type="text"
-                        value={editing[String(u.id)]?.value || ""}
-                        onChange={(e) =>
-                          setEditing((prev) => ({
-                            ...prev,
-                            [u.id]: { field: "phone", value: e.target.value },
-                          }))
-                        }
-                      />
-                      <button
-                        onClick={() => handleSave(u.id, "phone")}
-                        disabled={updating}
-                      >
-                        {updating ? "Guardando..." : "Guardar"}
-                      </button>
-                    </>
-                  ) : (
-                    <span>
-                      {(u as any).phone || "N/A"}{" "}
-                      <Pencil
-                        size={16}
-                        className={styles.editIcon}
-                        onClick={() =>
-                          setEditing((prev) => ({
-                            ...prev,
-                            [u.id]: {
-                              field: "phone",
-                              value: (u as any).phone || "",
-                            },
-                          }))
-                        }
-                      />
-                    </span>
-                  )}
-                </td>
-                {/* <td>{u.role}</td> */}
-                <td>
-                  {editingUserId === u.id ? (
-                    <div className={styles.roleEditor}>
-                      <select
-                        value={selectedRole}
-                        onChange={(e) => setSelectedRole(e.target.value)}
-                      >
-                        <option value="admin">Admin</option>
-                        <option value="trainer">Trainer</option>
-                        <option value="member">Member</option>
-                      </select>
-                      <button
-                        className={styles.saveBtn}
-                        onClick={() => updateUserRole(u.id, selectedRole)}
-                      >
-                        Guardar
-                      </button>
-                    </div>
-                  ) : (
-                    <div className={styles.roleDisplay}>
-                      <span>{(u as any).role || "N/A"}</span>
-                      <button
-                        className={styles.editBtn}
-                        onClick={() => {
-                          setEditingUserId(u.id);
-                          setSelectedRole((u as any).role || "");
-                        }}
-                      >
-                        <Pencil size={16} />
-                      </button>
-                    </div>
-                  )}
-                </td>
-                <td>{subInfo.status}</td>
-                <td>{formatDate(subInfo.start_at)}</td>
-                <td>{formatDate(subInfo.end_at)}</td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+                  {/* ====== PHONE ====== */}
+                  <td>
+                    {editing[String(u.id)]?.field === "phone" ? (
+                      <>
+                        <input
+                          type="text"
+                          value={editing[String(u.id)]?.value || ""}
+                          onChange={(e) =>
+                            setEditing((prev) => ({
+                              ...prev,
+                              [u.id]: { field: "phone", value: e.target.value },
+                            }))
+                          }
+                        />
+                        <button
+                          onClick={() => handleSave(u.id, "phone")}
+                          disabled={updating}
+                        >
+                          {updating ? "Guardando..." : "Guardar"}
+                        </button>
+                      </>
+                    ) : (
+                      <span>
+                        {(u as any).phone || "N/A"}{" "}
+                        <Pencil
+                          size={16}
+                          className={styles.editIcon}
+                          onClick={() =>
+                            setEditing((prev) => ({
+                              ...prev,
+                              [u.id]: {
+                                field: "phone",
+                                value: (u as any).phone || "",
+                              },
+                            }))
+                          }
+                        />
+                      </span>
+                    )}
+                  </td>
+                  {/* <td>{u.role}</td> */}
+                  <td>
+                    {editingUserId === u.id ? (
+                      <div className={styles.roleEditor}>
+                        <select
+                          value={selectedRole}
+                          onChange={(e) => setSelectedRole(e.target.value)}
+                        >
+                          <option value="admin">Admin</option>
+                          <option value="trainer">Trainer</option>
+                          <option value="member">Member</option>
+                        </select>
+                        <button
+                          className={styles.saveBtn}
+                          onClick={() => updateUserRole(u.id, selectedRole)}
+                        >
+                          Guardar
+                        </button>
+                      </div>
+                    ) : (
+                      <div className={styles.roleDisplay}>
+                        <span>{(u as any).role || "N/A"}</span>
+                        <button
+                          className={styles.editBtn}
+                          onClick={() => {
+                            setEditingUserId(u.id);
+                            setSelectedRole((u as any).role || "");
+                          }}
+                        >
+                          <Pencil size={16} />
+                        </button>
+                      </div>
+                    )}
+                  </td>
+                  <td>{subInfo.status}</td>
+                  <td>{formatDate(subInfo.start_at)}</td>
+                  <td>{formatDate(subInfo.end_at)}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
 
-export default UsersManagement;
+export default memo(UsersManagement);

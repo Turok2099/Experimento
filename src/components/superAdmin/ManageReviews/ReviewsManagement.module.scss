@@ -4,6 +4,10 @@
   background: #ffffff;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  height: 100%; /* Altura fija del contenedor padre */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .title {
@@ -11,6 +15,11 @@
   font-weight: 600;
   margin-bottom: 1.5rem;
   color: #333;
+}
+
+.tableContainer {
+  flex: 1;
+  overflow-y: auto;
 }
 
 .table {
@@ -66,4 +75,14 @@
 }
 .toggleBtn:hover {
   background: #1d4ed8;
+}
+
+.empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  font-size: 1.2rem;
+  color: #666;
+  text-align: center;
 }

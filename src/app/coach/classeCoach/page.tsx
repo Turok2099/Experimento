@@ -1,13 +1,15 @@
 'use client';
 
-import React from "react";
+import { AuthProvider } from "@/context/AuthContext";
+import { ClasesProvider } from "@/context/ClasesContext"; 
 import TablaClases from "@/views/table/TablaClases";
-import { ClasesProvider } from "@/context/ClasesContext"; // asegúrate de la ruta correcta
 
 export default function ClasesPage() {
   return (
-    <ClasesProvider>
-      <TablaClases />
-    </ClasesProvider>
+    <AuthProvider>
+      <ClasesProvider>
+        <TablaClases />
+      </ClasesProvider>
+    </AuthProvider>
   );
 }

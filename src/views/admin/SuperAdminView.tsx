@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useMemo, memo } from "react";
 import styles from "./SuperAdminView.module.scss";
 
 import UsersManagement from "../../components/superAdmin/ManageUsers/UsersManagement";
@@ -7,13 +7,18 @@ import ClassesManagement from "../../components/superAdmin/ManageClasses/Classes
 import PlansManagement from "../../components/superAdmin/ManagePlans/PlansManagement";
 import ReviewsManagement from "../../components/superAdmin/ManageReviews/ReviewsManagement";
 import ExercisesManagement from "@/components/superAdmin/ManageExercises/ExercisesManagement";
+import { useAuth } from "@/context/AuthContext";
 
 const SuperAdminView: React.FC = () => {
   // Estado para controlar la sección activa
   const [activeSection, setActiveSection] = useState("users");
 
-  // Renderiza la sección según lo seleccionado en el menú
-  const renderSection = () => {
+  // Obtener el token del contexto de autenticación
+  const { userData } = useAuth();
+  const token = userData?.token || "";
+
+  // Renderiza la sección según lo seleccionado en el menú - memoizado para evitar re-renders
+  const renderSection = useMemo(() => {
     switch (activeSection) {
       case "users":
         return <UsersManagement />;
@@ -22,13 +27,13 @@ const SuperAdminView: React.FC = () => {
       case "exercises":
         return <ExercisesManagement />;
       case "plans":
-        return <PlansManagement token="" />;
+        return <PlansManagement token={token} />;
       case "reviews":
-        return <ReviewsManagement />;
+        return <ReviewsManagement token={token} />;
       default:
         return <div>Selecciona una opción</div>;
     }
-  };
+  }, [activeSection, token]);
 
   return (
     <div className={styles.container}>
@@ -82,10 +87,10 @@ const SuperAdminView: React.FC = () => {
       {/* Contenido principal */}
       <main className={styles.content}>
         <h1 className={styles.title}>Panel de Administrador</h1>
-        <div className={styles.section}>{renderSection()}</div>
+        <div className={styles.section}>{renderSection}</div>
       </main>
     </div>
   );
 };
 
-export default SuperAdminView;
+export default memo(SuperAdminView);
