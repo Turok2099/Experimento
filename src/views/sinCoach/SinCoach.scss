@@ -101,12 +101,14 @@ h2 {
     }
 
     td:has(button.btn-tomar) {
-      background-color: #ffd700;
+      background-color: transparent;
       border-radius: 0.5rem;
-      padding: 8px;
+      padding: 12px;
       display: flex;
       justify-content: center;
       align-items: center;
+      text-align: center;
+      width: 100%;
     }
 
     td button.btn-tomar {
@@ -128,15 +130,15 @@ h2 {
         background-color: rgba(255, 215, 0, 0.2);
       }
 
-      // Estilo especial para entrenadores - botón más grande y amigable
+      // Estilo especial para entrenadores - un solo contenedor limpio
       &.trainer-btn {
         background-color: #ffd700;
         color: #222;
         width: auto;
-        min-width: 120px;
+        min-width: 150px;
         height: 45px;
-        padding: 0 12px;
-        gap: 8px;
+        padding: 0 16px;
+        gap: 10px;
         font-size: 0.9rem;
         font-weight: 600;
         border-radius: 12px;

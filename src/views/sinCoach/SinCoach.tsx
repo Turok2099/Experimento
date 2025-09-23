@@ -222,7 +222,9 @@ const Disponibles: React.FC = () => {
                                 {userData?.user?.role === "trainer" ? (
                                   <>
                                     <span className="trainer-icon">🏋️</span>
-                                    <span className="trainer-text">Asignar</span>
+                                    <span className="trainer-text">
+                                      Asignar
+                                    </span>
                                   </>
                                 ) : (
                                   "+"
