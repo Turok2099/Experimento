@@ -219,9 +219,14 @@ const Disponibles: React.FC = () => {
                                 }`}
                                 onClick={() => tomarClase(c)}
                               >
-                                {userData?.user?.role === "trainer"
-                                  ? "🏋️"
-                                  : "+"}
+                                {userData?.user?.role === "trainer" ? (
+                                  <>
+                                    <span className="trainer-icon">🏋️</span>
+                                    <span className="trainer-text">Asignar</span>
+                                  </>
+                                ) : (
+                                  "+"
+                                )}
                               </button>
                             )}
                           </td>
