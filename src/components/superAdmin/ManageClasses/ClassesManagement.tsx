@@ -48,7 +48,7 @@ const ClassesManagement: React.FC = () => {
 
       const responseData = await res.json();
       console.log("✅ Success response:", responseData);
-      
+
       // Refrescar la lista de clases con un pequeño delay para asegurar que el backend haya terminado
       console.log("🔄 Refrescando lista de clases...");
       setTimeout(() => {

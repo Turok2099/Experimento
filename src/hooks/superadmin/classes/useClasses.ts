@@ -33,7 +33,7 @@ export function useClasses() {
       }
 
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/classes/admin`,
+        `${process.env.NEXT_PUBLIC_API_URL}/classes/admin?includeInactive=true`,
         {
           headers: {
             "Content-type": "application/json",
@@ -83,9 +83,16 @@ export function useClasses() {
         }
       );
 
-       console.log("📊 Total clases mapeadas:", mappedClasses.length);
-       console.log("📊 Estados de las clases:", mappedClasses.map(c => ({ id: c.id, title: c.title, status: c.status })));
-       setClasses(mappedClasses);
+      console.log("📊 Total clases mapeadas:", mappedClasses.length);
+      console.log(
+        "📊 Estados de las clases:",
+        mappedClasses.map((c) => ({
+          id: c.id,
+          title: c.title,
+          status: c.status,
+        }))
+      );
+      setClasses(mappedClasses);
     } catch (err: any) {
       console.error(err);
       setError(err.message || "Error desconocido");
