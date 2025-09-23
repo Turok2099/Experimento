@@ -1,0 +1,236 @@
+@use '../../../styles/utils.scss' as utils;
+
+.section {
+  max-width: 800px;
+  font-size: 1.4rem;
+  min-height: auto; /* deja que crezca */
+}
+
+
+.sectionTitle {
+  color: var(--colorAmarillo);
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid #333333;
+  padding-bottom: 0.5rem;
+}
+
+.commentForm {
+  background-color: #1a1a1a;
+  padding: 2rem;
+  border-radius: 8px;
+  border: 1px solid #333333;
+  margin-bottom: 2rem;
+  @include utils.ClassDifuminado;
+  width: 30rem;
+}
+
+.formGroup {
+  margin-bottom: 1.5rem;
+  
+}
+
+.formGroup label {
+  display: block;
+  color: var(--colorAmarillo);
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.formGroup textarea {
+  width: 100%;
+  padding: 0.75rem;
+  // background-color: #333333;
+  border: 1px solid #555555;
+  border-radius: 20px;
+  color: black;
+  font-size: 1.3rem;
+  min-height: 100px;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.formGroup textarea:focus {
+  outline: none;
+  border-color: var(--colorAmarillo);
+  box-shadow: 0 0 0 2px rgba(255, 255, 0, 0.2);
+}
+
+.stars {
+  display: flex;
+  gap: 0.25rem;
+  margin-bottom: 1rem;
+}
+
+.star {
+  color: var(--colorAmarillo);
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+.select{
+  height: 3rem;
+  width: 15rem;
+  font-size: 1.2rem;
+}
+.emptyStar {
+  color: #555555;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.star:hover,
+.emptyStar:hover {
+  color: var(--colorAmarillo);
+}
+
+.submitButton {
+  @include utils.ClassButton;
+  width: 15rem;
+}
+
+.submitButton:hover {
+  background-color: black;
+  color: var(--colorAmarillo);
+  transform: translateY(-1px);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #1a1a1a;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #333333;
+  @include utils.ClassDifuminado;
+}
+
+.table th {
+  background-color: #333333;
+  color: black  ;
+  padding: 1rem;
+  text-align: left;
+  font-weight: bold;
+  border-bottom: 2px solid #555555;
+  width: 10rem;
+  height: 4rem;
+  @include utils.ClassDifuminado;
+  font-size: 1.3rem;
+}
+
+.table td {
+  padding: 1rem;
+  border-bottom: 1px solid #333333;
+  color: #ffffff;
+  font-size: 1.3rem;
+
+}
+
+.table tr:hover {
+  background-color: #2a2a2a;
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+.emptyMessage {
+  color: #888888;
+  font-style: italic;
+  text-align: center;
+  padding: 2rem;
+}
+
+.alert {
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  font-weight: bold;
+  background-color: #2d5a2d;
+  color: #90ee90;
+  border: 1px solid #4a7c4a;
+}
+
+.sectionAddyTabla{
+  display: flex;
+  width: 200rem;
+  gap: 2rem;
+}
+.contComentarios{
+
+}
+
+
+/* Tablet (≤ 1024px) */
+@media (max-width: 1024px) {
+  .section {
+    max-width: 100%;
+    font-size: 1.2rem;
+    padding: 1rem;
+  }
+
+  .commentForm {
+    padding: 1.5rem;
+  }
+
+  .select {
+    width: 100%;
+    font-size: 1rem;
+  }
+
+  .submitButton {
+    width: 100%;
+  }
+}
+
+/* Móvil (≤ 430px) */
+@media (max-width: 430px) {
+  .sectionTitle {
+    font-size: 1.5rem;
+    text-align: center;
+  }
+
+  .commentForm {
+    padding: 1rem;
+    width: 20rem;
+  }
+
+  .formGroup textarea {
+    font-size: 1rem;
+    min-height: 80px;
+  }
+
+  /* Hacemos la tabla scrollable */
+  .table {
+    display: block;
+    width: 20rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 6px;
+  }
+
+  .table table {
+    width: 600px; /* ancho mínimo para scroll horizontal */
+  }
+
+  .table th,
+  .table td {
+    font-size: 0.9rem;
+    padding: 0.5rem;
+    white-space: nowrap;
+  }
+
+  .submitButton {
+    font-size: 1rem;
+    padding: 0.8rem;
+  }
+  .sectionAddyTabla{
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sectionAddyTabla{
+    width: 20rem;
+  }
+}

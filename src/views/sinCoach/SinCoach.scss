@@ -1,0 +1,161 @@
+.tabla-page {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 2rem 0;
+}
+
+.tabla-container {
+  width: 100%;
+  max-width: 900px;
+  min-width: 500px;
+  padding: 2.5rem;
+  border-radius: 1rem;
+  background-color: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 10px 25px rgba(255, 223, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 1rem;
+  color: #222;
+}
+
+.dia-semana {
+  width: 100%;
+  margin-bottom: 1rem;
+
+  .btn-dia {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    text-align: left;
+    background-color: #FFD700;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin-bottom: 0.5rem;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: #ffc107;
+    }
+  }
+
+  .tabla-wrapper {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+
+  .tabla-clases {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: separate;
+    border-spacing: 0 8px;
+
+    th,
+    td {
+      padding: 0.75rem 1rem;
+      border-radius: 0.5rem;
+      border: none;
+      text-align: center;
+      word-break: break-word;
+    }
+
+    th {
+      background-color: #FFD700;
+      font-weight: 700;
+    }
+
+    tbody tr {
+      background-color: #fff;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      }
+
+      &.fila-tomada {
+        background-color: #d4edda; /* verde claro */
+      }
+    }
+
+    tbody tr:nth-child(even):not(.fila-tomada) {
+      background-color: #f7f7f7;
+    }
+
+    td.tutor-usuario {
+      min-width: 120px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    td:has(button.btn-tomar) {
+      background-color: #FFD700;
+      border-radius: 0.5rem;
+    }
+
+    td button.btn-tomar {
+      background-color: transparent;
+      color: #222;
+      font-weight: 700;
+      font-size: 1.25rem;
+      border: none;
+      cursor: pointer;
+    }
+
+    /* Cuando ya se tomó la clase */
+    td .tomada-usuario {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+
+      span {
+        font-weight: 600;
+        color: #155724; /* verde oscuro */
+      }
+
+      .btn-cancelar {
+        background: transparent;
+        border: none;
+        color: #dc3545; /* rojo */
+        font-size: 1.1rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: transform 0.2s;
+
+        &:hover {
+          transform: scale(1.2);
+        }
+      }
+    }
+  }
+}
+
+/* ---------------------- */
+/* Estilos para react-hot-toast */
+.toast-success {
+  background-color: #FFD700 !important;
+  color: #222 !important;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+}
+
+.toast-error {
+  background-color: #dc3545 !important;
+  color: #fff !important;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+}

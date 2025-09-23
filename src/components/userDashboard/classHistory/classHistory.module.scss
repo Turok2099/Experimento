@@ -1,0 +1,51 @@
+/* Historial de clases */
+.section {
+    max-width: 800px;
+}
+
+.sectionTitle {
+    color:var(--colorAmarillo);
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid #333333;
+    padding-bottom: 0.5rem;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #1a1a1a;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #333333;
+}
+
+.table th {
+    background-color: #333333;
+    color:var(--colorAmarillo);
+    padding: 1rem;
+    text-align: left;
+    font-weight: bold;
+    border-bottom: 2px solid #555555;
+}
+
+.table td {
+    padding: 1rem;
+    border-bottom: 1px solid #333333;
+    color: #ffffff;
+}
+
+.table tr:hover {
+    background-color: #2a2a2a;
+}
+
+.table tr:last-child td {
+    border-bottom: none;
+}
+
+.emptyMessage {
+    color: #888888;
+    font-style: italic;
+    text-align: center;
+    padding: 2rem;
+}

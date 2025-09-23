@@ -1,0 +1,191 @@
+@use "../../../styles/utils.scss" as utils;
+
+.mensaje {
+  @include utils.ClassStyleTitle;
+  margin-bottom: 2rem;
+}
+
+.sectionComentary {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  color: #fff;
+  text-align: center;
+  width: 100%;
+}
+
+.sliderWrapper {
+  width: 100%;
+  max-width: 100%;
+
+  .slick-slide {
+    padding: 0 1rem;
+  }
+  .slick-list {
+    margin: 0 -1rem;
+  }
+}
+
+.card {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 10px;
+  padding: 2rem;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.3s ease;
+  gap: 1rem;
+
+  &:hover {
+    transform: translateY(-5px);
+    border-color: var(--colorAmarillo);
+    box-shadow: 0 4px 12px rgba(255, 255, 0, 0.2);
+  }
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+}
+
+.userName {
+  font-weight: bold;
+  color: var(--colorAmarillo);
+  font-size: 1.5rem;
+}
+
+.text {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.date {
+  font-size: 1.2rem;
+  color: #aaa;
+}
+
+.stars {
+  display: flex;
+  gap: 0.2rem;
+  font-size: 1.2rem;
+}
+
+.star {
+  color: #444;
+  font-size: 1.2rem;
+}
+
+.starActive {
+  color: var(--colorAmarillo);
+}
+
+// Responsive Design
+@media (max-width: 1024px) {
+  .sectionComentary {
+    padding: 1.5rem;
+  }
+
+  .card {
+    padding: 1.5rem;
+    min-height: 180px;
+  }
+
+  .userName {
+    font-size: 1.3rem;
+  }
+
+  .text {
+    font-size: 1.3rem;
+  }
+
+  .date {
+    font-size: 1rem;
+  }
+
+  .stars {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .sectionComentary {
+    padding: 1rem;
+  }
+
+  .card {
+    padding: 1.25rem;
+    min-height: 160px;
+  }
+
+  .userName {
+    font-size: 1.2rem;
+  }
+
+  .text {
+    font-size: 1.2rem;
+  }
+
+  .date {
+    font-size: 0.9rem;
+  }
+
+  .stars {
+    font-size: 0.9rem;
+  }
+
+  .sliderWrapper {
+    .slick-slide {
+      padding: 0 0.5rem;
+    }
+    .slick-list {
+      margin: 0 -0.5rem;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .sectionComentary {
+    padding: 0.5rem;
+  }
+
+  .card {
+    padding: 1rem;
+    min-height: 140px;
+  }
+
+  .userName {
+    font-size: 1.1rem;
+  }
+
+  .text {
+    font-size: 1.1rem;
+  }
+
+  .date {
+    font-size: 0.8rem;
+  }
+
+  .stars {
+    font-size: 0.8rem;
+  }
+
+  .sliderWrapper {
+    .slick-slide {
+      padding: 0 0.25rem;
+    }
+    .slick-list {
+      margin: 0 -0.25rem;
+    }
+  }
+}

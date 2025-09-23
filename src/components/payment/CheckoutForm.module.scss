@@ -1,0 +1,177 @@
+.checkoutForm {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.paymentSummary {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 8px;
+  color: white;
+
+  h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+}
+
+.amount {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.paymentForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.paymentElementContainer {
+  padding: 1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  background: #f9fafb;
+  transition: border-color 0.2s ease;
+
+  &:focus-within {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  }
+}
+
+.errorMessage {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  color: #dc2626;
+  font-size: 0.9rem;
+}
+
+.errorIcon {
+  font-size: 1.2rem;
+}
+
+.payButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 56px;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.lockIcon {
+  font-size: 1.2rem;
+}
+
+.securityInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: #f0f9ff;
+  border: 1px solid #bae6fd;
+  border-radius: 8px;
+  color: #0369a1;
+  font-size: 0.85rem;
+  text-align: center;
+
+  p {
+    margin: 0;
+    line-height: 1.4;
+  }
+}
+
+.securityIcon {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+// Dark mode support
+@media (prefers-color-scheme: dark) {
+  .checkoutForm {
+    background: #1f2937;
+    color: white;
+  }
+
+  .paymentElementContainer {
+    background: #374151;
+    border-color: #4b5563;
+  }
+
+  .errorMessage {
+    background: #7f1d1d;
+    border-color: #991b1b;
+    color: #fca5a5;
+  }
+
+  .securityInfo {
+    background: #1e3a8a;
+    border-color: #3b82f6;
+    color: #93c5fd;
+  }
+}
+
+// Responsive design
+@media (max-width: 640px) {
+  .checkoutForm {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+
+  .amount {
+    font-size: 1.5rem;
+  }
+
+  .payButton {
+    padding: 0.875rem 1.5rem;
+    font-size: 1rem;
+  }
+}
