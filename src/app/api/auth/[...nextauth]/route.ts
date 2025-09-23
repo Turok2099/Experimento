@@ -54,16 +54,15 @@ const handler = NextAuth({
         // Enviando el token de Google para que genere un JWT propio
         try {
           console.log("🔄 Sincronizando con backend...");
-          console.log(
-            "🌐 URL del backend:",
-            "http://localhost:3001/auth/google"
-          );
+          const backendUrl =
+            process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+          console.log("🌐 URL del backend:", `${backendUrl}/auth/google`);
           console.log(
             "🔑 ID Token:",
             account.id_token ? "Presente" : "Ausente"
           );
 
-          const response = await fetch("http://localhost:3001/auth/google", {
+          const response = await fetch(`${backendUrl}/auth/google`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -114,17 +113,16 @@ const handler = NextAuth({
         );
 
         try {
-          const response = await fetch(
-            "http://localhost:3001/auth/google/sync",
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                email: (token.user as any)?.email,
-                name: (token.user as any)?.name,
-              }),
-            }
-          );
+          const backendUrl =
+            process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+          const response = await fetch(`${backendUrl}/auth/google/sync`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email: (token.user as any)?.email,
+              name: (token.user as any)?.name,
+            }),
+          });
 
           if (response.ok) {
             const data = await response.json();

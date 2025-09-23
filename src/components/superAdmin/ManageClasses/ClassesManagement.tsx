@@ -16,7 +16,13 @@ const ClassesManagement: React.FC = () => {
     id: string,
     currentStatus: ClassDto["status"]
   ) => {
+    console.log("🔄 === DEBUG TOGGLE STATUS ===");
+    console.log("📥 ID:", id);
+    console.log("📥 Current Status:", currentStatus);
+
     const newIsActive = currentStatus === "active" ? false : true;
+    console.log("📤 New isActive:", newIsActive);
+
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/classes/${id}/status`,
@@ -34,10 +40,17 @@ const ClassesManagement: React.FC = () => {
       );
       if (!res.ok) {
         const errorText = await res.text();
+        console.log("❌ Error response:", res.status, errorText);
         throw new Error(
           `Error al cambiar estado de clase: ${res.status} ${errorText}`
         );
       }
+
+      const responseData = await res.json();
+      console.log("✅ Success response:", responseData);
+
+      // Refrescar la lista de clases
+      console.log("🔄 Refrescando lista de clases...");
       fetchClasses();
     } catch (err) {
       console.error(err);

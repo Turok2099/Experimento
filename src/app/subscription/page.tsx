@@ -22,8 +22,7 @@ export default function SubscriptionPage() {
   const { plans: activePlans, loading: plansLoading } = useActivePlans();
 
   // URL base de la API
-  const apiUrl =
-    "https://back-c2meoxp3c-jorge-castros-projects-839066ef.vercel.app";
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
   useEffect(() => {
     if (!loadingSession) {
@@ -298,8 +297,7 @@ export default function SubscriptionPage() {
     try {
       // Confirmar el pago en el backend
       console.log("🔄 Confirmando pago en el backend...");
-      const apiUrl =
-        "https://back-c2meoxp3c-jorge-castros-projects-839066ef.vercel.app";
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
       const userSession = localStorage.getItem("userSession");
       const token = userSession ? JSON.parse(userSession).token : null;
 
