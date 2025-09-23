@@ -71,7 +71,7 @@ const ExercisesManagement: React.FC = () => {
         {
           headers: {
             "Content-type": "application/json",
-            Authorization: `Bearer ${userData.token}`,
+            Authorization: `Bearer ${userData.accessToken || userData.token}`,
           },
         }
       );
@@ -109,7 +109,7 @@ const ExercisesManagement: React.FC = () => {
 
       // Crear FormData para enviar tanto los datos como la imagen
       const formDataToSend = new FormData();
-      
+
       // Agregar todos los campos del formulario
       Object.entries(formData).forEach(([key, value]) => {
         if (value !== undefined && value !== null && value !== "") {
@@ -127,7 +127,7 @@ const ExercisesManagement: React.FC = () => {
         {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${userData.token}`,
+            Authorization: `Bearer ${userData.accessToken || userData.token}`,
             // No establecer Content-Type, dejar que el navegador lo haga automáticamente para FormData
           },
           body: formDataToSend,
@@ -160,7 +160,7 @@ const ExercisesManagement: React.FC = () => {
 
       // Crear FormData para enviar tanto los datos como la imagen
       const formDataToSend = new FormData();
-      
+
       // Agregar todos los campos del formulario
       Object.entries(formData).forEach(([key, value]) => {
         if (value !== undefined && value !== null && value !== "") {
@@ -178,7 +178,7 @@ const ExercisesManagement: React.FC = () => {
         {
           method: "PUT",
           headers: {
-            Authorization: `Bearer ${userData.token}`,
+            Authorization: `Bearer ${userData.accessToken || userData.token}`,
             // No establecer Content-Type, dejar que el navegador lo haga automáticamente para FormData
           },
           body: formDataToSend,
@@ -215,7 +215,7 @@ const ExercisesManagement: React.FC = () => {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${userData.token}`,
+            Authorization: `Bearer ${userData.accessToken || userData.token}`,
           },
           body: JSON.stringify({ isActive: !currentStatus }),
         }
@@ -248,7 +248,7 @@ const ExercisesManagement: React.FC = () => {
         {
           method: "DELETE",
           headers: {
-            Authorization: `Bearer ${userData.token}`,
+            Authorization: `Bearer ${userData.accessToken || userData.token}`,
           },
         }
       );
