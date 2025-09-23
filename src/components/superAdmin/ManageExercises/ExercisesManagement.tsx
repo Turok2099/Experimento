@@ -51,7 +51,8 @@ const ExercisesManagement: React.FC = () => {
   const [formData, setFormData] = useState<Partial<Exercise & Class>>({});
   const [showAddForm, setShowAddForm] = useState(false);
   const [contentType, setContentType] = useState<ContentType>("exercises");
-  const [exerciseCategory, setExerciseCategory] = useState<ExerciseCategory>("hipertrofia");
+  const [exerciseCategory, setExerciseCategory] =
+    useState<ExerciseCategory>("hipertrofia");
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const { userData } = useAuth();
 
@@ -284,7 +285,7 @@ const ExercisesManagement: React.FC = () => {
               </div>
             </div>
 
-            {/* Segunda decisión para Ejercicios: Categoría */}
+            {/* Segunda decisión para Ejercicios: Categoría - Solo visible después de seleccionar Ejercicios */}
             {contentType === "exercises" && (
               <div className={styles.categorySelector}>
                 <h4>Selecciona la categoría del ejercicio:</h4>
@@ -317,71 +318,72 @@ const ExercisesManagement: React.FC = () => {
               </div>
             )}
 
-            {/* Campos específicos para Hipertrofia */}
-            {contentType === "exercises" && exerciseCategory === "hipertrofia" && (
-              <>
-                <div className={styles.formGroup}>
-                  <label>Nombre del Ejercicio:</label>
-                  <input
-                    type="text"
-                    value={formData.ejercicio || ""}
-                    onChange={(e) =>
-                      setFormData({ ...formData, ejercicio: e.target.value })
-                    }
-                    placeholder="Ej: Press de banca con barra"
-                  />
-                </div>
+            {/* Campos específicos para Hipertrofia - Solo visible después de seleccionar Ejercicios + Hipertrofia */}
+            {contentType === "exercises" &&
+              exerciseCategory === "hipertrofia" && (
+                <>
+                  <div className={styles.formGroup}>
+                    <label>Nombre del Ejercicio:</label>
+                    <input
+                      type="text"
+                      value={formData.ejercicio || ""}
+                      onChange={(e) =>
+                        setFormData({ ...formData, ejercicio: e.target.value })
+                      }
+                      placeholder="Ej: Press de banca con barra"
+                    />
+                  </div>
 
-                <div className={styles.formGroup}>
-                  <label>Grupo Muscular:</label>
-                  <select
-                    value={formData.grupo || ""}
-                    onChange={(e) =>
-                      setFormData({ ...formData, grupo: e.target.value })
-                    }
-                  >
-                    <option value="">Seleccionar grupo</option>
-                    <option value="PECHO">PECHO</option>
-                    <option value="BRAZO">BRAZO</option>
-                    <option value="TRICEP">TRICEP</option>
-                    <option value="ESPALDA">ESPALDA</option>
-                    <option value="PIERNA">PIERNA</option>
-                  </select>
-                </div>
+                  <div className={styles.formGroup}>
+                    <label>Grupo Muscular:</label>
+                    <select
+                      value={formData.grupo || ""}
+                      onChange={(e) =>
+                        setFormData({ ...formData, grupo: e.target.value })
+                      }
+                    >
+                      <option value="">Seleccionar grupo</option>
+                      <option value="PECHO">PECHO</option>
+                      <option value="BRAZO">BRAZO</option>
+                      <option value="TRICEP">TRICEP</option>
+                      <option value="ESPALDA">ESPALDA</option>
+                      <option value="PIERNA">PIERNA</option>
+                    </select>
+                  </div>
 
-                <div className={styles.formGroup}>
-                  <label>Series:</label>
-                  <input
-                    type="number"
-                    value={formData.hipertrofia_series || ""}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        hipertrofia_series: parseInt(e.target.value),
-                      })
-                    }
-                    placeholder="Ej: 4"
-                  />
-                </div>
+                  <div className={styles.formGroup}>
+                    <label>Series:</label>
+                    <input
+                      type="number"
+                      value={formData.hipertrofia_series || ""}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          hipertrofia_series: parseInt(e.target.value),
+                        })
+                      }
+                      placeholder="Ej: 4"
+                    />
+                  </div>
 
-                <div className={styles.formGroup}>
-                  <label>Repeticiones:</label>
-                  <input
-                    type="number"
-                    value={formData.hipertrofia_repeticiones || ""}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        hipertrofia_repeticiones: parseInt(e.target.value),
-                      })
-                    }
-                    placeholder="Ej: 10"
-                  />
-                </div>
-              </>
-            )}
+                  <div className={styles.formGroup}>
+                    <label>Repeticiones:</label>
+                    <input
+                      type="number"
+                      value={formData.hipertrofia_repeticiones || ""}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          hipertrofia_repeticiones: parseInt(e.target.value),
+                        })
+                      }
+                      placeholder="Ej: 10"
+                    />
+                  </div>
+                </>
+              )}
 
-            {/* Campos específicos para Fuerza */}
+            {/* Campos específicos para Fuerza - Solo visible después de seleccionar Ejercicios + Fuerza */}
             {contentType === "exercises" && exerciseCategory === "fuerza" && (
               <>
                 <div className={styles.formGroup}>
@@ -445,22 +447,23 @@ const ExercisesManagement: React.FC = () => {
               </>
             )}
 
-            {/* Campos específicos para Resistencia */}
-            {contentType === "exercises" && exerciseCategory === "resistencia" && (
-              <div className={styles.formGroup}>
-                <label>Máquina:</label>
-                <input
-                  type="text"
-                  value={formData.ejercicio || ""}
-                  onChange={(e) =>
-                    setFormData({ ...formData, ejercicio: e.target.value })
-                  }
-                  placeholder="Ej: Cinta de correr, Bicicleta estática, Elíptica"
-                />
-              </div>
-            )}
+            {/* Campos específicos para Resistencia - Solo visible después de seleccionar Ejercicios + Resistencia */}
+            {contentType === "exercises" &&
+              exerciseCategory === "resistencia" && (
+                <div className={styles.formGroup}>
+                  <label>Máquina:</label>
+                  <input
+                    type="text"
+                    value={formData.ejercicio || ""}
+                    onChange={(e) =>
+                      setFormData({ ...formData, ejercicio: e.target.value })
+                    }
+                    placeholder="Ej: Cinta de correr, Bicicleta estática, Elíptica"
+                  />
+                </div>
+              )}
 
-            {/* Campos específicos para Clases */}
+            {/* Campos específicos para Clases - Solo visible después de seleccionar Clases */}
             {contentType === "classes" && (
               <>
                 <div className={styles.formGroup}>
@@ -549,24 +552,25 @@ const ExercisesManagement: React.FC = () => {
               </>
             )}
 
-            {/* Campo único para subir imagen */}
-            <div className={styles.formGroup}>
-              <label>Imagen:</label>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => {
-                  const file = e.target.files?.[0];
-                  setSelectedImage(file || null);
-                }}
-              />
-              {selectedImage && (
-                <p className={styles.fileInfo}>
-                  Archivo seleccionado: {selectedImage.name}
-                </p>
-              )}
-            </div>
-
+            {/* Campo único para subir imagen - Solo visible después de seleccionar tipo de contenido */}
+            {(contentType === "exercises" || contentType === "classes") && (
+              <div className={styles.formGroup}>
+                <label>Imagen:</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    setSelectedImage(file || null);
+                  }}
+                />
+                {selectedImage && (
+                  <p className={styles.fileInfo}>
+                    Archivo seleccionado: {selectedImage.name}
+                  </p>
+                )}
+              </div>
+            )}
           </div>
 
           <div className={styles.formActions}>
