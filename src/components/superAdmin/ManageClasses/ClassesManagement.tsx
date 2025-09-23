@@ -15,7 +15,10 @@ const ClassesManagement: React.FC = () => {
   useEffect(() => {
     console.log("🔄 === CLASES CAMBIARON EN EL COMPONENTE ===");
     console.log("📊 Total de clases:", classes.length);
-    console.log("📊 Estados de las clases:", classes.map(c => ({ id: c.id, title: c.title, status: c.status })));
+    console.log(
+      "📊 Estados de las clases:",
+      classes.map((c) => ({ id: c.id, title: c.title, status: c.status }))
+    );
   }, [classes]);
 
   // Cambiar estado activo/inactivo

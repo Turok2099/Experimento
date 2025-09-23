@@ -92,16 +92,23 @@ export function useClasses() {
           status: c.status,
         }))
       );
-       console.log("🔄 Actualizando estado local de las clases...");
-       console.log("📊 Datos que se van a establecer:", mappedClasses.map(c => ({ id: c.id, title: c.title, status: c.status })));
-       setClasses(mappedClasses);
-       console.log("✅ Estado local actualizado");
-       
-       // Verificar que el estado se actualizó
-       setTimeout(() => {
-         console.log("🔍 Verificando estado después de setClasses...");
-         console.log("📊 Estado actual de classes:", classes.length);
-       }, 100);
+      console.log("🔄 Actualizando estado local de las clases...");
+      console.log(
+        "📊 Datos que se van a establecer:",
+        mappedClasses.map((c) => ({
+          id: c.id,
+          title: c.title,
+          status: c.status,
+        }))
+      );
+      setClasses(mappedClasses);
+      console.log("✅ Estado local actualizado");
+
+      // Verificar que el estado se actualizó
+      setTimeout(() => {
+        console.log("🔍 Verificando estado después de setClasses...");
+        console.log("📊 Estado actual de classes:", classes.length);
+      }, 100);
     } catch (err: any) {
       console.error(err);
       setError(err.message || "Error desconocido");

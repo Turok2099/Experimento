@@ -53,7 +53,7 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  height: 100%; // Asegurar que ocupe toda la altura disponible
+  min-height: 500px; // Altura fija igual al bloque verde
 }
 
 .planCard:hover {
@@ -254,7 +254,7 @@
 .paymentSection {
   width: 100%;
   max-width: 100%; // Igualar al ancho del planCard
-  height: 100%; // Asegurar que ocupe toda la altura disponible
+  min-height: 500px; // Altura fija igual al bloque morado
   display: flex;
   flex-direction: column;
 }
@@ -302,7 +302,7 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  height: 100%; // Asegurar que ocupe toda la altura disponible
+  min-height: 500px; // Altura fija igual al bloque morado
   justify-content: space-between; // Distribuir el contenido verticalmente
 
   &:hover {
