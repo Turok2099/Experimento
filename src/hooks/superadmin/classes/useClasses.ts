@@ -83,7 +83,9 @@ export function useClasses() {
         }
       );
 
-      setClasses(mappedClasses);
+       console.log("📊 Total clases mapeadas:", mappedClasses.length);
+       console.log("📊 Estados de las clases:", mappedClasses.map(c => ({ id: c.id, title: c.title, status: c.status })));
+       setClasses(mappedClasses);
     } catch (err: any) {
       console.error(err);
       setError(err.message || "Error desconocido");
