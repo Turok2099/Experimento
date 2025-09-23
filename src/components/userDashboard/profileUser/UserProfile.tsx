@@ -28,6 +28,9 @@ export default function UserProfile({ onUpdateUser }: UserProfileProps) {
     phone: "",
   });
   const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState<
+    "success" | "error" | "warning"
+  >("success");
 
   // ✅ Cargar datos desde userData.user
   useEffect(() => {
@@ -41,6 +44,22 @@ export default function UserProfile({ onUpdateUser }: UserProfileProps) {
     }
   }, [userData]);
 
+  // ✅ Función para cancelar edición y restaurar datos originales
+  const handleCancel = () => {
+    // Restaurar datos originales del usuario
+    if (userData?.user) {
+      setFormData({
+        name: userData.user.name || "",
+        email: userData.user.email || "",
+        address: userData.user.address || "",
+        phone: userData.user.phone || "",
+      });
+    }
+    setIsEditing(false);
+    setMessage(""); // Limpiar cualquier mensaje
+    setMessageType("success");
+  };
+
   if (!userData?.user) {
     return <p>No hay usuario logueado</p>;
   }
@@ -51,35 +70,35 @@ export default function UserProfile({ onUpdateUser }: UserProfileProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const token = userData?.token; // debe ser el access token STRING
-    console.log("🔑 Token disponible:", token ? "Sí" : "No");
-    console.log("🔑 Token completo:", token);
-    console.log("👤 Usuario completo:", userData?.user);
-    console.log("👤 Usuario ID:", userData?.user?.id);
-    console.log("👤 Usuario email:", userData?.user?.email);
+    const token = userData?.token;
+
+    console.log("🔍 Token disponible:", token ? "Sí" : "No");
 
     if (!token) {
-      setMessage("No hay token de sesión");
+      setMessage("❌ No hay token de sesión");
+      setMessageType("error");
       return;
     }
 
+    // Solo enviar campos editables (address y phone)
     const payload: UpdateProfilePayload = {
-      name: formData.name?.trim() || undefined,
       address: formData.address?.trim() || undefined,
       phone: formData.phone?.trim() || undefined,
     };
+
+    // Validar que al menos un campo tenga contenido
+    if (!payload.address && !payload.phone) {
+      setMessage("⚠️ Debes completar al menos un campo");
+      setMessageType("warning");
+      return;
+    }
+
     try {
-      // Usar el mismo endpoint que usa el admin, pero con el ID del usuario actual
-      const userId = userData?.user?.id;
-      console.log(
-        "📡 URL de petición:",
-        `${process.env.NEXT_PUBLIC_API_URL}/users/${userId}`
-      );
-      console.log("📦 Payload:", payload);
-      console.log("👤 User ID:", userId);
+      console.log("📡 Actualizando perfil del usuario autenticado");
+      console.log("📦 Datos a actualizar:", payload);
 
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/users/${userId}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/users/profile`,
         {
           method: "PUT",
           headers: {
@@ -90,31 +109,50 @@ export default function UserProfile({ onUpdateUser }: UserProfileProps) {
         }
       );
 
-      console.log("📊 Respuesta del servidor:", res.status, res.statusText);
-
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));
         throw new Error(
-          err?.message || `Error ${res.status} ${res.statusText}`
+          err?.message || `Error ${res.status}: ${res.statusText}`
         );
       }
 
       const updatedUser: User = await res.json();
+
+      // Actualizar el contexto global
       onUpdateUser(updatedUser);
       setUserData({ token, user: updatedUser });
-      setMessage("Datos actualizados correctamente");
+
+      // Mostrar mensaje de éxito
+      setMessage("✅ Datos actualizados correctamente");
+      setMessageType("success");
+
+      // Salir del modo edición
       setIsEditing(false);
+
+      console.log("✅ Perfil actualizado exitosamente:", updatedUser);
     } catch (err: any) {
-      setMessage(err?.message || "Error actualizando datos");
+      console.error("❌ Error actualizando perfil:", err);
+      setMessage(
+        `❌ Error: ${err?.message || "No se pudieron guardar los cambios"}`
+      );
+      setMessageType("error");
     } finally {
-      setTimeout(() => setMessage(""), 3000);
+      // Limpiar mensaje después de 3 segundos
+      setTimeout(() => {
+        setMessage("");
+        setMessageType("success");
+      }, 3000);
     }
   };
 
   return (
     <div className={styles.section}>
       <h2 className={styles.sectionTitle}>Mi Perfil</h2>
-      {message && <div className={styles.alert}>{message}</div>}
+      {message && (
+        <div className={styles.alert} data-type={messageType}>
+          {message}
+        </div>
+      )}
 
       <form className={styles.form} onSubmit={handleSubmit}>
         <div className={styles.formGroup}>
@@ -123,8 +161,9 @@ export default function UserProfile({ onUpdateUser }: UserProfileProps) {
             type="text"
             name="name"
             value={formData.name}
-            disabled
+            disabled={true}
             onChange={handleChange}
+            placeholder="Nombre no editable"
           />
         </div>
 
@@ -134,8 +173,8 @@ export default function UserProfile({ onUpdateUser }: UserProfileProps) {
             type="email"
             name="email"
             value={formData.email}
-            disabled // <- el backend NO lo cambia aquí
-            placeholder="El email no se edita desde este formulario"
+            disabled={true}
+            placeholder="Email no editable"
           />
         </div>
 
@@ -147,6 +186,11 @@ export default function UserProfile({ onUpdateUser }: UserProfileProps) {
             value={formData.address}
             onChange={handleChange}
             disabled={!isEditing}
+            placeholder={
+              isEditing
+                ? "Ingresa tu dirección"
+                : "Haz clic en Editar para modificar"
+            }
           />
         </div>
 
@@ -158,10 +202,15 @@ export default function UserProfile({ onUpdateUser }: UserProfileProps) {
             value={formData.phone}
             onChange={handleChange}
             disabled={!isEditing}
+            placeholder={
+              isEditing
+                ? "Ingresa tu teléfono"
+                : "Haz clic en Editar para modificar"
+            }
           />
         </div>
 
-        {isEditing ? (
+        {isEditing && (
           <div className={styles.buttonGroup}>
             <button type="submit" className={styles.submitButton}>
               Guardar Cambios
@@ -169,12 +218,16 @@ export default function UserProfile({ onUpdateUser }: UserProfileProps) {
             <button
               type="button"
               className={styles.cancelButton}
-              onClick={() => setIsEditing(false)}
+              onClick={handleCancel}
             >
               Cancelar
             </button>
           </div>
-        ) : (
+        )}
+      </form>
+
+      {!isEditing && (
+        <div className={styles.buttonGroup}>
           <button
             type="button"
             className={styles.submitButton}
@@ -182,8 +235,8 @@ export default function UserProfile({ onUpdateUser }: UserProfileProps) {
           >
             Editar Datos
           </button>
-        )}
-      </form>
+        </div>
+      )}
     </div>
   );
 }

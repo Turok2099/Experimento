@@ -1,59 +1,82 @@
 @use "../../../styles/utils.scss" as utils;
 
 .section {
-  max-width: 800px;
+  height: 100%; /* Altura fija del contenedor padre */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0;
+  width: 100%;
+  max-width: 100%;
   font-size: 1.4rem;
-  min-height: auto; /* deja que crezca */
-  margin-bottom: 4rem; /* Margen inferior para separar del footer */
-  padding-bottom: 2rem; /* Padding adicional para más espacio */
+  box-sizing: border-box;
 }
 
 .sectionTitle {
   color: var(--colorAmarillo);
-  font-size: 2rem;
+  font-size: 2.2rem;
+  font-weight: 700;
   margin-bottom: 2rem;
-  border-bottom: 2px solid #333333;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.3);
   padding-bottom: 0.5rem;
+  text-align: center;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .commentForm {
-  background-color: #1a1a1a;
-  padding: 2rem;
-  border-radius: 8px;
-  border: 1px solid #333333;
-  margin-bottom: 2rem;
-  @include utils.ClassDifuminado;
-  width: 30rem;
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  margin-bottom: 1.5rem;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 400px;
+  min-width: 300px;
+  box-sizing: border-box;
 }
 
 .formGroup {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.2rem;
 }
 
 .formGroup label {
   display: block;
   color: var(--colorAmarillo);
-  font-weight: bold;
-  margin-bottom: 0.5rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  font-size: 0.9rem;
 }
 
 .formGroup textarea {
   width: 100%;
-  padding: 0.75rem;
-  // background-color: #333333;
-  border: 1px solid #555555;
-  border-radius: 20px;
-  color: black;
-  font-size: 1.3rem;
-  min-height: 100px;
+  padding: 0.8rem;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  color: #333;
+  font-size: 0.95rem;
+  min-height: 80px;
   resize: vertical;
   box-sizing: border-box;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  transition: all 0.3s ease;
 }
 
 .formGroup textarea:focus {
   outline: none;
   border-color: var(--colorAmarillo);
   box-shadow: 0 0 0 2px rgba(255, 255, 0, 0.2);
+  transform: translateY(-1px);
+}
+
+.formGroup textarea:hover {
+  border-color: rgba(255, 255, 255, 0.5);
 }
 
 .stars {
@@ -69,9 +92,27 @@
   transition: color 0.2s ease;
 }
 .select {
-  height: 3rem;
-  width: 15rem;
-  font-size: 1.2rem;
+  height: 2.5rem;
+  width: 100%;
+  font-size: 0.9rem;
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  color: #333;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+}
+
+.select:hover {
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.select:focus {
+  outline: none;
+  border-color: var(--colorAmarillo);
+  box-shadow: 0 0 0 2px rgba(255, 255, 0, 0.2);
+  transform: translateY(-1px);
 }
 .emptyStar {
   color: #555555;
@@ -87,52 +128,87 @@
 
 .submitButton {
   @include utils.ClassButton;
-  width: 15rem;
+  width: 100%;
+  padding: 0.8rem 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: all 0.3s ease;
 }
 
 .submitButton:hover {
   background-color: black;
   color: var(--colorAmarillo);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.submitButton:active {
+  transform: translateY(0);
 }
 
 .table {
   width: 100%;
+  min-width: 500px;
   border-collapse: collapse;
-  background-color: #1a1a1a;
-  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 10px;
   overflow: hidden;
-  border: 1px solid #333333;
-  margin-bottom: 2rem; /* Margen inferior para la tabla */
-  @include utils.ClassDifuminado;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  margin-bottom: 1.5rem;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  box-sizing: border-box;
+  table-layout: fixed;
 }
 
 .table th {
-  background-color: #333333;
-  color: black;
-  padding: 1rem;
+  background: rgba(0, 0, 0, 0.4);
+  color: var(--colorAmarillo);
+  padding: 1rem 0.8rem;
   text-align: left;
-  font-weight: bold;
-  border-bottom: 2px solid #555555;
-  width: 10rem;
-  height: 4rem;
-  @include utils.ClassDifuminado;
-  font-size: 1.3rem;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  font-size: 1rem;
 }
 
 .table td {
-  padding: 1rem;
-  border-bottom: 1px solid #333333;
+  padding: 1rem 0.8rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   color: #ffffff;
-  font-size: 1.3rem;
+  font-size: 0.95rem;
+  vertical-align: top;
 }
 
 .table tr:hover {
-  background-color: #2a2a2a;
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .table tr:last-child td {
   border-bottom: none;
+}
+
+/* Estilos específicos para las celdas */
+.commentCell {
+  width: 60%;
+  word-wrap: break-word;
+  line-height: 1.4;
+  white-space: pre-wrap;
+}
+
+.ratingCell {
+  width: 25%;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.dateCell {
+  width: 15%;
+  text-align: center;
+  white-space: nowrap;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .emptyMessage {
@@ -154,82 +230,226 @@
 
 .sectionAddyTabla {
   display: flex;
-  width: 200rem;
-  gap: 2rem;
+  width: 100%;
+  max-width: 100%;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
 }
 .contComentarios {
-  margin-bottom: 2rem; /* Margen inferior para la tabla de comentarios */
+  margin-bottom: 1.5rem;
+  width: 100%;
+  max-width: 600px;
+  box-sizing: border-box;
+  overflow-x: auto;
 }
 
-/* Tablet (≤ 1024px) */
+/* ===== Responsive Design mejorado ===== */
+
+/* Tablets */
 @media (max-width: 1024px) {
   .section {
-    max-width: 100%;
-    font-size: 1.2rem;
-    padding: 1rem;
+    font-size: 1.1rem;
   }
 
-  .commentForm {
-    padding: 1.5rem;
-  }
-
-  .select {
-    width: 100%;
-    font-size: 1rem;
-  }
-
-  .submitButton {
-    width: 100%;
-  }
-}
-
-/* Móvil (≤ 430px) */
-@media (max-width: 430px) {
   .sectionTitle {
-    font-size: 1.5rem;
-    text-align: center;
+    font-size: clamp(1.8rem, 3.5vw, 2rem);
+    margin-bottom: 1.5rem;
   }
 
   .commentForm {
-    padding: 1rem;
-    width: 20rem;
+    padding: 1.2rem;
+    width: 100%;
+    max-width: 450px;
+    min-width: 280px;
   }
 
   .formGroup textarea {
-    font-size: 1rem;
-    min-height: 80px;
-  }
-
-  /* Hacemos la tabla scrollable */
-  .table {
-    display: block;
-    width: 20rem;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    border-radius: 6px;
-  }
-
-  .table table {
-    width: 600px; /* ancho mínimo para scroll horizontal */
-  }
-
-  .table th,
-  .table td {
     font-size: 0.9rem;
-    padding: 0.5rem;
-    white-space: nowrap;
+    min-height: 70px;
+    padding: 0.7rem;
+  }
+
+  .formGroup label {
+    font-size: 0.85rem;
+  }
+
+  .select {
+    font-size: 0.85rem;
+    height: 2.2rem;
   }
 
   .submitButton {
-    font-size: 1rem;
-    padding: 0.8rem;
+    font-size: 0.85rem;
+    padding: 0.7rem 1.2rem;
   }
-  .sectionAddyTabla {
-    display: flex;
-    flex-direction: column;
+
+  .table {
+    font-size: 0.8rem;
+    min-width: 450px;
+  }
+
+  .table th {
+    padding: 0.8rem 0.6rem;
+    font-size: 0.9rem;
+  }
+
+  .table td {
+    padding: 0.8rem 0.6rem;
+    font-size: 0.85rem;
   }
 
   .sectionAddyTabla {
-    width: 20rem;
+    flex-direction: column;
+    width: 100%;
+    max-width: 100%;
+    gap: 1.2rem;
+    align-items: center;
+  }
+
+  .contComentarios {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+/* Móviles */
+@media (max-width: 768px) {
+  .sectionTitle {
+    font-size: clamp(1.5rem, 4vw, 1.8rem);
+    text-align: center;
+    margin-bottom: 1.2rem;
+  }
+
+  .commentForm {
+    padding: 1rem;
+    width: 100%;
+    max-width: 100%;
+    min-width: auto;
+    margin-bottom: 1rem;
+  }
+
+  .formGroup textarea {
+    font-size: 0.9rem;
+    min-height: 60px;
+    padding: 0.6rem;
+  }
+
+  .formGroup label {
+    font-size: 0.8rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .select {
+    font-size: 0.8rem;
+    height: 2rem;
+    padding: 0.4rem;
+  }
+
+  .submitButton {
+    font-size: 0.8rem;
+    padding: 0.6rem 1rem;
+  }
+
+  .sectionAddyTabla {
+    flex-direction: column;
+    width: 100%;
+    max-width: 100%;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .contComentarios {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  .table {
+    min-width: 400px;
+    font-size: 0.75rem;
+  }
+
+  .table th {
+    padding: 0.6rem 0.4rem;
+    font-size: 0.8rem;
+  }
+
+  .table td {
+    padding: 0.6rem 0.4rem;
+    font-size: 0.75rem;
+  }
+}
+
+/* Móviles pequeños */
+@media (max-width: 480px) {
+  .sectionTitle {
+    font-size: clamp(1.3rem, 3.5vw, 1.6rem);
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+
+  .commentForm {
+    padding: 0.8rem;
+    width: 100%;
+    max-width: 100%;
+    min-width: auto;
+    margin-bottom: 0.8rem;
+  }
+
+  .formGroup textarea {
+    font-size: 0.85rem;
+    min-height: 55px;
+    padding: 0.5rem;
+  }
+
+  .formGroup label {
+    font-size: 0.75rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .select {
+    font-size: 0.75rem;
+    height: 1.8rem;
+    padding: 0.3rem;
+  }
+
+  .submitButton {
+    font-size: 0.75rem;
+    padding: 0.5rem 0.8rem;
+  }
+
+  .sectionAddyTabla {
+    flex-direction: column;
+    width: 100%;
+    max-width: 100%;
+    gap: 0.8rem;
+    align-items: center;
+  }
+
+  .contComentarios {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  .table {
+    min-width: 350px;
+    font-size: 0.7rem;
+  }
+
+  .table th {
+    padding: 0.5rem 0.3rem;
+    font-size: 0.75rem;
+  }
+
+  .table td {
+    padding: 0.5rem 0.3rem;
+    font-size: 0.7rem;
+  }
+
+  .stars {
+    gap: 0.15rem;
   }
 }

@@ -155,17 +155,97 @@
   }
 }
 
-// Responsive Design - igual que superadmin
+/* ===== Responsive Design mejorado ===== */
+
+/* Tablets */
 @media (max-width: 1024px) {
+  .content {
+    padding: 1.5rem;
+  }
+  
   .content > * {
-    height: 550px; /* Altura completamente fija para tablets */
-    width: 1000px; /* Ancho completamente fijo para tablets */
+    height: 550px;
+    width: 100%;
+    max-width: 1000px;
+    padding: 1.2rem;
+  }
+  
+  .sidebar {
+    width: 220px;
+    padding: 1.5rem 1rem;
+  }
+  
+  .sidebar-title {
+    font-size: 1.1rem;
+  }
+  
+  .nav a {
+    font-size: 0.9rem;
+    padding: 0.5rem 0.8rem;
   }
 }
 
+/* Móviles */
 @media (max-width: 768px) {
+  .content {
+    padding: 1rem;
+  }
+  
   .content > * {
-    height: 500px; /* Altura completamente fija para móviles */
-    width: 100%; /* En móviles usar ancho completo */
+    height: auto;
+    min-height: 500px;
+    width: 100%;
+    padding: 1rem;
+    border-radius: 8px;
+  }
+  
+  .sidebar {
+    width: 200px;
+    padding: 1rem 0.8rem;
+  }
+  
+  .sidebar-title {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .nav a {
+    font-size: 0.85rem;
+    padding: 0.4rem 0.6rem;
+    margin-bottom: 0.2rem;
+  }
+  
+  .hamburger {
+    top: 50px;
+    left: 8px;
+    font-size: 1rem;
+    padding: 0.3rem 0.5rem;
+  }
+}
+
+/* Móviles pequeños */
+@media (max-width: 480px) {
+  .content {
+    padding: 0.5rem;
+  }
+  
+  .content > * {
+    padding: 0.8rem;
+    border-radius: 6px;
+  }
+  
+  .sidebar {
+    width: 180px;
+    padding: 0.8rem 0.5rem;
+  }
+  
+  .sidebar-title {
+    font-size: 0.9rem;
+    margin-bottom: 0.8rem;
+  }
+  
+  .nav a {
+    font-size: 0.8rem;
+    padding: 0.3rem 0.5rem;
   }
 }

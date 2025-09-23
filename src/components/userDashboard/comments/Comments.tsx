@@ -24,9 +24,12 @@ export default function Comments({
   const [rating, setRating] = useState(5);
   const [message, setMessage] = useState("");
 
-  // normalizamos IDs a string para evitar mismatch string/number
+  // Los comentarios ya vienen filtrados del backend para el usuario autenticado
+  // No es necesario filtrar nuevamente aquí
+  const userComments = comments;
+
+  // Necesario para determinar si un comentario es del usuario actual
   const userIdStr = String(user.id);
-  const userComments = comments.filter((c) => String(c.userId) === userIdStr);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -61,27 +64,24 @@ export default function Comments({
 
   return (
     <div className={styles.section}>
-      <h2 className={styles.sectionTitle}>Comentarios realizados</h2>
+      <h2 className={styles.sectionTitle}>Mis Reseñas</h2>
 
       {message && <div className={styles.alert}>{message}</div>}
 
       <div className={styles.sectionAddyTabla}>
         {/* Formulario */}
         <div className={styles.commentForm}>
-          <h3>Agregar Comentario</h3>
           <form onSubmit={handleSubmit}>
             <div className={styles.formGroup}>
-              <label>Comentario</label>
               <textarea
                 value={newComment}
                 onChange={(e) => setNewComment(e.target.value)}
-                placeholder="Escribe tu comentario sobre el gimnasio..."
+                placeholder="Escribe tu reseña sobre el gimnasio..."
                 required
               />
             </div>
 
             <div className={styles.formGroup}>
-              <label>Calificación</label>
               <select
                 className={styles.select}
                 value={rating}
@@ -96,39 +96,33 @@ export default function Comments({
             </div>
 
             <button type="submit" className={styles.submitButton}>
-              Agregar Comentario
+              Agregar Reseña
             </button>
           </form>
         </div>
 
         {/* Tabla */}
         <div className={styles.contComentarios}>
-          <h3>Mis Comentarios</h3>
-
           {userComments.length === 0 ? (
-            <p className={styles.emptyMessage}>No has hecho comentarios aún.</p>
+            <p className={styles.emptyMessage}>No has hecho reseñas aún.</p>
           ) : (
             <table className={styles.table}>
               <thead>
                 <tr>
-                  <th>Usuario</th>
-                  <th>Comentario</th>
+                  <th>Reseña</th>
                   <th>Calificación</th>
                   <th>Fecha</th>
                 </tr>
               </thead>
               <tbody>
                 {userComments.map((comment) => {
-                  const isMine = String(comment.userId) === userIdStr;
-                  const author = isMine
-                    ? "Tú"
-                    : comment.user?.name ?? "Anónimo";
                   return (
                     <tr key={comment.id}>
-                      <td>{author}</td>
-                      <td>{comment.text}</td>
-                      <td>{renderStars(comment.rating)}</td>
-                      <td>{comment.date}</td>
+                      <td className={styles.commentCell}>{comment.text}</td>
+                      <td className={styles.ratingCell}>
+                        {renderStars(comment.rating)}
+                      </td>
+                      <td className={styles.dateCell}>{comment.date}</td>
                     </tr>
                   );
                 })}

@@ -52,28 +52,95 @@
   }
 }
 
-/* Responsive para móviles */
-@media (max-width: 460px) {
+/* ===== Responsive Design mejorado ===== */
+
+/* Tablets */
+@media (max-width: 1024px) {
+  .trainer-wrapper {
+    padding: 1rem;
+  }
+  
   .trainer-card {
-    padding: 1.5rem;
-  }
-
-  h2 {
-    font-size: clamp(1.2rem, 4vw, 1.5rem);
-  }
-
-  p {
-    font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+    max-width: 500px;
+    padding: 2rem;
+    
+    h2 {
+      font-size: clamp(1.4rem, 3.5vw, 2rem);
+      margin-bottom: 0.8rem;
+    }
+    
+    p {
+      font-size: clamp(0.85rem, 2.2vw, 0.95rem);
+      margin: 0.4rem 0;
+    }
   }
 }
 
-/* Responsive para tablet */
-@media (max-width: 1024px) {
-  .trainer-card {
-    padding: clamp(1.5rem, 2vw, 2.5rem);
+/* Móviles */
+@media (max-width: 768px) {
+  .trainer-wrapper {
+    padding: 0.5rem;
+    justify-content: flex-start;
+    padding-top: 2rem;
   }
+  
+  .trainer-card {
+    max-width: 100%;
+    padding: 1.5rem;
+    border-radius: 0.8rem;
+    box-shadow: 0 8px 20px rgba(255, 223, 0, 0.5);
+    
+    h2 {
+      font-size: clamp(1.3rem, 4vw, 1.8rem);
+      margin-bottom: 1rem;
+    }
+    
+    p {
+      font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+      margin: 0.6rem 0;
+      line-height: 1.4;
+      
+      .sub {
+        display: block;
+        margin-bottom: 0.2rem;
+      }
+    }
+    
+    &:hover {
+      transform: none; /* Desactivar hover en móviles */
+      box-shadow: 0 8px 20px rgba(255, 223, 0, 0.5);
+    }
+  }
+}
 
-  h2 {
-    font-size: clamp(1.4rem, 3.5vw, 2rem);
+/* Móviles pequeños */
+@media (max-width: 480px) {
+  .trainer-wrapper {
+    padding: 0.3rem;
+    padding-top: 1rem;
+  }
+  
+  .trainer-card {
+    padding: 1.2rem;
+    border-radius: 0.6rem;
+    
+    h2 {
+      font-size: clamp(1.2rem, 4vw, 1.5rem);
+      margin-bottom: 0.8rem;
+    }
+    
+    p {
+      font-size: clamp(0.75rem, 2.5vw, 0.85rem);
+      margin: 0.5rem 0;
+      
+      .sub {
+        font-size: clamp(0.7rem, 2.2vw, 0.8rem);
+      }
+    }
+    
+    .loading-card {
+      padding: 1.5rem;
+      font-size: clamp(0.8rem, 2vw, 0.9rem);
+    }
   }
 }

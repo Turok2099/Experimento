@@ -39,22 +39,24 @@ const ExercisesManagement: React.FC = () => {
         throw new Error("Usuario no autorizado");
       }
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/exercises`, {
-        headers: {
-          "Content-type": "application/json",
-        },
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/admin/exercises`,
+        {
+          headers: {
+            "Content-type": "application/json",
+            Authorization: `Bearer ${userData.token}`,
+          },
+        }
+      );
 
       if (!res.ok) throw new Error("Error al obtener ejercicios");
 
       const data = await res.json();
       console.log("📊 Respuesta del servidor:", data);
 
-      // Si la respuesta tiene un array de ejercicios, usarlo
+      // El endpoint ahora devuelve directamente el array de ejercicios
       if (Array.isArray(data)) {
         setExercises(data);
-      } else if (data.data && Array.isArray(data.data)) {
-        setExercises(data.data);
       } else {
         console.warn("Formato de respuesta inesperado:", data);
         setExercises([]);
@@ -78,14 +80,17 @@ const ExercisesManagement: React.FC = () => {
         throw new Error("Usuario no autorizado");
       }
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/exercises`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${userData.token}`,
-        },
-        body: JSON.stringify(formData),
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/admin/exercises`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${userData.token}`,
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
       if (!res.ok) {
         const errorText = await res.text();
@@ -111,9 +116,9 @@ const ExercisesManagement: React.FC = () => {
       }
 
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/exercises/${editingExercise.id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/admin/exercises/${editingExercise.id}`,
         {
-          method: "PATCH",
+          method: "PUT",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${userData.token}`,
@@ -146,14 +151,14 @@ const ExercisesManagement: React.FC = () => {
       }
 
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/exercises/${id}/status`,
+        `${process.env.NEXT_PUBLIC_API_URL}/admin/exercises/${id}/toggle`,
         {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${userData.token}`,
           },
-          body: JSON.stringify({ is_active: !currentStatus }),
+          body: JSON.stringify({ isActive: !currentStatus }),
         }
       );
 
@@ -180,7 +185,7 @@ const ExercisesManagement: React.FC = () => {
       }
 
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/exercises/${id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/admin/exercises/${id}`,
         {
           method: "DELETE",
           headers: {

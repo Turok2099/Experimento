@@ -1,21 +1,10 @@
-'use client';
+"use client";
 
 import React, { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
-import { ClasesService } from "@/services/ClasesService";
+import { ClasesService, ClaseAPI } from "@/services/ClasesService";
 import toast, { Toaster } from "react-hot-toast";
 import "../table/TablaClases.scss"; // Import global SCSS
-
-interface ClaseAPI {
-  id: string;
-  title: string;
-  date: string; 
-  startTime: string;
-  endTime: string;
-  trainerName: string;
-  trainerId: string;
-  capacity: number;
-}
 
 const TablaClases: React.FC = () => {
   const { userData } = useAuth();
@@ -36,11 +25,11 @@ const TablaClases: React.FC = () => {
         setClases(allClases);
 
         // Filtrar solo las clases donde el entrenador actual está asignado
-        const myAssignedClasses = allClases.filter(clase => 
-          clase.trainerId === userData.user?.id && 
-          clase.trainerName === userData.user?.name
+        const myAssignedClasses = allClases.filter(
+          (clase) =>
+            clase.trainerName === userData.user?.name
         );
-        
+
         setTomadas(myAssignedClasses);
       } catch (err) {
         console.error("Error al obtener clases asignadas:", err);
