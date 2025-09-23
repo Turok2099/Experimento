@@ -107,15 +107,30 @@ const ExercisesManagement: React.FC = () => {
         throw new Error("Usuario no autorizado");
       }
 
+      // Crear FormData para enviar tanto los datos como la imagen
+      const formDataToSend = new FormData();
+      
+      // Agregar todos los campos del formulario
+      Object.entries(formData).forEach(([key, value]) => {
+        if (value !== undefined && value !== null && value !== "") {
+          formDataToSend.append(key, String(value));
+        }
+      });
+
+      // Agregar la imagen si existe
+      if (selectedImage) {
+        formDataToSend.append("image", selectedImage);
+      }
+
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/admin/exercises`,
         {
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
             Authorization: `Bearer ${userData.token}`,
+            // No establecer Content-Type, dejar que el navegador lo haga automáticamente para FormData
           },
-          body: JSON.stringify(formData),
+          body: formDataToSend,
         }
       );
 
@@ -126,6 +141,7 @@ const ExercisesManagement: React.FC = () => {
 
       setShowAddForm(false);
       setFormData({});
+      setSelectedImage(null);
       fetchExercises();
     } catch (err: any) {
       console.error(err);
@@ -142,15 +158,30 @@ const ExercisesManagement: React.FC = () => {
         throw new Error("Usuario no autorizado");
       }
 
+      // Crear FormData para enviar tanto los datos como la imagen
+      const formDataToSend = new FormData();
+      
+      // Agregar todos los campos del formulario
+      Object.entries(formData).forEach(([key, value]) => {
+        if (value !== undefined && value !== null && value !== "") {
+          formDataToSend.append(key, String(value));
+        }
+      });
+
+      // Agregar la imagen si existe
+      if (selectedImage) {
+        formDataToSend.append("image", selectedImage);
+      }
+
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/admin/exercises/${editingExercise.id}`,
         {
           method: "PUT",
           headers: {
-            "Content-Type": "application/json",
             Authorization: `Bearer ${userData.token}`,
+            // No establecer Content-Type, dejar que el navegador lo haga automáticamente para FormData
           },
-          body: JSON.stringify(formData),
+          body: formDataToSend,
         }
       );
 
@@ -163,6 +194,7 @@ const ExercisesManagement: React.FC = () => {
 
       setEditingExercise(null);
       setFormData({});
+      setSelectedImage(null);
       fetchExercises();
     } catch (err: any) {
       console.error(err);
