@@ -14,16 +14,16 @@ import { useSessionSync } from "@/hooks/useSessionSync";
 // 🔹 Definición de rutas visibles según rol
 const roleLinks: Record<string, { href: string; label: string }[]> = {
   admin: [
-    { href: "/routine", label: "Rutina" },
+    { href: "/routine", label: "Crear Rutina" },
     { href: "/superadmin", label: "Mi Consola" },
   ],
   member: [
     { href: "/userDashboard", label: "Mi Consola" },
-    { href: "/routine", label: "Rutina" },
+    { href: "/routine", label: "Crear Rutina" },
   ],
   trainer: [
     { href: "/coach", label: "Mi Consola" },
-    { href: "/routine", label: "Rutina" },
+    { href: "/routine", label: "Crear Rutina" },
   ],
 };
 

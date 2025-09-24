@@ -9,6 +9,7 @@ export function middleware(request: NextRequest) {
   const roleRoutes: Record<string, string[]> = {
     admin: ["/routine", "/superadmin"],
     member: ["/userDashboard", "/routine"],
+    trainer: ["/coach", "/routine"],
   };
 
   //Obtener cookie de sesión
@@ -30,6 +31,7 @@ export function middleware(request: NextRequest) {
       "/routine",
       "/admindashboard",
       "/superadmin",
+      "/coach",
       "/subscription",
     ].includes(pathname) &&
     !user
@@ -72,6 +74,7 @@ export const config = {
     "/routine",
     "/admindashboard",
     "/superadmin",
+    "/coach",
     "/subscription",
     "/register",
     "/login",
