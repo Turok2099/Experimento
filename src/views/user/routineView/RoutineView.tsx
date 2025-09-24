@@ -130,28 +130,41 @@ export default function RoutineView() {
 
     // Para fuerza e hipertrofia, filtrar solo grupos musculares que tienen ejercicios
     const categoriesWithExercises = new Map<string, string>();
-    
+
     exercises.forEach((exercise) => {
       // Solo incluir si tiene ejercicios para el tipo seleccionado
-      const hasExercisesForType = isStrength 
-        ? (exercise.fuerza.series > 0 && exercise.fuerza.repeticiones > 0)
-        : isHypertrophy 
-        ? (exercise.hipertrofia.series > 0 && exercise.hipertrofia.repeticiones > 0)
+      const hasExercisesForType = isStrength
+        ? exercise.fuerza.series > 0 && exercise.fuerza.repeticiones > 0
+        : isHypertrophy
+        ? exercise.hipertrofia.series > 0 &&
+          exercise.hipertrofia.repeticiones > 0
         : false;
-        
+
       if (hasExercisesForType && !categoriesWithExercises.has(exercise.grupo)) {
         categoriesWithExercises.set(exercise.grupo, exercise.imagenGrupo);
       }
     });
 
-    console.log(`🎯 [RoutineView] Grupos musculares disponibles para ${activeGoal}:`, 
-      Array.from(categoriesWithExercises.keys()));
+    console.log(
+      `🎯 [RoutineView] Grupos musculares disponibles para ${activeGoal}:`,
+      Array.from(categoriesWithExercises.keys())
+    );
 
-    return Array.from(categoriesWithExercises.entries()).map(([grupo, imagen]) => ({
-      grupo,
-      imagen,
-    }));
-  }, [activeGoal, isCardio, classes, exercises, isStrength, isHypertrophy, loading]);
+    return Array.from(categoriesWithExercises.entries()).map(
+      ([grupo, imagen]) => ({
+        grupo,
+        imagen,
+      })
+    );
+  }, [
+    activeGoal,
+    isCardio,
+    classes,
+    exercises,
+    isStrength,
+    isHypertrophy,
+    loading,
+  ]);
 
   const availableItems: RoutineItem[] = useMemo(() => {
     if (!activeGoal || !selectedCategory || loading) return [];
@@ -316,7 +329,9 @@ export default function RoutineView() {
                       height={100}
                       className={styles.categoryImage}
                     />
-                    <h3 className={styles.cardTitle}>{grupo || "Sin categoría"}</h3>
+                    <h3 className={styles.cardTitle}>
+                      {grupo || "Sin categoría"}
+                    </h3>
                   </div>
                 ))}
               </div>

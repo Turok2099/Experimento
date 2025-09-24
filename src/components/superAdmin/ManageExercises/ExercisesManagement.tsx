@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import styles from "./ExercisesManagement.module.scss";
 import { useAuth } from "@/context/AuthContext";
 
@@ -58,7 +58,7 @@ const ExercisesManagement: React.FC = () => {
   const { userData } = useAuth();
 
   // Cargar ejercicios
-  const fetchExercises = async () => {
+  const fetchExercises = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -95,7 +95,7 @@ const ExercisesManagement: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [userData?.token, userData?.accessToken]);
 
   useEffect(() => {
     fetchExercises();
