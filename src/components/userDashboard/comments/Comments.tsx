@@ -12,7 +12,7 @@ type CommentsUser = { id: string | number; name: string };
 interface CommentsProps {
   user: CommentsUser;
   comments: Comentary[];
-  onAddComment: (comment: Omit<Comentary, "id">) => void;
+  onAddComment: (comment: Omit<Comentary, "id">) => Promise<void>;
 }
 
 export default function Comments({
@@ -31,22 +31,30 @@ export default function Comments({
   // Necesario para determinar si un comentario es del usuario actual
   const userIdStr = String(user.id);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newComment.trim()) return;
 
-    onAddComment({
-      userId: String(user.id), // ← CORREGIDO: Convertir a string
-      text: newComment.trim(),
-      date: new Date().toISOString().split("T")[0],
-      rating,
-      user: { id: String(user.id), name: user.name }, // ← CORREGIDO: Convertir a string
-    });
+    try {
+      await onAddComment({
+        userId: String(user.id), // ← CORREGIDO: Convertir a string
+        text: newComment.trim(),
+        date: new Date().toISOString().split("T")[0],
+        rating,
+        user: { id: String(user.id), name: user.name }, // ← CORREGIDO: Convertir a string
+      });
 
-    setNewComment("");
-    setRating(5);
-    setMessage("Comentario agregado correctamente");
-    setTimeout(() => setMessage(""), 3000);
+      // Solo mostrar mensaje de éxito si el comentario se creó correctamente
+      setNewComment("");
+      setRating(5);
+      setMessage("Comentario agregado correctamente");
+      setTimeout(() => setMessage(""), 3000);
+    } catch (error) {
+      // Mostrar mensaje de error si falla la creación
+      console.error("Error al crear comentario:", error);
+      setMessage("Error al agregar comentario. Verifica que tengas clases registradas.");
+      setTimeout(() => setMessage(""), 5000);
+    }
   };
 
   const renderStars = (value: number) => (

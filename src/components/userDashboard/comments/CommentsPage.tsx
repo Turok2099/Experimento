@@ -38,9 +38,15 @@ export default function CommentsPage() {
   }, [token]);
 
   const handleAddComment = async (c: Omit<Comentary, "id">) => {
-    if (!token) return;
-    const created = await createComment(token, c.text, c.rating); // POST /reviews
-    setComments((prev) => [created, ...prev]); // persistimos en UI
+    if (!token) throw new Error("No hay token de autenticación");
+    
+    try {
+      const created = await createComment(token, c.text, c.rating); // POST /reviews
+      setComments((prev) => [created, ...prev]); // persistimos en UI
+    } catch (error) {
+      // Re-lanzar el error para que el componente hijo lo maneje
+      throw error;
+    }
   };
 
   // ✅ Aseguramos que hay usuario e ID (no opcional)
