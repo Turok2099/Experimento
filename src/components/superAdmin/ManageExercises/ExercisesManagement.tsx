@@ -111,8 +111,16 @@ const ExercisesManagement: React.FC = () => {
       // Crear FormData para enviar tanto los datos como la imagen
       const formDataToSend = new FormData();
 
-      // Agregar todos los campos del formulario
-      Object.entries(formData).forEach(([key, value]) => {
+      // Campos permitidos para creación (excluir campos del sistema)
+      const allowedFields = [
+        'ejercicio', 'grupo', 'categoria', 'hipertrofia_series', 'hipertrofia_repeticiones',
+        'fuerza_series', 'fuerza_repeticiones', 'resistencia_series', 'resistencia_repeticiones',
+        'tiempo', 'isActive'
+      ];
+
+      // Agregar solo los campos permitidos
+      allowedFields.forEach(key => {
+        const value = (formData as any)[key];
         if (value !== undefined && value !== null && value !== "") {
           formDataToSend.append(key, String(value));
         }
@@ -208,8 +216,16 @@ const ExercisesManagement: React.FC = () => {
       // Crear FormData para enviar tanto los datos como la imagen
       const formDataToSend = new FormData();
 
-      // Agregar todos los campos del formulario
-      Object.entries(formData).forEach(([key, value]) => {
+      // Campos permitidos para actualización (excluir campos del sistema)
+      const allowedFields = [
+        'ejercicio', 'grupo', 'categoria', 'hipertrofia_series', 'hipertrofia_repeticiones',
+        'fuerza_series', 'fuerza_repeticiones', 'resistencia_series', 'resistencia_repeticiones',
+        'tiempo', 'isActive'
+      ];
+
+      // Agregar solo los campos permitidos
+      allowedFields.forEach(key => {
+        const value = (formData as any)[key];
         if (value !== undefined && value !== null && value !== "") {
           formDataToSend.append(key, String(value));
         }
@@ -395,7 +411,7 @@ const ExercisesManagement: React.FC = () => {
                       setFormData({
                         ...formData,
                         categoria: "Resistencia",
-                        grupo: "Integral"
+                        grupo: "Integral",
                       });
                     }}
                   >
@@ -544,11 +560,11 @@ const ExercisesManagement: React.FC = () => {
                       type="text"
                       value={formData.ejercicio || ""}
                       onChange={(e) =>
-                        setFormData({ 
-                          ...formData, 
+                        setFormData({
+                          ...formData,
                           ejercicio: e.target.value,
                           categoria: "Resistencia", // Automático
-                          grupo: "Integral" // Automático
+                          grupo: "Integral", // Automático
                         })
                       }
                       placeholder="Ej: Cinta de correr, Bicicleta estática, Elíptica"
