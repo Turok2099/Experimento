@@ -16,6 +16,7 @@ interface Exercise {
   hipertrofia_repeticiones?: number;
   resistencia_series?: number;
   resistencia_repeticiones?: string;
+  tiempo?: string; // Campo para ejercicios de resistencia
   image_url?: string; // Nueva columna para Cloudinary
   created_at: string;
   updated_at: string;
@@ -528,17 +529,39 @@ const ExercisesManagement: React.FC = () => {
             {/* Campos específicos para Resistencia - Solo visible después de seleccionar Ejercicios + Resistencia */}
             {contentType === "exercises" &&
               exerciseCategory === "resistencia" && (
-                <div className={styles.formGroup}>
-                  <label>Máquina:</label>
-                  <input
-                    type="text"
-                    value={formData.ejercicio || ""}
-                    onChange={(e) =>
-                      setFormData({ ...formData, ejercicio: e.target.value })
-                    }
-                    placeholder="Ej: Cinta de correr, Bicicleta estática, Elíptica"
-                  />
-                </div>
+                <>
+                  <div className={styles.formGroup}>
+                    <label>Máquina:</label>
+                    <input
+                      type="text"
+                      value={formData.ejercicio || ""}
+                      onChange={(e) =>
+                        setFormData({ ...formData, ejercicio: e.target.value })
+                      }
+                      placeholder="Ej: Cinta de correr, Bicicleta estática, Elíptica"
+                    />
+                  </div>
+
+                  <div className={styles.formGroup}>
+                    <label>Tiempo:</label>
+                    <select
+                      value={formData.tiempo || ""}
+                      onChange={(e) =>
+                        setFormData({ ...formData, tiempo: e.target.value })
+                      }
+                    >
+                      <option value="">Seleccionar tiempo</option>
+                      <option value="15 min">15 minutos</option>
+                      <option value="30 min">30 minutos</option>
+                      <option value="45 min">45 minutos</option>
+                      <option value="60 min">1 hora</option>
+                      <option value="75 min">1 hora 15 minutos</option>
+                      <option value="90 min">1 hora 30 minutos</option>
+                      <option value="105 min">1 hora 45 minutos</option>
+                      <option value="120 min">2 horas</option>
+                    </select>
+                  </div>
+                </>
               )}
 
             {/* Campos específicos para Clases - Solo visible después de seleccionar Clases */}

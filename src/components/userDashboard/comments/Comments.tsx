@@ -52,7 +52,9 @@ export default function Comments({
     } catch (error) {
       // Mostrar mensaje de error si falla la creación
       console.error("Error al crear comentario:", error);
-      setMessage("Error al agregar comentario. Verifica que tengas clases registradas.");
+      setMessage(
+        "Error al agregar comentario. Verifica que tengas clases registradas."
+      );
       setTimeout(() => setMessage(""), 5000);
     }
   };
