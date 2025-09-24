@@ -37,7 +37,7 @@ export default function RoutineView() {
 
   // Estados para datos reales
   const [exercises, setExercises] = useState<ExerciseForRoutine[]>([]);
-  const [categories, setCategories] = useState<ExerciseCategory[]>([]);
+  // const [categories, setCategories] = useState<ExerciseCategory[]>([]); // No se usa directamente
   const [classes, setClasses] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -55,21 +55,18 @@ export default function RoutineView() {
 
         console.log("🔄 [RoutineView] Cargando datos reales...");
 
-        // Cargar ejercicios y categorías en paralelo
-        const [exercisesData, categoriesData, classesData] = await Promise.all([
+        // Cargar ejercicios y clases en paralelo
+        const [exercisesData, classesData] = await Promise.all([
           exerciseService.getExercises(),
-          exerciseService.getCategories(),
           ClasesService.getAllClasses(), // Obtener clases reales
         ]);
 
         console.log("✅ [RoutineView] Datos cargados:", {
           exercises: exercisesData.length,
-          categories: categoriesData.length,
           classes: classesData.length,
         });
 
         setExercises(exercisesData);
-        setCategories(categoriesData);
         setClasses(classesData);
       } catch (err: any) {
         console.error("❌ [RoutineView] Error cargando datos:", err);
@@ -131,12 +128,30 @@ export default function RoutineView() {
       }));
     }
 
-    // Para fuerza e hipertrofia, usar categorías reales
-    return categories.map((cat) => ({
-      grupo: cat.grupo,
-      imagen: cat.imagen,
+    // Para fuerza e hipertrofia, filtrar solo grupos musculares que tienen ejercicios
+    const categoriesWithExercises = new Map<string, string>();
+    
+    exercises.forEach((exercise) => {
+      // Solo incluir si tiene ejercicios para el tipo seleccionado
+      const hasExercisesForType = isStrength 
+        ? (exercise.fuerza.series > 0 && exercise.fuerza.repeticiones > 0)
+        : isHypertrophy 
+        ? (exercise.hipertrofia.series > 0 && exercise.hipertrofia.repeticiones > 0)
+        : false;
+        
+      if (hasExercisesForType && !categoriesWithExercises.has(exercise.grupo)) {
+        categoriesWithExercises.set(exercise.grupo, exercise.imagenGrupo);
+      }
+    });
+
+    console.log(`🎯 [RoutineView] Grupos musculares disponibles para ${activeGoal}:`, 
+      Array.from(categoriesWithExercises.keys()));
+
+    return Array.from(categoriesWithExercises.entries()).map(([grupo, imagen]) => ({
+      grupo,
+      imagen,
     }));
-  }, [activeGoal, isCardio, classes, categories, loading]);
+  }, [activeGoal, isCardio, classes, exercises, isStrength, isHypertrophy, loading]);
 
   const availableItems: RoutineItem[] = useMemo(() => {
     if (!activeGoal || !selectedCategory || loading) return [];
@@ -254,12 +269,12 @@ export default function RoutineView() {
                   <div className={styles.goalInfo}>
                     <Image
                       src={`/rutina/${idx + 1}.png`}
-                      alt={goal}
+                      alt={goal || "Meta de entrenamiento"}
                       width={100}
                       height={100}
                       className={styles.cardImage}
                     />
-                    <div className={styles.cardTitle}>{goal}</div>
+                    <div className={styles.cardTitle}>{goal || "Sin meta"}</div>
                   </div>
 
                   {expandedGoal === goal && (
@@ -295,13 +310,13 @@ export default function RoutineView() {
                     }}
                   >
                     <Image
-                      src={imagen}
-                      alt={grupo}
+                      src={imagen || "/Train UP.png"}
+                      alt={grupo || "Categoría de ejercicio"}
                       width={100}
                       height={100}
                       className={styles.categoryImage}
                     />
-                    <h3 className={styles.cardTitle}>{grupo}</h3>
+                    <h3 className={styles.cardTitle}>{grupo || "Sin categoría"}</h3>
                   </div>
                 ))}
               </div>
@@ -338,8 +353,8 @@ export default function RoutineView() {
                       <div className={styles.itemRow}>
                         <div className={styles.itemImageWrapper}>
                           <Image
-                            src={item.imagen}
-                            alt={item.nombre}
+                            src={item.imagen || "/Train UP.png"}
+                            alt={item.nombre || "Ejercicio"}
                             width={50}
                             height={50}
                             className={styles.itemImage}
