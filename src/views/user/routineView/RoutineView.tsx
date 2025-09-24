@@ -2,13 +2,12 @@
 
 import { useMemo, useState, useEffect } from "react";
 import Image from "next/image";
-import { cardioActivities, trainingGoals } from "@/helpers/fitnessLists";
+import { trainingGoals } from "@/helpers/fitnessLists";
 import styles from "./routineView.module.scss";
 import DailyRoutine from "@/components/routine/dailyRoutine";
 import {
   exerciseService,
   ExerciseForRoutine,
-  ExerciseCategory,
 } from "@/services/ExerciseService";
 import { ClasesService } from "@/services/ClasesService";
 
@@ -44,7 +43,8 @@ export default function RoutineView() {
 
   const isStrength = activeGoal === "Fuerza máxima";
   const isHypertrophy = activeGoal === "Hipertrofia";
-  const isCardio = activeGoal === "Resistencia muscular";
+  const isResistance = activeGoal === "Resistencia";
+  const isClasses = activeGoal === "Clases";
 
   // Cargar datos reales al montar el componente
   useEffect(() => {
@@ -103,26 +103,35 @@ export default function RoutineView() {
     });
   }, [activeGoal, isStrength, isHypertrophy, exercises, loading]);
 
-  // 2️⃣ Categorías (paso 2)
+  // 2️⃣ Categorías (paso 2) - Grupos musculares
   const availableCategories: Category[] = useMemo(() => {
     if (!activeGoal || loading) return [];
-    if (isCardio) {
-      // Para cardio, usar clases reales + actividades mock
-      const map = new Map<string, string>();
-
-      // Agregar clases reales
+    
+    // Para Clases: mostrar todas las clases disponibles
+    if (isClasses) {
+      const classMap = new Map<string, string>();
       classes.forEach((clase) => {
-        if (!map.has(clase.title)) {
-          map.set(clase.title, clase.imageUrl || "/Train UP.png");
+        if (!classMap.has(clase.title)) {
+          classMap.set(clase.title, clase.imageUrl || "/Train UP.png");
         }
       });
+      return Array.from(classMap.entries()).map(([grupo, imagen]) => ({
+        grupo,
+        imagen,
+      }));
+    }
 
-      // Agregar actividades mock como fallback
-      cardioActivities.forEach((a) => {
-        if (!map.has(a.grupo)) map.set(a.grupo, a.imagenGrupo);
+    // Para Resistencia: mostrar solo ejercicios de máquina (categoría "Resistencia")
+    if (isResistance) {
+      const resistanceMap = new Map<string, string>();
+      exercises.forEach((exercise) => {
+        if (exercise.categoria === "Resistencia" && exercise.tiempo) {
+          if (!resistanceMap.has(exercise.ejercicio)) {
+            resistanceMap.set(exercise.ejercicio, exercise.imagenEjercicio || "/Train UP.png");
+          }
+        }
       });
-
-      return Array.from(map.entries()).map(([grupo, imagen]) => ({
+      return Array.from(resistanceMap.entries()).map(([grupo, imagen]) => ({
         grupo,
         imagen,
       }));
@@ -158,7 +167,8 @@ export default function RoutineView() {
     );
   }, [
     activeGoal,
-    isCardio,
+    isClasses,
+    isResistance,
     classes,
     exercises,
     isStrength,
@@ -169,42 +179,44 @@ export default function RoutineView() {
   const availableItems: RoutineItem[] = useMemo(() => {
     if (!activeGoal || !selectedCategory || loading) return [];
 
-    if (isCardio) {
-      // Para cardio, buscar en clases reales primero
-      const realClass = classes.find(
-        (clase) => clase.title === selectedCategory
-      );
-      if (realClass) {
-        return [
-          {
-            nombre: realClass.title,
-            series: 1,
-            repeticiones: `${realClass.startTime} - ${realClass.endTime}`,
-            grupoMuscular: "Clase",
-            imagen: realClass.imageUrl || "/Train UP.png",
-            goal: activeGoal,
-          },
-        ];
-      }
-
-      // Fallback a actividades mock
-      return cardioActivities
-        .filter((a) => a.grupo === selectedCategory)
-        .map((a) => ({
-          nombre: a.ejercicio,
-          series: a.resistencia.series,
-          repeticiones: a.resistencia.repeticiones,
-          grupoMuscular: a.grupo,
-          imagen: a.imagenEjercicio,
+    // Para Clases: mostrar la clase específica seleccionada
+    if (isClasses) {
+      const selectedClass = classes.find((clase) => clase.title === selectedCategory);
+      if (selectedClass) {
+        return [{
+          nombre: selectedClass.title,
+          series: 1,
+          repeticiones: `${selectedClass.startTime} - ${selectedClass.endTime}`,
+          grupoMuscular: "Clase",
+          imagen: selectedClass.imageUrl || "/Train UP.png",
           goal: activeGoal,
-        }));
+        }];
+      }
+      return [];
+    }
+
+    // Para Resistencia: mostrar el ejercicio de máquina específico
+    if (isResistance) {
+      const selectedExercise = exercises.find((exercise) => 
+        exercise.ejercicio === selectedCategory && exercise.categoria === "Resistencia"
+      );
+      if (selectedExercise) {
+        return [{
+          nombre: selectedExercise.ejercicio,
+          grupoMuscular: "Resistencia",
+          repeticiones: selectedExercise.tiempo || "30 min",
+          imagen: selectedExercise.imagenEjercicio || "/Train UP.png",
+          goal: activeGoal,
+        }];
+      }
+      return [];
     }
 
     // Para fuerza e hipertrofia, usar ejercicios reales
     return strengthData.filter(
       (item) => item.grupoMuscular === selectedCategory
     );
-  }, [activeGoal, selectedCategory, isCardio, strengthData, classes, loading]);
+  }, [activeGoal, selectedCategory, isClasses, isResistance, strengthData, classes, exercises, loading]);
 
   // ✅ Handlers
   const handleStartExercises = (goal: string) => {
@@ -351,8 +363,10 @@ export default function RoutineView() {
           {step === 3 && (
             <>
               <h3 className={styles.sectionTitle}>
-                {isCardio
-                  ? `Actividades "${selectedCategory}":`
+                {isClasses
+                  ? `Clase "${selectedCategory}":`
+                  : isResistance
+                  ? `Máquina "${selectedCategory}":`
                   : `Ejercicios ${selectedCategory}:`}
               </h3>
 

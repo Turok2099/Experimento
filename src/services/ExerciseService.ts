@@ -7,6 +7,7 @@ export interface ExerciseForRoutine {
   categoria: string;
   imagenGrupo: string;
   imagenEjercicio: string;
+  tiempo?: string;
   fuerza: {
     series: number;
     repeticiones: number;

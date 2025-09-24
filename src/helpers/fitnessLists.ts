@@ -295,5 +295,6 @@ export const cardioActivities = [
 export const trainingGoals = [
   "Fuerza máxima",
   "Hipertrofia",
-  "Resistencia muscular",
+  "Resistencia",
+  "Clases",
 ];
