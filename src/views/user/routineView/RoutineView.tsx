@@ -139,7 +139,7 @@ export default function RoutineView() {
       console.log("📊 Total ejercicios disponibles:", exercises.length);
 
       const resistanceExercises = exercises.filter(
-        (ex) => ex.categoria === "Resistencia"
+        (ex) => ex.categoria === "resistencia"
       );
       console.log(
         "🏋️ Ejercicios de resistencia encontrados:",
@@ -148,7 +148,7 @@ export default function RoutineView() {
 
       const resistanceMap = new Map<string, string>();
       exercises.forEach((exercise) => {
-        if (exercise.categoria === "Resistencia" && exercise.tiempo) {
+        if (exercise.categoria === "resistencia" && exercise.tiempo) {
           console.log(
             `✅ Agregando: ${exercise.ejercicio} - Tiempo: ${exercise.tiempo}`
           );
@@ -239,7 +239,7 @@ export default function RoutineView() {
       const selectedExercise = exercises.find(
         (exercise) =>
           exercise.ejercicio === selectedCategory &&
-          exercise.categoria === "Resistencia"
+          exercise.categoria === "resistencia"
       );
       if (selectedExercise) {
         return [

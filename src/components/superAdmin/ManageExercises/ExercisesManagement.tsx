@@ -20,38 +20,25 @@ interface Exercise {
   image_url?: string; // Nueva columna para Cloudinary
   created_at: string;
   updated_at: string;
-}
-
-interface Class {
-  id: string;
-  title: string;
-  date: string;
-  startTime: string;
-  endTime: string;
-  capacity: number;
-  trainerName?: string;
-  trainerId?: string;
+  // Campos para clases
+  title?: string;
+  date?: string;
+  startTime?: string;
+  endTime?: string;
+  capacity?: number;
   location?: string;
   description?: string;
-  is_active: boolean;
-  image_url?: string; // Nueva columna para Cloudinary
-  created_at: string;
-  updated_at: string;
 }
 
-type ContentType = "exercises" | "classes";
-type ExerciseCategory = "hipertrofia" | "fuerza" | "resistencia";
+type ExerciseCategory = "hipertrofia" | "fuerza" | "resistencia" | "clases";
 
 const ExercisesManagement: React.FC = () => {
   const [exercises, setExercises] = useState<Exercise[]>([]);
-  // const [classes, setClasses] = useState<Class[]>([]); // No se usa actualmente
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [editingExercise, setEditingExercise] = useState<Exercise | null>(null);
-  const [editingClass, setEditingClass] = useState<Class | null>(null);
-  const [formData, setFormData] = useState<Partial<Exercise & Class>>({});
+  const [formData, setFormData] = useState<Partial<Exercise>>({});
   const [showAddForm, setShowAddForm] = useState(false);
-  const [contentType, setContentType] = useState<ContentType>("exercises");
   const [exerciseCategory, setExerciseCategory] =
     useState<ExerciseCategory>("hipertrofia");
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
@@ -362,148 +349,130 @@ const ExercisesManagement: React.FC = () => {
       </div>
 
       {/* Formulario de agregar/editar */}
-      {(showAddForm || editingExercise || editingClass) && (
+      {(showAddForm || editingExercise) && (
         <div className={styles.formContainer}>
           <h3>
             {editingExercise
               ? "Editar Ejercicio"
-              : editingClass
-              ? "Editar Clase"
+              : exerciseCategory === "clases"
+              ? "Agregar Clase"
               : "Agregar Ejercicio"}
           </h3>
 
           <div className={styles.formGrid}>
-            {/* Primera decisión: Ejercicios o Clases */}
-            <div className={styles.contentTypeSelector}>
-              <h4>¿Qué tipo de contenido deseas agregar?</h4>
-              <div className={styles.contentTypeButtons}>
+            {/* Selección directa de categoría */}
+            <div className={styles.categorySelector}>
+              <h4>Selecciona el tipo de contenido:</h4>
+              <div className={styles.categoryButtons}>
                 <button
-                  className={`${styles.contentTypeButton} ${
-                    contentType === "exercises" ? styles.active : ""
+                  className={`${styles.categoryButton} ${
+                    exerciseCategory === "hipertrofia" ? styles.active : ""
                   }`}
-                  onClick={() => setContentType("exercises")}
+                  onClick={() => setExerciseCategory("hipertrofia")}
                 >
-                  Ejercicios
+                  Hipertrofia
                 </button>
                 <button
-                  className={`${styles.contentTypeButton} ${
-                    contentType === "classes" ? styles.active : ""
+                  className={`${styles.categoryButton} ${
+                    exerciseCategory === "fuerza" ? styles.active : ""
                   }`}
-                  onClick={() => setContentType("classes")}
+                  onClick={() => setExerciseCategory("fuerza")}
+                >
+                  Fuerza
+                </button>
+                <button
+                  className={`${styles.categoryButton} ${
+                    exerciseCategory === "resistencia" ? styles.active : ""
+                  }`}
+                  onClick={() => {
+                    setExerciseCategory("resistencia");
+                    // Establecer valores automáticos para resistencia
+                    setFormData({
+                      ...formData,
+                      categoria: "Resistencia",
+                      grupo: "Integral",
+                    });
+                  }}
+                >
+                  Resistencia
+                </button>
+                <button
+                  className={`${styles.categoryButton} ${
+                    exerciseCategory === "clases" ? styles.active : ""
+                  }`}
+                  onClick={() => setExerciseCategory("clases")}
                 >
                   Clases
                 </button>
               </div>
             </div>
 
-            {/* Segunda decisión para Ejercicios: Categoría - Solo visible después de seleccionar Ejercicios */}
-            {contentType === "exercises" && (
-              <div className={styles.categorySelector}>
-                <h4>Selecciona la categoría del ejercicio:</h4>
-                <div className={styles.categoryButtons}>
-                  <button
-                    className={`${styles.categoryButton} ${
-                      exerciseCategory === "hipertrofia" ? styles.active : ""
-                    }`}
-                    onClick={() => setExerciseCategory("hipertrofia")}
+            {/* Campos específicos para Hipertrofia */}
+            {exerciseCategory === "hipertrofia" && (
+              <>
+                <div className={styles.formGroup}>
+                  <label>Nombre del Ejercicio:</label>
+                  <input
+                    type="text"
+                    value={formData.ejercicio || ""}
+                    onChange={(e) =>
+                      setFormData({ ...formData, ejercicio: e.target.value })
+                    }
+                    placeholder="Ej: Press de banca con barra"
+                  />
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label>Grupo Muscular:</label>
+                  <select
+                    value={formData.grupo || ""}
+                    onChange={(e) =>
+                      setFormData({ ...formData, grupo: e.target.value })
+                    }
                   >
-                    Hipertrofia
-                  </button>
-                  <button
-                    className={`${styles.categoryButton} ${
-                      exerciseCategory === "fuerza" ? styles.active : ""
-                    }`}
-                    onClick={() => setExerciseCategory("fuerza")}
-                  >
-                    Fuerza
-                  </button>
-                  <button
-                    className={`${styles.categoryButton} ${
-                      exerciseCategory === "resistencia" ? styles.active : ""
-                    }`}
-                    onClick={() => {
-                      setExerciseCategory("resistencia");
-                      // Establecer valores automáticos para resistencia
+                    <option value="">Seleccionar grupo</option>
+                    <option value="PECHO">PECHO</option>
+                    <option value="BRAZO">BRAZO</option>
+                    <option value="TRICEP">TRICEP</option>
+                    <option value="ESPALDA">ESPALDA</option>
+                    <option value="PIERNA">PIERNA</option>
+                  </select>
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label>Series:</label>
+                  <input
+                    type="number"
+                    value={formData.hipertrofia_series || ""}
+                    onChange={(e) =>
                       setFormData({
                         ...formData,
-                        categoria: "Resistencia",
-                        grupo: "Integral",
-                      });
-                    }}
-                  >
-                    Resistencia
-                  </button>
+                        hipertrofia_series: parseInt(e.target.value),
+                      })
+                    }
+                    placeholder="Ej: 4"
+                  />
                 </div>
-              </div>
+
+                <div className={styles.formGroup}>
+                  <label>Repeticiones:</label>
+                  <input
+                    type="number"
+                    value={formData.hipertrofia_repeticiones || ""}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        hipertrofia_repeticiones: parseInt(e.target.value),
+                      })
+                    }
+                    placeholder="Ej: 10"
+                  />
+                </div>
+              </>
             )}
 
-            {/* Campos específicos para Hipertrofia - Solo visible después de seleccionar Ejercicios + Hipertrofia */}
-            {contentType === "exercises" &&
-              exerciseCategory === "hipertrofia" && (
-                <>
-                  <div className={styles.formGroup}>
-                    <label>Nombre del Ejercicio:</label>
-                    <input
-                      type="text"
-                      value={formData.ejercicio || ""}
-                      onChange={(e) =>
-                        setFormData({ ...formData, ejercicio: e.target.value })
-                      }
-                      placeholder="Ej: Press de banca con barra"
-                    />
-                  </div>
-
-                  <div className={styles.formGroup}>
-                    <label>Grupo Muscular:</label>
-                    <select
-                      value={formData.grupo || ""}
-                      onChange={(e) =>
-                        setFormData({ ...formData, grupo: e.target.value })
-                      }
-                    >
-                      <option value="">Seleccionar grupo</option>
-                      <option value="PECHO">PECHO</option>
-                      <option value="BRAZO">BRAZO</option>
-                      <option value="TRICEP">TRICEP</option>
-                      <option value="ESPALDA">ESPALDA</option>
-                      <option value="PIERNA">PIERNA</option>
-                    </select>
-                  </div>
-
-                  <div className={styles.formGroup}>
-                    <label>Series:</label>
-                    <input
-                      type="number"
-                      value={formData.hipertrofia_series || ""}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          hipertrofia_series: parseInt(e.target.value),
-                        })
-                      }
-                      placeholder="Ej: 4"
-                    />
-                  </div>
-
-                  <div className={styles.formGroup}>
-                    <label>Repeticiones:</label>
-                    <input
-                      type="number"
-                      value={formData.hipertrofia_repeticiones || ""}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          hipertrofia_repeticiones: parseInt(e.target.value),
-                        })
-                      }
-                      placeholder="Ej: 10"
-                    />
-                  </div>
-                </>
-              )}
-
-            {/* Campos específicos para Fuerza - Solo visible después de seleccionar Ejercicios + Fuerza */}
-            {contentType === "exercises" && exerciseCategory === "fuerza" && (
+            {/* Campos específicos para Fuerza */}
+            {exerciseCategory === "fuerza" && (
               <>
                 <div className={styles.formGroup}>
                   <label>Nombre del Ejercicio:</label>
@@ -566,51 +535,50 @@ const ExercisesManagement: React.FC = () => {
               </>
             )}
 
-            {/* Campos específicos para Resistencia - Solo visible después de seleccionar Ejercicios + Resistencia */}
-            {contentType === "exercises" &&
-              exerciseCategory === "resistencia" && (
-                <>
-                  <div className={styles.formGroup}>
-                    <label>Máquina:</label>
-                    <input
-                      type="text"
-                      value={formData.ejercicio || ""}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          ejercicio: e.target.value,
-                          categoria: "Resistencia", // Automático
-                          grupo: "Integral", // Automático
-                        })
-                      }
-                      placeholder="Ej: Cinta de correr, Bicicleta estática, Elíptica"
-                    />
-                  </div>
+            {/* Campos específicos para Resistencia */}
+            {exerciseCategory === "resistencia" && (
+              <>
+                <div className={styles.formGroup}>
+                  <label>Máquina:</label>
+                  <input
+                    type="text"
+                    value={formData.ejercicio || ""}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        ejercicio: e.target.value,
+                        categoria: "Resistencia", // Automático
+                        grupo: "Integral", // Automático
+                      })
+                    }
+                    placeholder="Ej: Cinta de correr, Bicicleta estática, Elíptica"
+                  />
+                </div>
 
-                  <div className={styles.formGroup}>
-                    <label>Tiempo:</label>
-                    <select
-                      value={formData.tiempo || ""}
-                      onChange={(e) =>
-                        setFormData({ ...formData, tiempo: e.target.value })
-                      }
-                    >
-                      <option value="">Seleccionar tiempo</option>
-                      <option value="15 min">15 minutos</option>
-                      <option value="30 min">30 minutos</option>
-                      <option value="45 min">45 minutos</option>
-                      <option value="60 min">1 hora</option>
-                      <option value="75 min">1 hora 15 minutos</option>
-                      <option value="90 min">1 hora 30 minutos</option>
-                      <option value="105 min">1 hora 45 minutos</option>
-                      <option value="120 min">2 horas</option>
-                    </select>
-                  </div>
-                </>
-              )}
+                <div className={styles.formGroup}>
+                  <label>Tiempo:</label>
+                  <select
+                    value={formData.tiempo || ""}
+                    onChange={(e) =>
+                      setFormData({ ...formData, tiempo: e.target.value })
+                    }
+                  >
+                    <option value="">Seleccionar tiempo</option>
+                    <option value="15 min">15 minutos</option>
+                    <option value="30 min">30 minutos</option>
+                    <option value="45 min">45 minutos</option>
+                    <option value="60 min">1 hora</option>
+                    <option value="75 min">1 hora 15 minutos</option>
+                    <option value="90 min">1 hora 30 minutos</option>
+                    <option value="105 min">1 hora 45 minutos</option>
+                    <option value="120 min">2 horas</option>
+                  </select>
+                </div>
+              </>
+            )}
 
-            {/* Campos específicos para Clases - Solo visible después de seleccionar Clases */}
-            {contentType === "classes" && (
+            {/* Campos específicos para Clases */}
+            {exerciseCategory === "clases" && (
               <>
                 <div className={styles.formGroup}>
                   <label>Título de la Clase:</label>
@@ -698,8 +666,8 @@ const ExercisesManagement: React.FC = () => {
               </>
             )}
 
-            {/* Campo único para subir imagen - Solo visible después de seleccionar tipo de contenido */}
-            {(contentType === "exercises" || contentType === "classes") && (
+            {/* Campo para subir imagen */}
+            {exerciseCategory && (
               <div className={styles.formGroup}>
                 <label>Imagen:</label>
                 <input
@@ -723,30 +691,22 @@ const ExercisesManagement: React.FC = () => {
             <button
               className={styles.saveButton}
               onClick={() => {
-                if (contentType === "exercises") {
-                  if (editingExercise) {
-                    handleUpdate();
-                  } else {
-                    handleCreate();
-                  }
-                } else if (contentType === "classes") {
-                  if (editingClass) {
-                    // TODO: Implementar handleUpdateClass
-                    alert("Funcionalidad para editar clases en desarrollo");
-                  } else {
-                    handleCreateClass();
-                  }
+                if (editingExercise) {
+                  handleUpdate();
+                } else if (exerciseCategory === "clases") {
+                  handleCreateClass();
+                } else {
+                  handleCreate();
                 }
               }}
             >
-              {editingExercise || editingClass ? "Actualizar" : "Crear"}
+              {editingExercise ? "Actualizar" : "Crear"}
             </button>
             <button
               className={styles.cancelButton}
               onClick={() => {
                 setShowAddForm(false);
                 setEditingExercise(null);
-                setEditingClass(null);
                 setFormData({});
                 setSelectedImage(null);
                 setExerciseCategory("hipertrofia"); // Resetear categoría
