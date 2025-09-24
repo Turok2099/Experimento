@@ -41,14 +41,21 @@ export default function DailyRoutine({
                     completed.includes(id) ? styles.completedText : undefined
                   }
                 >
-                  <strong>{item.goal}</strong> — {item.nombre}
-                  {item.series != null && item.repeticiones != null && (
-                    <>
-                      {" "}
-                      (Series: {item.series} x Repeticiones: {item.repeticiones}
-                      )
-                    </>
+                  <strong>{item.goal}</strong> {item.nombre}
+                  {/* Para clases, mostrar solo horario */}
+                  {item.goal === "Clases" && item.repeticiones && (
+                    <> (Horario: {item.repeticiones})</>
                   )}
+                  {/* Para ejercicios, mostrar series y repeticiones */}
+                  {item.goal !== "Clases" &&
+                    item.series != null &&
+                    item.repeticiones != null && (
+                      <>
+                        {" "}
+                        (Series: {item.series} x Repeticiones:{" "}
+                        {item.repeticiones})
+                      </>
+                    )}
                 </span>
 
                 {routineRegistered && (

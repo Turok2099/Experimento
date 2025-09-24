@@ -66,6 +66,13 @@ export default function RoutineView() {
           classes: classesData.length,
         });
 
+        // Debug específico para ejercicios de resistencia
+        const resistanceExercises = exercisesData.filter(ex => ex.categoria === "Resistencia");
+        console.log("🏋️ [RoutineView] Ejercicios de resistencia:", resistanceExercises.length);
+        resistanceExercises.forEach((ex, index) => {
+          console.log(`${index + 1}. ${ex.ejercicio} - Tiempo: ${ex.tiempo}`);
+        });
+
         setExercises(exercisesData);
         setClasses(classesData);
       } catch (err: any) {
@@ -106,7 +113,7 @@ export default function RoutineView() {
   // 2️⃣ Categorías (paso 2) - Grupos musculares
   const availableCategories: Category[] = useMemo(() => {
     if (!activeGoal || loading) return [];
-    
+
     // Para Clases: mostrar todas las clases disponibles
     if (isClasses) {
       const classMap = new Map<string, string>();
@@ -123,18 +130,32 @@ export default function RoutineView() {
 
     // Para Resistencia: mostrar solo ejercicios de máquina (categoría "Resistencia")
     if (isResistance) {
+      console.log("🔍 [RoutineView] Procesando resistencia...");
+      console.log("📊 Total ejercicios disponibles:", exercises.length);
+      
+      const resistanceExercises = exercises.filter(ex => ex.categoria === "Resistencia");
+      console.log("🏋️ Ejercicios de resistencia encontrados:", resistanceExercises.length);
+      
       const resistanceMap = new Map<string, string>();
       exercises.forEach((exercise) => {
         if (exercise.categoria === "Resistencia" && exercise.tiempo) {
+          console.log(`✅ Agregando: ${exercise.ejercicio} - Tiempo: ${exercise.tiempo}`);
           if (!resistanceMap.has(exercise.ejercicio)) {
-            resistanceMap.set(exercise.ejercicio, exercise.imagenEjercicio || "/Train UP.png");
+            resistanceMap.set(
+              exercise.ejercicio,
+              exercise.imagenEjercicio || "/Train UP.png"
+            );
           }
         }
       });
-      return Array.from(resistanceMap.entries()).map(([grupo, imagen]) => ({
+      
+      const result = Array.from(resistanceMap.entries()).map(([grupo, imagen]) => ({
         grupo,
         imagen,
       }));
+      
+      console.log("📋 Resultado final para resistencia:", result);
+      return result;
     }
 
     // Para fuerza e hipertrofia, filtrar solo grupos musculares que tienen ejercicios
@@ -181,33 +202,41 @@ export default function RoutineView() {
 
     // Para Clases: mostrar la clase específica seleccionada
     if (isClasses) {
-      const selectedClass = classes.find((clase) => clase.title === selectedCategory);
+      const selectedClass = classes.find(
+        (clase) => clase.title === selectedCategory
+      );
       if (selectedClass) {
-        return [{
-          nombre: selectedClass.title,
-          series: 1,
-          repeticiones: `${selectedClass.startTime} - ${selectedClass.endTime}`,
-          grupoMuscular: "Clase",
-          imagen: selectedClass.imageUrl || "/Train UP.png",
-          goal: activeGoal,
-        }];
+        return [
+          {
+            nombre: selectedClass.title,
+            series: 1,
+            repeticiones: `${selectedClass.startTime} - ${selectedClass.endTime}`,
+            grupoMuscular: "Clase",
+            imagen: selectedClass.imageUrl || "/Train UP.png",
+            goal: activeGoal,
+          },
+        ];
       }
       return [];
     }
 
     // Para Resistencia: mostrar el ejercicio de máquina específico
     if (isResistance) {
-      const selectedExercise = exercises.find((exercise) => 
-        exercise.ejercicio === selectedCategory && exercise.categoria === "Resistencia"
+      const selectedExercise = exercises.find(
+        (exercise) =>
+          exercise.ejercicio === selectedCategory &&
+          exercise.categoria === "Resistencia"
       );
       if (selectedExercise) {
-        return [{
-          nombre: selectedExercise.ejercicio,
-          grupoMuscular: "Resistencia",
-          repeticiones: selectedExercise.tiempo || "30 min",
-          imagen: selectedExercise.imagenEjercicio || "/Train UP.png",
-          goal: activeGoal,
-        }];
+        return [
+          {
+            nombre: selectedExercise.ejercicio,
+            grupoMuscular: "Resistencia",
+            repeticiones: selectedExercise.tiempo || "30 min",
+            imagen: selectedExercise.imagenEjercicio || "/Train UP.png",
+            goal: activeGoal,
+          },
+        ];
       }
       return [];
     }
@@ -216,7 +245,16 @@ export default function RoutineView() {
     return strengthData.filter(
       (item) => item.grupoMuscular === selectedCategory
     );
-  }, [activeGoal, selectedCategory, isClasses, isResistance, strengthData, classes, exercises, loading]);
+  }, [
+    activeGoal,
+    selectedCategory,
+    isClasses,
+    isResistance,
+    strengthData,
+    classes,
+    exercises,
+    loading,
+  ]);
 
   // ✅ Handlers
   const handleStartExercises = (goal: string) => {
@@ -252,8 +290,10 @@ export default function RoutineView() {
         return "Programa orientado a desarrollar la fuerza absoluta mediante el levantamiento de cargas muy pesadas con pocas repeticiones por serie. Ideal para quienes buscan aumentar su capacidad de generar potencia máxima, mejorar el rendimiento en deportes de fuerza y optimizar la técnica en movimientos compuestos como sentadillas, press de banca o peso muerto.";
       case "Hipertrofia":
         return "Enfoque diseñado para estimular el crecimiento muscular a través de un volumen de entrenamiento moderado-alto, con repeticiones controladas y tiempos de descanso estratégicos. Perfecto para quienes desean mejorar la estética corporal, aumentar la masa muscular y lograr una musculatura más definida y simétrica.";
-      case "Resistencia muscular":
-        return "Plan centrado en mejorar la capacidad de los músculos para sostener esfuerzos prolongados, combinando ejercicios cardiovasculares y de fuerza con cargas ligeras y repeticiones altas. Recomendado para quienes buscan optimizar la resistencia física, la salud cardiovascular y el rendimiento en actividades de larga duración.";
+      case "Resistencia":
+        return "Entrenamiento enfocado en ejercicios cardiovasculares usando máquinas especializadas como bicicletas estáticas, cintas de correr, elípticas y remadoras. Perfecto para mejorar la condición cardiovascular, quemar calorías, aumentar la resistencia aeróbica y mantener un corazón saludable con sesiones de intensidad controlada.";
+      case "Clases":
+        return "Participa en clases grupales dirigidas por entrenadores profesionales. Disfruta de una variedad de actividades como Boxeo, HIIT, Pilates, Spinning, Zumba y más. Ideal para quienes buscan motivación grupal, variedad en su rutina de ejercicios y la guía experta de instructores certificados en un ambiente dinámico y social.";
       default:
         return "";
     }
@@ -293,7 +333,11 @@ export default function RoutineView() {
                 >
                   <div className={styles.goalInfo}>
                     <Image
-                      src={`/rutina/${idx + 1}.png`}
+                      src={
+                        goal === "Clases"
+                          ? "/Train UP.png"
+                          : `/rutina/${idx + 1}.png`
+                      }
                       alt={goal || "Meta de entrenamiento"}
                       width={100}
                       height={100}
@@ -362,13 +406,24 @@ export default function RoutineView() {
           {/* Paso 3: Ejercicios */}
           {step === 3 && (
             <>
-              <h3 className={styles.sectionTitle}>
-                {isClasses
-                  ? `Clase "${selectedCategory}":`
-                  : isResistance
-                  ? `Máquina "${selectedCategory}":`
-                  : `Ejercicios ${selectedCategory}:`}
-              </h3>
+              <div className={styles.sectionTitleContainer}>
+                {isClasses ? (
+                  <>
+                    <span className={styles.titleLabel}>Clase</span>
+                    <h3 className={styles.categoryTitle}>{selectedCategory}</h3>
+                  </>
+                ) : isResistance ? (
+                  <>
+                    <span className={styles.titleLabel}>Máquina</span>
+                    <h3 className={styles.categoryTitle}>{selectedCategory}</h3>
+                  </>
+                ) : (
+                  <>
+                    <span className={styles.titleLabel}>Ejercicios</span>
+                    <h3 className={styles.categoryTitle}>{selectedCategory}</h3>
+                  </>
+                )}
+              </div>
 
               {availableItems.length === 0 ? (
                 <p>No hay ejercicios disponibles para esta categoría.</p>
@@ -391,12 +446,21 @@ export default function RoutineView() {
                         </div>
                         <div className={styles.itemText}>
                           <strong>{item.nombre}</strong>
-                          {item.series != null && item.repeticiones != null && (
+                          {/* Para clases, mostrar solo horario */}
+                          {isClasses && item.repeticiones && (
                             <span className={styles.itemDetails}>
-                              Series: {item.series} Repeticiones:{" "}
-                              {item.repeticiones}
+                              Horario: {item.repeticiones}
                             </span>
                           )}
+                          {/* Para ejercicios, mostrar series y repeticiones */}
+                          {!isClasses &&
+                            item.series != null &&
+                            item.repeticiones != null && (
+                              <span className={styles.itemDetails}>
+                                Series: {item.series} Repeticiones:{" "}
+                                {item.repeticiones}
+                              </span>
+                            )}
                         </div>
                         <input
                           type="checkbox"
