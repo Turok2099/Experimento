@@ -44,7 +44,7 @@ type ExerciseCategory = "hipertrofia" | "fuerza" | "resistencia";
 
 const ExercisesManagement: React.FC = () => {
   const [exercises, setExercises] = useState<Exercise[]>([]);
-  const [classes, setClasses] = useState<Class[]>([]);
+  // const [classes, setClasses] = useState<Class[]>([]); // No se usa actualmente
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [editingExercise, setEditingExercise] = useState<Exercise | null>(null);
@@ -99,7 +99,7 @@ const ExercisesManagement: React.FC = () => {
 
   useEffect(() => {
     fetchExercises();
-  }, [userData?.token]);
+  }, [userData?.token, fetchExercises]);
 
   // Crear ejercicio
   const handleCreate = async () => {

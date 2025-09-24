@@ -2,13 +2,14 @@
 
 import { useMemo, useState, useEffect } from "react";
 import Image from "next/image";
-import {
-  cardioActivities,
-  trainingGoals,
-} from "@/helpers/fitnessLists";
+import { cardioActivities, trainingGoals } from "@/helpers/fitnessLists";
 import styles from "./routineView.module.scss";
 import DailyRoutine from "@/components/routine/dailyRoutine";
-import { exerciseService, ExerciseForRoutine, ExerciseCategory } from "@/services/ExerciseService";
+import {
+  exerciseService,
+  ExerciseForRoutine,
+  ExerciseCategory,
+} from "@/services/ExerciseService";
 import { ClasesService } from "@/services/ClasesService";
 
 export type RoutineItem = {
@@ -52,16 +53,16 @@ export default function RoutineView() {
         setLoading(true);
         setError(null);
 
-        console.log('🔄 [RoutineView] Cargando datos reales...');
+        console.log("🔄 [RoutineView] Cargando datos reales...");
 
         // Cargar ejercicios y categorías en paralelo
         const [exercisesData, categoriesData, classesData] = await Promise.all([
           exerciseService.getExercises(),
           exerciseService.getCategories(),
-          ClasesService.getClasses(), // Obtener clases reales
+          ClasesService.getAllClasses(), // Obtener clases reales
         ]);
 
-        console.log('✅ [RoutineView] Datos cargados:', {
+        console.log("✅ [RoutineView] Datos cargados:", {
           exercises: exercisesData.length,
           categories: categoriesData.length,
           classes: classesData.length,
@@ -71,11 +72,11 @@ export default function RoutineView() {
         setCategories(categoriesData);
         setClasses(classesData);
       } catch (err: any) {
-        console.error('❌ [RoutineView] Error cargando datos:', err);
-        setError(err.message || 'Error al cargar los datos');
-        
+        console.error("❌ [RoutineView] Error cargando datos:", err);
+        setError(err.message || "Error al cargar los datos");
+
         // En caso de error, usar datos mock como fallback
-        console.log('🔄 [RoutineView] Usando datos mock como fallback...');
+        console.log("🔄 [RoutineView] Usando datos mock como fallback...");
       } finally {
         setLoading(false);
       }
@@ -111,25 +112,25 @@ export default function RoutineView() {
     if (isCardio) {
       // Para cardio, usar clases reales + actividades mock
       const map = new Map<string, string>();
-      
+
       // Agregar clases reales
       classes.forEach((clase) => {
         if (!map.has(clase.title)) {
           map.set(clase.title, clase.imageUrl || "/rutina/filtro3/Clases.png");
         }
       });
-      
+
       // Agregar actividades mock como fallback
       cardioActivities.forEach((a) => {
         if (!map.has(a.grupo)) map.set(a.grupo, a.imagenGrupo);
       });
-      
+
       return Array.from(map.entries()).map(([grupo, imagen]) => ({
         grupo,
         imagen,
       }));
     }
-    
+
     // Para fuerza e hipertrofia, usar categorías reales
     return categories.map((cat) => ({
       grupo: cat.grupo,
@@ -139,21 +140,25 @@ export default function RoutineView() {
 
   const availableItems: RoutineItem[] = useMemo(() => {
     if (!activeGoal || !selectedCategory || loading) return [];
-    
+
     if (isCardio) {
       // Para cardio, buscar en clases reales primero
-      const realClass = classes.find((clase) => clase.title === selectedCategory);
+      const realClass = classes.find(
+        (clase) => clase.title === selectedCategory
+      );
       if (realClass) {
-        return [{
-          nombre: realClass.title,
-          series: 1,
-          repeticiones: `${realClass.startTime} - ${realClass.endTime}`,
-          grupoMuscular: "Clase",
-          imagen: realClass.imageUrl || "/rutina/filtro3/Clases.png",
-          goal: activeGoal,
-        }];
+        return [
+          {
+            nombre: realClass.title,
+            series: 1,
+            repeticiones: `${realClass.startTime} - ${realClass.endTime}`,
+            grupoMuscular: "Clase",
+            imagen: realClass.imageUrl || "/rutina/filtro3/Clases.png",
+            goal: activeGoal,
+          },
+        ];
       }
-      
+
       // Fallback a actividades mock
       return cardioActivities
         .filter((a) => a.grupo === selectedCategory)
@@ -166,7 +171,7 @@ export default function RoutineView() {
           goal: activeGoal,
         }));
     }
-    
+
     // Para fuerza e hipertrofia, usar ejercicios reales
     return strengthData.filter(
       (item) => item.grupoMuscular === selectedCategory

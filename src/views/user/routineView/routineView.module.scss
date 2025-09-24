@@ -8,7 +8,8 @@
   position: relative;
 }
 
-.loadingMessage, .errorMessage {
+.loadingMessage,
+.errorMessage {
   display: flex;
   flex-direction: column;
   align-items: center;

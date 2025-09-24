@@ -48,7 +48,7 @@ class ExerciseService {
   private baseUrl: string;
 
   constructor() {
-    this.baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+    this.baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
   }
 
   /**
@@ -63,21 +63,24 @@ class ExerciseService {
   }): Promise<ExerciseForRoutine[]> {
     try {
       const searchParams = new URLSearchParams();
-      
-      if (params?.q) searchParams.append('q', params.q);
-      if (params?.muscleGroup) searchParams.append('muscleGroup', params.muscleGroup);
-      if (params?.type) searchParams.append('type', params.type);
-      if (params?.page) searchParams.append('page', params.page.toString());
-      if (params?.limit) searchParams.append('limit', params.limit.toString());
 
-      const url = `${this.baseUrl}/exercises${searchParams.toString() ? `?${searchParams.toString()}` : ''}`;
-      
-      console.log('🔍 [ExerciseService] Obteniendo ejercicios desde:', url);
-      
+      if (params?.q) searchParams.append("q", params.q);
+      if (params?.muscleGroup)
+        searchParams.append("muscleGroup", params.muscleGroup);
+      if (params?.type) searchParams.append("type", params.type);
+      if (params?.page) searchParams.append("page", params.page.toString());
+      if (params?.limit) searchParams.append("limit", params.limit.toString());
+
+      const url = `${this.baseUrl}/exercises${
+        searchParams.toString() ? `?${searchParams.toString()}` : ""
+      }`;
+
+      console.log("🔍 [ExerciseService] Obteniendo ejercicios desde:", url);
+
       const response = await fetch(url, {
-        method: 'GET',
+        method: "GET",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       });
 
@@ -86,12 +89,14 @@ class ExerciseService {
       }
 
       const result: ExercisesResponse = await response.json();
-      
-      console.log(`✅ [ExerciseService] Obtenidos ${result.data.length} ejercicios`);
-      
+
+      console.log(
+        `✅ [ExerciseService] Obtenidos ${result.data.length} ejercicios`
+      );
+
       return result.data;
     } catch (error) {
-      console.error('❌ [ExerciseService] Error obteniendo ejercicios:', error);
+      console.error("❌ [ExerciseService] Error obteniendo ejercicios:", error);
       throw error;
     }
   }
@@ -102,13 +107,13 @@ class ExerciseService {
   async getCategories(): Promise<ExerciseCategory[]> {
     try {
       const url = `${this.baseUrl}/exercises/categories`;
-      
-      console.log('🔍 [ExerciseService] Obteniendo categorías desde:', url);
-      
+
+      console.log("🔍 [ExerciseService] Obteniendo categorías desde:", url);
+
       const response = await fetch(url, {
-        method: 'GET',
+        method: "GET",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       });
 
@@ -117,12 +122,14 @@ class ExerciseService {
       }
 
       const result: CategoriesResponse = await response.json();
-      
-      console.log(`✅ [ExerciseService] Obtenidas ${result.data.length} categorías`);
-      
+
+      console.log(
+        `✅ [ExerciseService] Obtenidas ${result.data.length} categorías`
+      );
+
       return result.data;
     } catch (error) {
-      console.error('❌ [ExerciseService] Error obteniendo categorías:', error);
+      console.error("❌ [ExerciseService] Error obteniendo categorías:", error);
       throw error;
     }
   }
@@ -133,13 +140,13 @@ class ExerciseService {
   async getExerciseById(id: string): Promise<ExerciseForRoutine> {
     try {
       const url = `${this.baseUrl}/exercises/${id}`;
-      
-      console.log('🔍 [ExerciseService] Obteniendo ejercicio desde:', url);
-      
+
+      console.log("🔍 [ExerciseService] Obteniendo ejercicio desde:", url);
+
       const response = await fetch(url, {
-        method: 'GET',
+        method: "GET",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       });
 
@@ -148,12 +155,15 @@ class ExerciseService {
       }
 
       const result: SingleExerciseResponse = await response.json();
-      
-      console.log(`✅ [ExerciseService] Ejercicio obtenido:`, result.data.ejercicio);
-      
+
+      console.log(
+        `✅ [ExerciseService] Ejercicio obtenido:`,
+        result.data.ejercicio
+      );
+
       return result.data;
     } catch (error) {
-      console.error('❌ [ExerciseService] Error obteniendo ejercicio:', error);
+      console.error("❌ [ExerciseService] Error obteniendo ejercicio:", error);
       throw error;
     }
   }

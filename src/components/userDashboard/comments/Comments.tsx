@@ -29,7 +29,7 @@ export default function Comments({
   const userComments = comments;
 
   // Necesario para determinar si un comentario es del usuario actual
-  const userIdStr = String(user.id);
+  // const userIdStr = String(user.id); // No se usa actualmente
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
