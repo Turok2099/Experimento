@@ -1,14 +1,15 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import Image from "next/image";
 import {
-  ejercicios,
   cardioActivities,
   trainingGoals,
 } from "@/helpers/fitnessLists";
 import styles from "./routineView.module.scss";
 import DailyRoutine from "@/components/routine/dailyRoutine";
+import { exerciseService, ExerciseForRoutine, ExerciseCategory } from "@/services/ExerciseService";
+import { ClasesService } from "@/services/ClasesService";
 
 export type RoutineItem = {
   nombre: string;
@@ -33,57 +34,127 @@ export default function RoutineView() {
 
   const [expandedGoal, setExpandedGoal] = useState<string | null>(null);
 
+  // Estados para datos reales
+  const [exercises, setExercises] = useState<ExerciseForRoutine[]>([]);
+  const [categories, setCategories] = useState<ExerciseCategory[]>([]);
+  const [classes, setClasses] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
   const isStrength = activeGoal === "Fuerza máxima";
   const isHypertrophy = activeGoal === "Hipertrofia";
   const isCardio = activeGoal === "Resistencia muscular";
+
+  // Cargar datos reales al montar el componente
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        console.log('🔄 [RoutineView] Cargando datos reales...');
+
+        // Cargar ejercicios y categorías en paralelo
+        const [exercisesData, categoriesData, classesData] = await Promise.all([
+          exerciseService.getExercises(),
+          exerciseService.getCategories(),
+          ClasesService.getClasses(), // Obtener clases reales
+        ]);
+
+        console.log('✅ [RoutineView] Datos cargados:', {
+          exercises: exercisesData.length,
+          categories: categoriesData.length,
+          classes: classesData.length,
+        });
+
+        setExercises(exercisesData);
+        setCategories(categoriesData);
+        setClasses(classesData);
+      } catch (err: any) {
+        console.error('❌ [RoutineView] Error cargando datos:', err);
+        setError(err.message || 'Error al cargar los datos');
+        
+        // En caso de error, usar datos mock como fallback
+        console.log('🔄 [RoutineView] Usando datos mock como fallback...');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
+  }, []);
 
   const toggleGoal = (goal: string) => {
     setExpandedGoal((prev) => (prev === goal ? null : goal));
   };
 
   const strengthData: RoutineItem[] = useMemo(() => {
-    if (!(isStrength || isHypertrophy) || !activeGoal) return [];
+    if (!(isStrength || isHypertrophy) || !activeGoal || loading) return [];
 
-    return ejercicios.map((item) => {
-      const config = isStrength ? item.fuerza : item.hipertrofia;
+    return exercises.map((exercise) => {
+      const config = isStrength ? exercise.fuerza : exercise.hipertrofia;
 
       return {
-        nombre: item.ejercicio,
-        grupoMuscular: item.grupo,
+        nombre: exercise.ejercicio,
+        grupoMuscular: exercise.grupo,
         series: config.series,
-        repeticiones: String(config.repeticiones), // ← conversión aquí
-        imagen: item.imagenEjercicio,
+        repeticiones: String(config.repeticiones),
+        imagen: exercise.imagenEjercicio,
         goal: activeGoal,
       };
     });
-  }, [activeGoal, isStrength, isHypertrophy]);
+  }, [activeGoal, isStrength, isHypertrophy, exercises, loading]);
 
   // 2️⃣ Categorías (paso 2)
-  const categories: Category[] = useMemo(() => {
-    if (!activeGoal) return [];
+  const availableCategories: Category[] = useMemo(() => {
+    if (!activeGoal || loading) return [];
     if (isCardio) {
+      // Para cardio, usar clases reales + actividades mock
       const map = new Map<string, string>();
+      
+      // Agregar clases reales
+      classes.forEach((clase) => {
+        if (!map.has(clase.title)) {
+          map.set(clase.title, clase.imageUrl || "/rutina/filtro3/Clases.png");
+        }
+      });
+      
+      // Agregar actividades mock como fallback
       cardioActivities.forEach((a) => {
         if (!map.has(a.grupo)) map.set(a.grupo, a.imagenGrupo);
       });
+      
       return Array.from(map.entries()).map(([grupo, imagen]) => ({
         grupo,
         imagen,
       }));
     }
-    const map = new Map<string, string>();
-    ejercicios.forEach((e) => {
-      if (!map.has(e.grupo)) map.set(e.grupo, e.imagenGrupo);
-    });
-    return Array.from(map.entries()).map(([grupo, imagen]) => ({
-      grupo,
-      imagen,
+    
+    // Para fuerza e hipertrofia, usar categorías reales
+    return categories.map((cat) => ({
+      grupo: cat.grupo,
+      imagen: cat.imagen,
     }));
-  }, [activeGoal, isCardio]);
+  }, [activeGoal, isCardio, classes, categories, loading]);
 
   const availableItems: RoutineItem[] = useMemo(() => {
-    if (!activeGoal || !selectedCategory) return [];
+    if (!activeGoal || !selectedCategory || loading) return [];
+    
     if (isCardio) {
+      // Para cardio, buscar en clases reales primero
+      const realClass = classes.find((clase) => clase.title === selectedCategory);
+      if (realClass) {
+        return [{
+          nombre: realClass.title,
+          series: 1,
+          repeticiones: `${realClass.startTime} - ${realClass.endTime}`,
+          grupoMuscular: "Clase",
+          imagen: realClass.imageUrl || "/rutina/filtro3/Clases.png",
+          goal: activeGoal,
+        }];
+      }
+      
+      // Fallback a actividades mock
       return cardioActivities
         .filter((a) => a.grupo === selectedCategory)
         .map((a) => ({
@@ -95,10 +166,12 @@ export default function RoutineView() {
           goal: activeGoal,
         }));
     }
+    
+    // Para fuerza e hipertrofia, usar ejercicios reales
     return strengthData.filter(
       (item) => item.grupoMuscular === selectedCategory
     );
-  }, [activeGoal, selectedCategory, isCardio, strengthData]);
+  }, [activeGoal, selectedCategory, isCardio, strengthData, classes, loading]);
 
   // ✅ Handlers
   const handleStartExercises = (goal: string) => {
@@ -143,7 +216,24 @@ export default function RoutineView() {
 
   return (
     <div className={styles.mainWrapper}>
-      {!routineRegistered && (
+      {loading && (
+        <div className={styles.container}>
+          <div className={styles.loadingMessage}>
+            <p>Cargando ejercicios y clases disponibles...</p>
+          </div>
+        </div>
+      )}
+
+      {error && (
+        <div className={styles.container}>
+          <div className={styles.errorMessage}>
+            <p>Error: {error}</p>
+            <p>Usando datos de ejemplo como respaldo.</p>
+          </div>
+        </div>
+      )}
+
+      {!routineRegistered && !loading && (
         <div className={styles.container}>
           {/* Paso 1: Selección de meta */}
           {step === 1 && (
@@ -190,7 +280,7 @@ export default function RoutineView() {
           {step === 2 && (
             <>
               <div className={styles.cardGrid}>
-                {categories.map(({ grupo, imagen }) => (
+                {availableCategories.map(({ grupo, imagen }) => (
                   <div
                     key={grupo}
                     className={styles.card}

@@ -113,13 +113,21 @@ const ExercisesManagement: React.FC = () => {
 
       // Campos permitidos para creación (excluir campos del sistema)
       const allowedFields = [
-        'ejercicio', 'grupo', 'categoria', 'hipertrofia_series', 'hipertrofia_repeticiones',
-        'fuerza_series', 'fuerza_repeticiones', 'resistencia_series', 'resistencia_repeticiones',
-        'tiempo', 'isActive'
+        "ejercicio",
+        "grupo",
+        "categoria",
+        "hipertrofia_series",
+        "hipertrofia_repeticiones",
+        "fuerza_series",
+        "fuerza_repeticiones",
+        "resistencia_series",
+        "resistencia_repeticiones",
+        "tiempo",
+        "isActive",
       ];
 
       // Agregar solo los campos permitidos
-      allowedFields.forEach(key => {
+      allowedFields.forEach((key) => {
         const value = (formData as any)[key];
         if (value !== undefined && value !== null && value !== "") {
           formDataToSend.append(key, String(value));
@@ -218,13 +226,21 @@ const ExercisesManagement: React.FC = () => {
 
       // Campos permitidos para actualización (excluir campos del sistema)
       const allowedFields = [
-        'ejercicio', 'grupo', 'categoria', 'hipertrofia_series', 'hipertrofia_repeticiones',
-        'fuerza_series', 'fuerza_repeticiones', 'resistencia_series', 'resistencia_repeticiones',
-        'tiempo', 'isActive'
+        "ejercicio",
+        "grupo",
+        "categoria",
+        "hipertrofia_series",
+        "hipertrofia_repeticiones",
+        "fuerza_series",
+        "fuerza_repeticiones",
+        "resistencia_series",
+        "resistencia_repeticiones",
+        "tiempo",
+        "isActive",
       ];
 
       // Agregar solo los campos permitidos
-      allowedFields.forEach(key => {
+      allowedFields.forEach((key) => {
         const value = (formData as any)[key];
         if (value !== undefined && value !== null && value !== "") {
           formDataToSend.append(key, String(value));

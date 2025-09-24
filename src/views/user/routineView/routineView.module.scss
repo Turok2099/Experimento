@@ -8,6 +8,42 @@
   position: relative;
 }
 
+.loadingMessage, .errorMessage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  margin: 2rem 0;
+}
+
+.loadingMessage p {
+  color: var(--colorAmarillo);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.errorMessage p {
+  color: #ff6b6b;
+  font-size: 1rem;
+  margin: 0.5rem 0;
+}
+
+.errorMessage p:first-child {
+  font-weight: 600;
+}
+
+.errorMessage p:last-child {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.9rem;
+}
+
 .goalColumn {
   display: flex;
   flex-direction: column;
