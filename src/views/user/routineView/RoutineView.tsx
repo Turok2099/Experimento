@@ -116,7 +116,7 @@ export default function RoutineView() {
       // Agregar clases reales
       classes.forEach((clase) => {
         if (!map.has(clase.title)) {
-          map.set(clase.title, clase.imageUrl || "/rutina/filtro3/Clases.png");
+          map.set(clase.title, clase.imageUrl || "/Train UP.png");
         }
       });
 
@@ -153,7 +153,7 @@ export default function RoutineView() {
             series: 1,
             repeticiones: `${realClass.startTime} - ${realClass.endTime}`,
             grupoMuscular: "Clase",
-            imagen: realClass.imageUrl || "/rutina/filtro3/Clases.png",
+            imagen: realClass.imageUrl || "/Train UP.png",
             goal: activeGoal,
           },
         ];
