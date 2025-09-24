@@ -541,33 +541,20 @@ const ExercisesManagement: React.FC = () => {
                 </div>
               )}
 
-            {/* Campos específicos para Clases - Solo visible después de seleccionar Clases */}
-            {contentType === "classes" && (
-              <>
-                <div className={styles.formGroup}>
-                  <label>ID del Entrenador (requerido):</label>
-                  <input
-                    type="text"
-                    value={formData.trainerId || ""}
-                    onChange={(e) =>
-                      setFormData({ ...formData, trainerId: e.target.value })
-                    }
-                    placeholder="UUID del entrenador"
-                    required
-                  />
-                </div>
-
-                <div className={styles.formGroup}>
-                  <label>Título de la Clase:</label>
-                  <input
-                    type="text"
-                    value={formData.title || ""}
-                    onChange={(e) =>
-                      setFormData({ ...formData, title: e.target.value })
-                    }
-                    placeholder="Ej: Yoga Matutino"
-                  />
-                </div>
+                {/* Campos específicos para Clases - Solo visible después de seleccionar Clases */}
+                {contentType === "classes" && (
+                  <>
+                    <div className={styles.formGroup}>
+                      <label>Título de la Clase:</label>
+                      <input
+                        type="text"
+                        value={formData.title || ""}
+                        onChange={(e) =>
+                          setFormData({ ...formData, title: e.target.value })
+                        }
+                        placeholder="Ej: Yoga Matutino"
+                      />
+                    </div>
 
                 <div className={styles.formGroup}>
                   <label>Fecha:</label>
