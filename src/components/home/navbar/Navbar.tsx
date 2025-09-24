@@ -104,12 +104,12 @@ const Navbar = () => {
               </Link>
             ))}
 
-            <span 
+            <span
               className={`${styles.nombreUser} ${
-                userData.user?.role === 'admin' 
-                  ? styles.adminColor 
-                  : userData.user?.role === 'trainer' 
-                  ? styles.trainerColor 
+                userData.user?.role === "admin"
+                  ? styles.adminColor
+                  : userData.user?.role === "trainer"
+                  ? styles.trainerColor
                   : styles.memberColor
               }`}
             >
