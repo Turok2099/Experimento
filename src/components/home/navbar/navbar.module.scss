@@ -89,6 +89,19 @@
   font-size: 1.2rem;
 }
 
+// Colores condicionales para el nombre del usuario según rol
+.adminColor {
+  color: #3b82f6 !important; // Azul para admin
+}
+
+.trainerColor {
+  color: #ef4444 !important; // Rojo para trainer
+}
+
+.memberColor {
+  color: #10b981 !important; // Verde para member/user
+}
+
 .btn {
   background-color: black;
   color: white;

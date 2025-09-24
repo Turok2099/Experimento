@@ -104,7 +104,15 @@ const Navbar = () => {
               </Link>
             ))}
 
-            <span className={styles.nombreUser}>
+            <span 
+              className={`${styles.nombreUser} ${
+                userData.user?.role === 'admin' 
+                  ? styles.adminColor 
+                  : userData.user?.role === 'trainer' 
+                  ? styles.trainerColor 
+                  : styles.memberColor
+              }`}
+            >
               {userData.user?.name} <FaRegUser size={22} />
             </span>
 
