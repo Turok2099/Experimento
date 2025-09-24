@@ -149,6 +149,52 @@ const ExercisesManagement: React.FC = () => {
     }
   };
 
+  // Crear clase
+  const handleCreateClass = async () => {
+    try {
+      if (!userData?.token) {
+        throw new Error("Usuario no autorizado");
+      }
+
+      // Crear FormData para enviar tanto los datos como la imagen
+      const formDataToSend = new FormData();
+
+      // Agregar todos los campos del formulario
+      Object.entries(formData).forEach(([key, value]) => {
+        if (value !== undefined && value !== null && value !== "") {
+          formDataToSend.append(key, String(value));
+        }
+      });
+
+      // Agregar la imagen si existe
+      if (selectedImage) {
+        formDataToSend.append("image", selectedImage);
+      }
+
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/classes`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${userData.accessToken || userData.token}`,
+          // No establecer Content-Type, dejar que el navegador lo haga automáticamente para FormData
+        },
+        body: formDataToSend,
+      });
+
+      if (!res.ok) {
+        const errorText = await res.text();
+        throw new Error(`Error al crear clase: ${res.status} ${errorText}`);
+      }
+
+      setShowAddForm(false);
+      setFormData({});
+      setSelectedImage(null);
+      // TODO: Implementar fetchClasses cuando sea necesario
+    } catch (err: any) {
+      console.error(err);
+      alert(`Error: ${err.message}`);
+    }
+  };
+
   // Actualizar ejercicio
   const handleUpdate = async () => {
     if (!editingExercise) return;
@@ -499,6 +545,19 @@ const ExercisesManagement: React.FC = () => {
             {contentType === "classes" && (
               <>
                 <div className={styles.formGroup}>
+                  <label>ID del Entrenador (requerido):</label>
+                  <input
+                    type="text"
+                    value={formData.trainerId || ""}
+                    onChange={(e) =>
+                      setFormData({ ...formData, trainerId: e.target.value })
+                    }
+                    placeholder="UUID del entrenador"
+                    required
+                  />
+                </div>
+
+                <div className={styles.formGroup}>
                   <label>Título de la Clase:</label>
                   <input
                     type="text"
@@ -615,9 +674,13 @@ const ExercisesManagement: React.FC = () => {
                   } else {
                     handleCreate();
                   }
-                } else {
-                  // TODO: Implementar funciones para clases
-                  alert("Funcionalidad para clases en desarrollo");
+                } else if (contentType === "classes") {
+                  if (editingClass) {
+                    // TODO: Implementar handleUpdateClass
+                    alert("Funcionalidad para editar clases en desarrollo");
+                  } else {
+                    handleCreateClass();
+                  }
                 }
               }}
             >
