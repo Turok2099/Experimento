@@ -15,14 +15,14 @@ import { useSessionSync } from "@/hooks/useSessionSync";
 const roleLinks: Record<string, { href: string; label: string }[]> = {
   admin: [
     { href: "/routine", label: "Rutina" },
-    { href: "/superadmin", label: "Consola Administrador" },
+    { href: "/superadmin", label: "Mi Consola" },
   ],
   member: [
-    { href: "/userDashboard", label: "Perfil Usuario" },
+    { href: "/userDashboard", label: "Mi Consola" },
     { href: "/routine", label: "Rutina" },
   ],
   trainer: [
-    { href: "/coach", label: "Panel Entrenador" },
+    { href: "/coach", label: "Mi Consola" },
     { href: "/routine", label: "Rutina" },
   ],
 };

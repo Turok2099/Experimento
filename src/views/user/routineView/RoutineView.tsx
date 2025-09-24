@@ -67,8 +67,13 @@ export default function RoutineView() {
         });
 
         // Debug específico para ejercicios de resistencia
-        const resistanceExercises = exercisesData.filter(ex => ex.categoria === "Resistencia");
-        console.log("🏋️ [RoutineView] Ejercicios de resistencia:", resistanceExercises.length);
+        const resistanceExercises = exercisesData.filter(
+          (ex) => ex.categoria === "Resistencia"
+        );
+        console.log(
+          "🏋️ [RoutineView] Ejercicios de resistencia:",
+          resistanceExercises.length
+        );
         resistanceExercises.forEach((ex, index) => {
           console.log(`${index + 1}. ${ex.ejercicio} - Tiempo: ${ex.tiempo}`);
         });
@@ -132,14 +137,21 @@ export default function RoutineView() {
     if (isResistance) {
       console.log("🔍 [RoutineView] Procesando resistencia...");
       console.log("📊 Total ejercicios disponibles:", exercises.length);
-      
-      const resistanceExercises = exercises.filter(ex => ex.categoria === "Resistencia");
-      console.log("🏋️ Ejercicios de resistencia encontrados:", resistanceExercises.length);
-      
+
+      const resistanceExercises = exercises.filter(
+        (ex) => ex.categoria === "Resistencia"
+      );
+      console.log(
+        "🏋️ Ejercicios de resistencia encontrados:",
+        resistanceExercises.length
+      );
+
       const resistanceMap = new Map<string, string>();
       exercises.forEach((exercise) => {
         if (exercise.categoria === "Resistencia" && exercise.tiempo) {
-          console.log(`✅ Agregando: ${exercise.ejercicio} - Tiempo: ${exercise.tiempo}`);
+          console.log(
+            `✅ Agregando: ${exercise.ejercicio} - Tiempo: ${exercise.tiempo}`
+          );
           if (!resistanceMap.has(exercise.ejercicio)) {
             resistanceMap.set(
               exercise.ejercicio,
@@ -148,12 +160,14 @@ export default function RoutineView() {
           }
         }
       });
-      
-      const result = Array.from(resistanceMap.entries()).map(([grupo, imagen]) => ({
-        grupo,
-        imagen,
-      }));
-      
+
+      const result = Array.from(resistanceMap.entries()).map(
+        ([grupo, imagen]) => ({
+          grupo,
+          imagen,
+        })
+      );
+
       console.log("📋 Resultado final para resistencia:", result);
       return result;
     }
