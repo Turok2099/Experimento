@@ -389,7 +389,15 @@ const ExercisesManagement: React.FC = () => {
                     className={`${styles.categoryButton} ${
                       exerciseCategory === "resistencia" ? styles.active : ""
                     }`}
-                    onClick={() => setExerciseCategory("resistencia")}
+                    onClick={() => {
+                      setExerciseCategory("resistencia");
+                      // Establecer valores automáticos para resistencia
+                      setFormData({
+                        ...formData,
+                        categoria: "Resistencia",
+                        grupo: "Integral"
+                      });
+                    }}
                   >
                     Resistencia
                   </button>
@@ -536,7 +544,12 @@ const ExercisesManagement: React.FC = () => {
                       type="text"
                       value={formData.ejercicio || ""}
                       onChange={(e) =>
-                        setFormData({ ...formData, ejercicio: e.target.value })
+                        setFormData({ 
+                          ...formData, 
+                          ejercicio: e.target.value,
+                          categoria: "Resistencia", // Automático
+                          grupo: "Integral" // Automático
+                        })
                       }
                       placeholder="Ej: Cinta de correr, Bicicleta estática, Elíptica"
                     />
