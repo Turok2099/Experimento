@@ -27,25 +27,43 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   // cargar sesion desde el localStorage/cookies al iniciar
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem("userSession");
-      if (stored) {
-        const parsed: IUserSession = JSON.parse(stored);
-        setUserData(parsed);
-        console.log("🔍 Sesión cargada desde localStorage:", {
-          token: parsed.token ? "Presente" : "Ausente",
-          user: parsed.user?.email || "No disponible",
-        });
-      } else {
+    const loadSession = () => {
+      try {
+        const stored = localStorage.getItem("userSession");
+        if (stored) {
+          const parsed: IUserSession = JSON.parse(stored);
+          setUserData(parsed);
+          console.log("🔍 Sesión cargada desde localStorage:", {
+            token: parsed.token ? "Presente" : "Ausente",
+            user: parsed.user?.email || "No disponible",
+          });
+        } else {
+          setUserData(null);
+          console.log("❌ No hay sesión almacenada");
+        }
+      } catch (err) {
+        console.error("Error cargando userSession:", err);
         setUserData(null);
-        console.log("❌ No hay sesión almacenada");
+      } finally {
+        setLoadingSession(false); // 🔹 muy importante
       }
-    } catch (err) {
-      console.error("Error cargando userSession:", err);
-      setUserData(null);
-    } finally {
-      setLoadingSession(false); // 🔹 muy importante
-    }
+    };
+
+    loadSession();
+
+    // Listener para sincronizar sesiones entre pestañas
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === "userSession") {
+        console.log("🔄 Cambio detectado en userSession, sincronizando...");
+        loadSession();
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
   }, []);
 
   useEffect(() => {
@@ -68,7 +86,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setUserData(null);
     localStorage.removeItem("userSession");
     Cookies.remove("userSession");
+    console.log("🚪 Sesión cerrada completamente");
   };
+
+  // Limpiar sesión al cerrar la pestaña (opcional)
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      // Solo limpiar si es necesario (comentado por defecto)
+      // localStorage.removeItem("userSession");
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
 
   return (
     <AuthContext.Provider

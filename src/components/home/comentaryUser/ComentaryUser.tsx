@@ -55,7 +55,7 @@ export default function ComentaryUser() {
           breakpoint: 768,
           settings: {
             slidesToShow: 1,
-            autoplaySpeed: 6000,
+            autoplaySpeed: 3000, // Movimiento más rápido en móvil
             dots: false, // Ocultar dots en móvil
           },
         },
@@ -80,9 +80,6 @@ export default function ComentaryUser() {
   if (err)
     return (
       <section className={styles.sectionComentary}>
-        <div className={styles.mensaje}>
-          <h2>Comentarios de usuarios</h2>
-        </div>
         <div className={styles.errorContainer}>
           <p className={styles.alert}>{err}</p>
         </div>
@@ -92,9 +89,6 @@ export default function ComentaryUser() {
   if (!items.length)
     return (
       <section className={styles.sectionComentary}>
-        <div className={styles.mensaje}>
-          <h2>Comentarios de usuarios</h2>
-        </div>
         <div className={styles.emptyContainer}>
           <p className={styles.muted}>Aún no hay comentarios disponibles.</p>
         </div>
@@ -103,9 +97,6 @@ export default function ComentaryUser() {
 
   return (
     <section className={styles.sectionComentary}>
-      <div className={styles.mensaje}>
-        <h2>Comentarios de usuarios</h2>
-      </div>
       <div className={styles.sliderWrapper}>
         <Slider {...settings}>
           {items.map((c) => (

@@ -30,12 +30,14 @@ export class ClasesService {
 
   // Obtener la agenda del usuario (clases reservadas)
   static async getMyAgenda(token: string): Promise<ClaseAPI[]> {
+
     const res = await fetch(`${API}/reservations/me`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
       cache: "no-store",
     });
+
 
     if (!res.ok) {
       const errorData = await res.json().catch(() => ({}));
@@ -106,7 +108,9 @@ export class ClasesService {
 
     if (!res.ok) {
       const errorData = await res.json().catch(() => ({}));
-      throw new Error(errorData?.message || "No se pudo asignar como entrenador");
+      throw new Error(
+        errorData?.message || "No se pudo asignar como entrenador"
+      );
     }
 
     return res.json();
@@ -125,7 +129,9 @@ export class ClasesService {
 
     if (!res.ok) {
       const errorData = await res.json().catch(() => ({}));
-      throw new Error(errorData?.message || "No se pudo desasignar como entrenador");
+      throw new Error(
+        errorData?.message || "No se pudo desasignar como entrenador"
+      );
     }
 
     return res.json();

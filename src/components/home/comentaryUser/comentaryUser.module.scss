@@ -16,16 +16,11 @@
   }
 }
 
-.mensaje {
-  @include utils.ClassStyleTitle;
-  margin-bottom: 2rem; // Espacio reducido entre título y contenedor
-}
-
 .sectionComentary {
-  display: flex;
+  @include utils.ClassFlexCenter;
   flex-direction: column;
-  align-items: center;
-  padding: 2rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
   color: #fff;
   text-align: center;
   width: 100%;
@@ -36,7 +31,8 @@
   width: 100%;
   max-width: 1200px; // Limitar ancho máximo
   margin: 0 auto !important;
-  overflow: hidden;
+  padding: 1rem 2rem; // Padding vertical para hover
+  overflow: visible; // Permitir efectos hover
 
   // Estilos específicos para sobrescribir slick-carousel
   .slick-slider {
@@ -66,7 +62,7 @@
 
   // Estilos para los dots
   .slick-dots {
-    bottom: -3rem;
+    bottom: -2rem; // Ajustado por el nuevo padding
 
     li {
       margin: 0 0.5rem;
@@ -116,17 +112,6 @@
       transparent
     );
     transition: left 0.6s;
-  }
-
-  &:hover {
-    transform: translateY(-6px) scale(1.01); // Efecto más sutil
-    border-color: var(--colorAmarillo);
-    box-shadow: 0 6px 20px rgba(255, 255, 0, 0.15),
-      0 3px 10px rgba(0, 0, 0, 0.3);
-
-    &::before {
-      left: 100%;
-    }
   }
 }
 
@@ -262,6 +247,7 @@
   }
 
   .sliderWrapper {
+    padding: 1rem 1rem; // Mantener padding vertical
     .slick-slide {
       padding: 0 1rem !important;
     }
@@ -309,18 +295,19 @@
   }
 
   .sliderWrapper {
+    padding: 1rem 1rem; // Mantener padding vertical
     .slick-slide {
-      padding: 0 0.75rem !important;
+      padding: 0 0.5rem !important;
     }
     .slick-list {
-      margin: 0 -0.75rem !important;
+      margin: 0 -0.5rem !important;
     }
     .slick-track {
-      gap: 1rem !important;
+      gap: 0.5rem !important;
     }
 
     .slick-dots {
-      bottom: -2.5rem;
+      bottom: -1.5rem; // Ajustado por el nuevo padding
     }
   }
 
@@ -328,8 +315,8 @@
     padding: 1.75rem !important;
     height: 240px; // Altura fija para móvil
     gap: 1.25rem;
-    margin: 0 0.5rem !important;
-    width: calc(100% - 1rem) !important;
+    margin: 0 0.25rem !important;
+    width: calc(100% - 0.5rem) !important;
   }
 
   .userName {
@@ -363,18 +350,19 @@
   }
 
   .sliderWrapper {
+    padding: 1rem 0.5rem; // Mantener padding vertical
     .slick-slide {
-      padding: 0 0.5rem !important;
+      padding: 0 0.25rem !important;
     }
     .slick-list {
-      margin: 0 -0.5rem !important;
+      margin: 0 -0.25rem !important;
     }
     .slick-track {
-      gap: 0.75rem !important;
+      gap: 0.25rem !important;
     }
 
     .slick-dots {
-      bottom: -2rem;
+      bottom: -1rem; // Ajustado por el nuevo padding
 
       li {
         margin: 0 0.25rem;
@@ -391,8 +379,8 @@
     height: 220px; // Altura fija para móvil pequeño
     gap: 1rem;
     border-radius: 12px;
-    margin: 0 0.25rem !important;
-    width: calc(100% - 0.5rem) !important;
+    margin: 0 0.125rem !important;
+    width: calc(100% - 0.25rem) !important;
   }
 
   .userName {

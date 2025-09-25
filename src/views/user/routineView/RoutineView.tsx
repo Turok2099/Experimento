@@ -3,6 +3,8 @@
 import { useMemo, useState, useEffect } from "react";
 import Image from "next/image";
 import { trainingGoals } from "@/helpers/fitnessLists";
+import { getMuscleGroupImage } from "@/helpers/muscleGroupImages";
+import { getClassImage } from "@/helpers/classImages";
 import styles from "./routineView.module.scss";
 import DailyRoutine from "@/components/routine/dailyRoutine";
 import {
@@ -124,7 +126,8 @@ export default function RoutineView() {
       const classMap = new Map<string, string>();
       classes.forEach((clase) => {
         if (!classMap.has(clase.title)) {
-          classMap.set(clase.title, clase.imageUrl || "/Train UP.png");
+          // Usar la imagen específica de la clase desde nuestro helper
+          classMap.set(clase.title, getClassImage(clase.title));
         }
       });
       return Array.from(classMap.entries()).map(([grupo, imagen]) => ({
@@ -185,7 +188,11 @@ export default function RoutineView() {
         : false;
 
       if (hasExercisesForType && !categoriesWithExercises.has(exercise.grupo)) {
-        categoriesWithExercises.set(exercise.grupo, exercise.imagenGrupo);
+        // Usar la imagen específica del grupo muscular desde nuestro helper
+        categoriesWithExercises.set(
+          exercise.grupo,
+          getMuscleGroupImage(exercise.grupo)
+        );
       }
     });
 
@@ -419,7 +426,7 @@ export default function RoutineView() {
 
           {/* Paso 3: Ejercicios */}
           {step === 3 && (
-            <>
+            <div className={styles.stepContainer}>
               <div className={styles.sectionTitleContainer}>
                 {isClasses ? (
                   <>
@@ -493,7 +500,7 @@ export default function RoutineView() {
               <button className={styles.backButton} onClick={() => setStep(2)}>
                 ← Volver
               </button>
-            </>
+            </div>
           )}
         </div>
       )}

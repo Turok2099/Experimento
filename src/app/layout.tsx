@@ -2,6 +2,7 @@ import "./globals.css";
 import Footer from "@/components/home/footer/Footer";
 import Navbar from "@/components/home/navbar/Navbar";
 import Providers from "./providers";
+import { MenuProvider } from "@/context/MenuContext";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
@@ -25,11 +26,13 @@ export default function RootLayout({
       </head>
       <body>
         <Providers>
-          <div className="layout">
-            <Navbar />
-            <main className="main">{children}</main>
-            <Footer />
-          </div>
+          <MenuProvider>
+            <div className="layout">
+              <Navbar />
+              <main className="main">{children}</main>
+              <Footer />
+            </div>
+          </MenuProvider>
         </Providers>
       </body>
     </html>

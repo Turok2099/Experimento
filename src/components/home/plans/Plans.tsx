@@ -16,9 +16,6 @@ const Plans = () => {
 
   return (
     <section className={styles.plansSection}>
-      <div className={styles.mensaje}>
-        <h2>Unete al equipo TrainUp</h2>
-      </div>
       <div className={styles.contCard}>
         {plansLoading ? (
           <div className={styles.loading}>

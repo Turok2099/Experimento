@@ -51,38 +51,42 @@ const TablaClases: React.FC = () => {
       <div className="tabla-container">
         <h2>Mis Clases Asignadas</h2>
 
-        <table className="tabla-clases">
-          <thead>
-            <tr>
-              <th>Título</th>
-              <th>Fecha</th>
-              <th>Hora Inicio</th>
-              <th>Hora Fin</th>
-              <th>Estado</th>
-            </tr>
-          </thead>
-          <tbody>
-            {tomadas.length > 0 ? (
-              tomadas.map((c) => (
-                <tr key={c.id}>
-                  <td>{c.title}</td>
-                  <td>{c.date}</td>
-                  <td>{c.startTime}</td>
-                  <td>{c.endTime}</td>
-                  <td>
-                    <span className="assigned-status">
-                      ✅ Asignado como entrenador
-                    </span>
+        <div className="tabla-scroll-container">
+          <table className="tabla-clases">
+            <thead>
+              <tr>
+                <th>Título</th>
+                <th>Fecha</th>
+                <th>Hora Inicio</th>
+                <th>Hora Fin</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              {tomadas.length > 0 ? (
+                tomadas.map((c) => (
+                  <tr key={c.id}>
+                    <td>{c.title}</td>
+                    <td>{c.date}</td>
+                    <td>{c.startTime}</td>
+                    <td>{c.endTime}</td>
+                    <td>
+                      <span className="assigned-status">
+                        ✅ Asignado como entrenador
+                      </span>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr className="no-classes">
+                  <td colSpan={5}>
+                    No tienes clases asignadas como entrenador.
                   </td>
                 </tr>
-              ))
-            ) : (
-              <tr className="no-classes">
-                <td colSpan={5}>No tienes clases asignadas como entrenador.</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

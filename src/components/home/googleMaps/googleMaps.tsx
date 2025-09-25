@@ -27,10 +27,6 @@ const ComponentGoogleMaps: React.FC = () => {
 
   return (
     <section className={styles.container}>
-      <div className={styles.mensaje}>
-        <h2>Visítanos</h2>
-      </div>
-
       <div className={styles.mapsRow}>
         {locations.map((loc, index) => (
           <div key={index} className={styles.wrapper}>

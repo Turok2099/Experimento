@@ -35,10 +35,6 @@ const GaleryHome = () => {
 
   return (
     <section className={styles.sectionGaleria}>
-      <div className={styles.mensaje}>
-        <h2>Galeria</h2>
-      </div>
-
       <div className={styles.carouselContainer}>
         <Swiper
           modules={[FreeMode]}
@@ -63,7 +59,7 @@ const GaleryHome = () => {
                   fill
                   quality={75}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 60vw"
-                  style={{ objectFit: "cover" }}
+                  style={{ objectFit: "cover", objectPosition: "top" }}
                   priority={image.id <= 3}
                   loading={image.id <= 3 ? "eager" : "lazy"}
                 />

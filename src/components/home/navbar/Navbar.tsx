@@ -7,6 +7,7 @@ import { IoIosFitness } from "react-icons/io";
 import { HiLogout } from "react-icons/hi";
 import { signOut } from "next-auth/react";
 import { useAuth } from "@/context/AuthContext";
+import { useMenu } from "@/context/MenuContext";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import { useSessionSync } from "@/hooks/useSessionSync";
@@ -28,8 +29,8 @@ const roleLinks: Record<string, { href: string; label: string }[]> = {
 };
 
 const Navbar = () => {
-  const [open, setOpen] = useState(false);
   const { userData, setUserData } = useAuth();
+  const { navbarMenuOpen, openNavbarMenu, closeAllMenus } = useMenu();
   const router = useRouter();
 
   // Sincronizar sesión con NextAuth
@@ -37,7 +38,7 @@ const Navbar = () => {
 
   // Función para cerrar el menú
   const closeMenu = () => {
-    setOpen(false);
+    closeAllMenus();
   };
 
   const handleLogout = async () => {
@@ -65,16 +66,21 @@ const Navbar = () => {
       </nav>
 
       {/* Botón hamburguesa móvil */}
-      <div className={styles.hamburger} onClick={() => setOpen(!open)}>
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
+      <button
+        className={`${styles.hamburger} ${navbarMenuOpen ? styles.open : ""}`}
+        onClick={openNavbarMenu}
+      >
+        ☰
+      </button>
 
       {/* Overlay para cerrar el menú */}
-      {open && <div className={styles.overlay} onClick={closeMenu}></div>}
+      {navbarMenuOpen && (
+        <div className={styles.overlay} onClick={closeMenu}></div>
+      )}
 
-      <nav className={`${styles.contLinks} ${open ? styles.open : ""}`}>
+      <nav
+        className={`${styles.contLinks} ${navbarMenuOpen ? styles.open : ""}`}
+      >
         {/* 🔹 Si no hay sesión → mostrar links públicos */}
         {!userData && (
           <>

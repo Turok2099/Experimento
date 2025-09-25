@@ -3,11 +3,13 @@ import styles from "./ClassesManagement.module.scss";
 import { useClasses, ClassDto } from "@/hooks/superadmin/classes/useClasses";
 import { useUpdateClass } from "@/hooks/superadmin/classes/useUpdateClasses";
 import { useAuth } from "@/context/AuthContext";
+import CreateClass from "./CreateClass";
 
 const ClassesManagement: React.FC = () => {
   const { classes, loading, error, fetchClasses } = useClasses();
   const [editingClass, setEditingClass] = useState<ClassDto | null>(null);
   const [formData, setFormData] = useState<Partial<ClassDto>>({});
+  const [showCreateForm, setShowCreateForm] = useState(false);
   const { updateClass, loading: updating } = useUpdateClass();
   const { userData } = useAuth();
 
@@ -89,7 +91,15 @@ const ClassesManagement: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <h2>Gestión de Clases</h2>
+      <div className={styles.header}>
+        <h2>Gestión de Clases</h2>
+        <button
+          className={styles.addButton}
+          onClick={() => setShowCreateForm(true)}
+        >
+          + Agregar Clase
+        </button>
+      </div>
       <div className={styles.tableContainer}>
         <table className={styles.table}>
           <thead>
@@ -236,6 +246,16 @@ const ClassesManagement: React.FC = () => {
             </div>
           </div>
         </div>
+      )}
+
+      {showCreateForm && (
+        <CreateClass
+          onSuccess={() => {
+            setShowCreateForm(false);
+            fetchClasses(); // Refrescar la lista
+          }}
+          onCancel={() => setShowCreateForm(false)}
+        />
       )}
     </div>
   );

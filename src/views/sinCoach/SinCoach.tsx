@@ -45,8 +45,22 @@ const Disponibles: React.FC = () => {
         const allClases = await ClasesService.getAllClasses();
         setClases(allClases);
 
-        const agenda = await ClasesService.getMyAgenda(userData.token!);
-        setTomadas(agenda);
+        // Intentar obtener la agenda, pero no fallar si no se puede
+        try {
+          const agenda = await ClasesService.getMyAgenda(userData.token!);
+          setTomadas(agenda);
+        } catch (agendaErr: any) {
+          console.warn("No se pudo cargar la agenda:", agendaErr.message);
+          // Si es un error de autorización, simplemente no cargar la agenda
+          if (
+            agendaErr.message?.includes("Unauthorized") ||
+            agendaErr.message?.includes("Error al obtener agenda")
+          ) {
+            setTomadas([]); // Inicializar con array vacío
+          } else {
+            throw agendaErr; // Re-lanzar otros errores
+          }
+        }
       } catch (err) {
         console.error("Error al cargar clases", err);
         toast.error("Error al cargar clases");
@@ -55,6 +69,35 @@ const Disponibles: React.FC = () => {
 
     fetchClases();
   }, [userData]);
+
+  // Función para refrescar el estado completo
+  const refreshState = async () => {
+    if (!userData?.token) return;
+
+    try {
+      const allClases = await ClasesService.getAllClasses();
+      setClases(allClases);
+
+      // Intentar obtener la agenda, pero no fallar si no se puede
+      try {
+        const agenda = await ClasesService.getMyAgenda(userData.token);
+        setTomadas(agenda);
+      } catch (agendaErr: any) {
+        console.warn("No se pudo refrescar la agenda:", agendaErr.message);
+        // Si es un error de autorización, mantener el estado actual
+        if (
+          agendaErr.message?.includes("Unauthorized") ||
+          agendaErr.message?.includes("Error al obtener agenda")
+        ) {
+          // No cambiar el estado de tomadas si hay error de autorización
+        } else {
+          throw agendaErr; // Re-lanzar otros errores
+        }
+      }
+    } catch (err) {
+      console.error("Error al refrescar estado:", err);
+    }
+  };
 
   const toggleDay = (dia: string) => setOpenDay(openDay === dia ? null : dia);
 
@@ -75,7 +118,7 @@ const Disponibles: React.FC = () => {
         toast.success(`Te has inscrito en ${c.title} (${c.date}) ✅`);
       }
 
-      // Recargar las clases para reflejar los cambios
+      // Solo recargar las clases principales, no la agenda completa
       const allClases = await ClasesService.getAllClasses();
       setClases(allClases);
     } catch (err) {
@@ -89,11 +132,28 @@ const Disponibles: React.FC = () => {
 
     try {
       await ClasesService.cancelClass(userData.token, c.id);
+
+      // Actualizar estado local inmediatamente
       setTomadas((prev) => prev.filter((cl) => cl.id !== c.id));
-      toast(`Has cancelado ${c.title} (${c.date}) ❌`);
-    } catch (err) {
-      console.error(err);
-      toast.error("Error al cancelar clase");
+      toast.success(`Has cancelado ${c.title} (${c.date}) ❌`);
+
+      // Solo recargar las clases principales, no la agenda
+      const allClases = await ClasesService.getAllClasses();
+      setClases(allClases);
+    } catch (err: any) {
+      console.error("Error al cancelar clase:", err);
+
+      // Si el error es que no hay reserva activa, actualizar el estado local
+      if (err.message?.includes("No tienes una reserva activa")) {
+        setTomadas((prev) => prev.filter((cl) => cl.id !== c.id));
+        toast.success("La clase ya estaba cancelada");
+
+        // Solo recargar las clases principales
+        const allClases = await ClasesService.getAllClasses();
+        setClases(allClases);
+      } else {
+        toast.error("Error al cancelar clase");
+      }
     }
   };
 
@@ -108,7 +168,7 @@ const Disponibles: React.FC = () => {
         `Has cancelado tu asignación como entrenador de ${c.title} (${c.date}) ❌`
       );
 
-      // Recargar las clases para reflejar los cambios
+      // Solo recargar las clases principales
       const allClases = await ClasesService.getAllClasses();
       setClases(allClases);
     } catch (err) {

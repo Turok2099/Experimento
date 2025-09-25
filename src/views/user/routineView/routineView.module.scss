@@ -2,10 +2,17 @@
   padding: 2rem 1rem;
   max-width: 1000px;
   margin: 0 auto;
+  width: 100%;
 }
 
 .container {
   position: relative;
+}
+
+.stepContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .loadingMessage,
@@ -286,8 +293,8 @@
 
 .backButton,
 .viewExercisesButton {
-  display: inline-block;
-  margin: 1rem auto 0;
+  display: block;
+  margin: 3rem 0 0 auto; // ← Más espacio arriba (aumentado de 2rem a 3rem)
   padding: 0.8rem 1.6rem;
   background: var(--colorAmarillo);
   color: #000;
@@ -296,6 +303,9 @@
   font-weight: 600;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  width: fit-content; // ← Solo el ancho necesario
+  margin-left: auto; // ← Fuerza alineación a la derecha
+  margin-right: 0; // ← Sin margen derecho
 }
 
 .backButton:hover,
@@ -305,16 +315,86 @@
 }
 
 /* Responsive design */
-@media (max-width: 768px) {
+// Tablet
+@media (max-width: 1024px) {
+  .mainWrapper {
+    padding: 1.5rem 1rem;
+    max-width: 100%;
+  }
+
   .goalColumn {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
-    padding: 0 1rem;
+    padding: 0 0.5rem;
   }
 
   .cardImage {
-    width: 150px;
-    height: 150px;
+    width: 160px;
+    height: 160px;
+  }
+
+  .goalCard {
+    padding: 1.2rem 0.8rem;
+  }
+
+  .cardGrid {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.5rem;
+    padding: 0 0.5rem;
+  }
+
+  .categoryImage {
+    height: 140px;
+  }
+
+  .list {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+    padding: 0 0.5rem;
+  }
+
+  .itemRow {
+    padding: 1.2rem;
+  }
+
+  .itemImage {
+    width: 90px;
+    height: 90px;
+  }
+
+  .sectionTitleContainer {
+    padding: 1.2rem;
+    margin: 1.5rem 0;
+  }
+
+  .categoryTitle {
+    font-size: 2.2rem;
+  }
+
+  .backButton,
+  .viewExercisesButton {
+    margin: 2.5rem 0 0 auto; // ← Más espacio para tablet (aumentado de 1.5rem a 2.5rem)
+    margin-left: auto; // ← Fuerza alineación a la derecha
+    margin-right: 0; // ← Sin margen derecho
+  }
+}
+
+// Móvil
+@media (max-width: 768px) {
+  .mainWrapper {
+    padding: 1rem 0.5rem;
+    max-width: 100%;
+  }
+
+  .goalColumn {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding: 0 0.5rem;
+  }
+
+  .cardImage {
+    width: 140px;
+    height: 140px;
   }
 
   .goalCard {
@@ -322,28 +402,37 @@
   }
 
   .cardGrid {
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 1.5rem;
-    padding: 0 0.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem;
+    padding: 0 0.25rem;
   }
 
   .categoryImage {
-    height: 120px;
+    height: 100px;
   }
 
   .list {
     grid-template-columns: 1fr;
     gap: 1rem;
-    padding: 0 1rem;
+    padding: 0 0.5rem;
   }
 
   .itemRow {
     padding: 1rem;
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
   }
 
   .itemImage {
     width: 100px;
     height: 100px;
+    margin: 0 auto;
+  }
+
+  .itemDetails {
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
   }
 
   .sectionTitleContainer {
@@ -352,17 +441,33 @@
   }
 
   .categoryTitle {
-    font-size: 2rem;
+    font-size: 1.8rem;
   }
 
   .titleLabel {
     font-size: 0.9rem;
   }
+
+  .backButton,
+  .viewExercisesButton {
+    margin: 2rem 0 0 auto; // ← Más espacio para móvil (aumentado de 1.5rem a 2rem)
+    margin-left: auto; // ← Fuerza alineación a la derecha
+    margin-right: 0; // ← Sin margen derecho
+    padding: 0.7rem 1.4rem;
+    font-size: 0.9rem;
+  }
 }
 
+// Móvil pequeño
 @media (max-width: 480px) {
   .mainWrapper {
-    padding: 1rem 0.5rem;
+    padding: 0.75rem 0.25rem;
+    max-width: 100%;
+  }
+
+  .goalColumn {
+    gap: 1rem;
+    padding: 0 0.25rem;
   }
 
   .cardImage {
@@ -370,16 +475,32 @@
     height: 120px;
   }
 
+  .goalCard {
+    padding: 1rem 0.75rem;
+  }
+
   .cardTitle {
     font-size: 1rem;
   }
 
+  .cardGrid {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 0.75rem;
+    padding: 0 0.125rem;
+  }
+
+  .categoryImage {
+    height: 80px;
+  }
+
   .list {
-    padding: 0 0.5rem;
+    padding: 0 0.25rem;
+    gap: 0.75rem;
   }
 
   .itemRow {
     padding: 0.8rem;
+    gap: 0.75rem;
   }
 
   .itemImage {
@@ -388,7 +509,7 @@
   }
 
   .itemDetails {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     padding: 0.4rem 0.8rem;
   }
 
@@ -398,10 +519,96 @@
   }
 
   .categoryTitle {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
   }
 
   .titleLabel {
+    font-size: 0.8rem;
+  }
+
+  .backButton,
+  .viewExercisesButton {
+    margin: 1.75rem 0 0 auto; // ← Más espacio para móvil pequeño (aumentado de 1.25rem a 1.75rem)
+    margin-left: auto; // ← Fuerza alineación a la derecha
+    margin-right: 0; // ← Sin margen derecho
+    padding: 0.6rem 1.2rem;
+    font-size: 0.85rem;
+  }
+}
+
+// Móvil muy pequeño
+@media (max-width: 360px) {
+  .mainWrapper {
+    padding: 0.5rem 0.125rem;
+  }
+
+  .goalColumn {
+    gap: 0.75rem;
+    padding: 0 0.125rem;
+  }
+
+  .cardImage {
+    width: 100px;
+    height: 100px;
+  }
+
+  .goalCard {
+    padding: 0.75rem 0.5rem;
+  }
+
+  .cardTitle {
+    font-size: 0.9rem;
+  }
+
+  .cardGrid {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 0.5rem;
+    padding: 0;
+  }
+
+  .categoryImage {
+    height: 70px;
+  }
+
+  .list {
+    padding: 0 0.125rem;
+    gap: 0.5rem;
+  }
+
+  .itemRow {
+    padding: 0.6rem;
+    gap: 0.5rem;
+  }
+
+  .itemImage {
+    width: 70px;
+    height: 70px;
+  }
+
+  .itemDetails {
+    font-size: 0.8rem;
+    padding: 0.3rem 0.6rem;
+  }
+
+  .sectionTitleContainer {
+    padding: 0.6rem;
+    margin: 0.75rem 0;
+  }
+
+  .categoryTitle {
+    font-size: 1.4rem;
+  }
+
+  .titleLabel {
+    font-size: 0.75rem;
+  }
+
+  .backButton,
+  .viewExercisesButton {
+    margin: 1.5rem 0 0 auto; // ← Más espacio para móvil muy pequeño (aumentado de 1rem a 1.5rem)
+    margin-left: auto; // ← Fuerza alineación a la derecha
+    margin-right: 0; // ← Sin margen derecho
+    padding: 0.5rem 1rem;
     font-size: 0.8rem;
   }
 }

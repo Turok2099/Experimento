@@ -68,18 +68,70 @@
   }
 }
 
+// Modal overlay
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 10000; // ← Z-index muy alto para estar por encima del sidebar
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(5px);
+  overflow: hidden; // ← Prevenir scroll del modal
+}
+
 .formContainer {
   background: #f9f9f9;
   padding: 30px;
   border-radius: 12px;
-  margin-bottom: 30px;
   border: 1px solid #e0e0e0;
+  max-width: 800px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  position: relative;
+  margin: 0 auto; // ← Centrar el modal
+}
+
+.closeButton {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: #ff4444;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 10001; // ← Z-index muy alto para estar por encima del modal
+
+  &:hover {
+    background: #ff6666;
+    transform: scale(1.1);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
 }
 
 .formContainer h3 {
   color: #333;
   margin-bottom: 20px;
   font-size: 22px;
+  padding-right: 40px; // Espacio para el botón de cerrar
 }
 
 .formGrid {
@@ -403,6 +455,69 @@
   }
 }
 
+// Estilos para filtros
+.filtersContainer {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  flex-wrap: wrap;
+  align-items: end;
+}
+
+.filterGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 200px;
+}
+
+.filterGroup label {
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+}
+
+.filterSelect {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: white;
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+
+  &:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+  }
+
+  &:hover {
+    border-color: #007bff;
+  }
+}
+
+.clearFiltersButton {
+  padding: 8px 16px;
+  background: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  height: fit-content;
+
+  &:hover {
+    background: #5a6268;
+  }
+}
+
 // Responsive
 @media (max-width: 768px) {
   .container {
@@ -413,6 +528,23 @@
     flex-direction: column;
     gap: 15px;
     align-items: stretch;
+  }
+
+  .modalOverlay {
+    padding: 0;
+    align-items: flex-start;
+    padding-top: 80px; // ← Espacio para el navbar
+    padding-bottom: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .formContainer {
+    padding: 15px;
+    max-height: calc(100vh - 120px); // ← Altura considerando navbar y padding
+    width: 100%;
+    margin: 0;
+    overflow-y: auto;
   }
 
   .formGrid {
@@ -434,5 +566,113 @@
   .table th,
   .table td {
     padding: 10px 8px;
+  }
+
+  .filtersContainer {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .filterGroup {
+    min-width: auto;
+  }
+}
+
+// Móvil muy pequeño
+@media (max-width: 480px) {
+  .modalOverlay {
+    padding: 0;
+    padding-top: 80px; // ← Espacio para el navbar
+    padding-bottom: 15px;
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+
+  .formContainer {
+    padding: 10px;
+    max-height: calc(100vh - 110px); // ← Altura considerando navbar y padding
+    width: 100%;
+    border-radius: 8px;
+    overflow-y: auto;
+  }
+
+  .closeButton {
+    top: 10px;
+    right: 10px;
+    width: 25px;
+    height: 25px;
+    font-size: 16px;
+  }
+
+  .formContainer h3 {
+    font-size: 18px;
+    padding-right: 35px;
+  }
+
+  .formGroup input,
+  .formGroup select,
+  .formGroup textarea {
+    padding: 8px;
+    font-size: 14px;
+  }
+
+  .formActions {
+    gap: 10px;
+  }
+
+  .submitButton,
+  .cancelButton {
+    padding: 10px 15px;
+    font-size: 14px;
+  }
+}
+
+// Móvil extra pequeño
+@media (max-width: 360px) {
+  .modalOverlay {
+    padding: 0;
+    padding-top: 80px; // ← Espacio para el navbar
+    padding-bottom: 10px;
+    padding-left: 3px;
+    padding-right: 3px;
+  }
+
+  .formContainer {
+    padding: 8px;
+    max-height: calc(100vh - 100px); // ← Altura considerando navbar y padding
+    width: 100%;
+    border-radius: 6px;
+    overflow-y: auto;
+  }
+
+  .closeButton {
+    top: 8px;
+    right: 8px;
+    width: 22px;
+    height: 22px;
+    font-size: 14px;
+  }
+
+  .formContainer h3 {
+    font-size: 16px;
+    padding-right: 30px;
+    margin-bottom: 15px;
+  }
+
+  .formGroup label {
+    font-size: 12px;
+  }
+
+  .formGroup input,
+  .formGroup select,
+  .formGroup textarea {
+    padding: 6px;
+    font-size: 12px;
+  }
+
+  .submitButton,
+  .cancelButton {
+    padding: 8px 12px;
+    font-size: 12px;
   }
 }

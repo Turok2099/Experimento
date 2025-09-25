@@ -20,7 +20,15 @@
     font-weight: 700;
     text-align: center;
     margin-bottom: 1.5rem;
-    color: #222;
+    color: #fff; /* Título blanco para fondo negro */
+  }
+
+  /* Contenedor con scroll horizontal para tablas en móviles */
+  .tabla-scroll-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* Scroll suave en iOS */
+    margin: 0 -1rem; /* Compensar el padding del contenedor */
+    padding: 0 1rem;
   }
 
   .tabla-clases {
@@ -28,6 +36,7 @@
     border-collapse: separate;
     border-spacing: 0 8px;
     font-size: clamp(0.85rem, 2vw, 1rem);
+    table-layout: fixed; /* Mejor control del layout */
 
     th,
     td {
@@ -38,6 +47,7 @@
       max-width: 200px;
       word-break: break-word;
       text-align: center;
+      overflow: hidden; /* Evitar desbordamiento */
     }
 
     th {
@@ -52,7 +62,7 @@
 
       &:hover {
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Sombra negra más intensa */
       }
     }
 
@@ -83,6 +93,8 @@
     font-size: clamp(0.75rem, 2.5vw, 0.9rem);
     overflow-x: auto;
     display: block;
+    width: 100%;
+    min-width: 600px; /* Ancho mínimo para mantener legibilidad */
   }
 
   .assigned-status {
@@ -117,15 +129,16 @@
     font-size: clamp(1.3rem, 3vw, 1.6rem);
     margin-bottom: 1.5rem;
   }
-  
+
   .tabla-clases {
     font-size: 0.85rem;
-    
-    th, td {
+
+    th,
+    td {
       padding: 0.6rem 0.4rem;
     }
   }
-  
+
   .assigned-status {
     font-size: 0.75rem;
     padding: 3px 6px;
@@ -137,7 +150,7 @@
   .tabla-page {
     padding: 0.5rem 0;
   }
-  
+
   .tabla-container {
     padding: 1rem;
     border-radius: 0.8rem;
@@ -148,44 +161,45 @@
     margin-bottom: 1rem;
     text-align: center;
   }
-  
+
   .tabla-clases {
     font-size: 0.75rem;
     border-radius: 0.6rem;
-    
-    th, td {
+
+    th,
+    td {
       padding: 0.5rem 0.3rem;
       text-align: center;
     }
-    
+
     th {
       font-size: 0.7rem;
       font-weight: 600;
     }
-    
+
     /* Hacer la tabla más compacta en móviles */
     th:nth-child(2),
     td:nth-child(2) {
       min-width: 80px;
     }
-    
+
     th:nth-child(3),
     td:nth-child(3) {
       min-width: 70px;
     }
-    
+
     th:nth-child(4),
     td:nth-child(4) {
       min-width: 70px;
     }
   }
-  
+
   .assigned-status {
     font-size: 0.7rem;
     padding: 2px 4px;
     border-radius: 4px;
   }
-  
+
   .no-classes td {
     padding: 1.5rem;
     font-size: 0.8rem;
@@ -203,24 +217,25 @@
     font-size: clamp(1.1rem, 3vw, 1.3rem);
     margin-bottom: 0.8rem;
   }
-  
+
   .tabla-clases {
     font-size: 0.7rem;
-    
-    th, td {
+
+    th,
+    td {
       padding: 0.4rem 0.2rem;
     }
-    
+
     th {
       font-size: 0.65rem;
     }
   }
-  
+
   .assigned-status {
     font-size: 0.65rem;
     padding: 1px 3px;
   }
-  
+
   .no-classes td {
     padding: 1rem;
     font-size: 0.75rem;

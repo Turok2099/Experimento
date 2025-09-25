@@ -3,22 +3,13 @@
 .contactContainer {
   min-height: auto;
   background-color: black;
-  padding: 2rem;
-  display: flex;
+  @include utils.ClassFlexCenter;
   flex-direction: column;
-  align-items: center;
-}
-
-.mensaje {
-  @include utils.ClassStyleTitle;
+  margin-top: 2rem;
   margin-bottom: 2rem;
-}
-
-.mainContent {
-  display: flex;
-  justify-content: center;
+  padding: 0 2rem;
   width: 100%;
-  max-width: 800px;
+  max-width: 800px; // Ancho fijo para PC
 }
 
 // Formulario
@@ -201,11 +192,8 @@
 
 @media (max-width: 768px) {
   .contactContainer {
-    padding: 1.5rem;
-  }
-
-  .mainContent {
-    max-width: 100%;
+    padding: 0 1.5rem;
+    max-width: 100%; // Responsive solo en móvil
   }
 
   .formContainer {
@@ -223,7 +211,8 @@
 
 @media (max-width: 480px) {
   .contactContainer {
-    padding: 1rem;
+    padding: 0 1rem;
+    max-width: 100%; // Responsive solo en móvil
   }
 
   .formContainer {
@@ -257,7 +246,8 @@
 
 @media (max-width: 360px) {
   .contactContainer {
-    padding: 0.5rem;
+    padding: 0 0.5rem;
+    max-width: 100%; // Responsive solo en móvil
   }
 
   .formContainer {

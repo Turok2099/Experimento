@@ -1,35 +1,56 @@
+@use "../../../styles/utils.scss" as utils;
+
 // Sección de Clases
 .sectionClases {
-  padding: 4rem 2rem;
-  background-color: black;
-  display: flex;
+  @include utils.ClassFlexCenter;
   flex-direction: column;
-  align-items: center;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  background-color: black;
   width: 100%;
 
-  .mensaje {
-    text-align: center;
-    margin-bottom: 3rem;
+  .cardsScrollContainer {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: var(--colorAmarillo) transparent;
+    margin-bottom: 2rem; // ← Margen inferior adicional
 
-    h2 {
-      font-size: 2.5rem;
-      color: white;
-      margin: 0;
+    &::-webkit-scrollbar {
+      height: 8px;
+    }
 
-      .trainUp {
-        color: var(--colorAmarillo);
-        font-weight: bold;
-      }
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: var(--colorAmarillo);
+      border-radius: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background-color: #ffed4e;
     }
   }
 
   .contCards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    display: flex;
     gap: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
-    margin-bottom: 3rem;
+    padding: 0 2rem;
+    margin-bottom: 4rem; // ← Aumentado de 3rem a 4rem para separar del botón
+    min-width: fit-content;
+
+    // Para desktop, mantener grid
+    @media (min-width: 769px) {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      max-width: 1200px;
+      margin: 0 auto;
+      margin-bottom: 4rem; // ← También aumentar en desktop
+    }
   }
 
   .cardClase {
@@ -38,10 +59,18 @@
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    flex-shrink: 0; // ← Evita que se compriman en scroll horizontal
+    width: 300px; // ← Ancho fijo para scroll horizontal
 
     &:hover {
       transform: translateY(-5px);
       box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    // Para desktop, mantener comportamiento responsive
+    @media (min-width: 769px) {
+      width: auto; // ← Ancho automático en desktop
+      flex-shrink: 1; // ← Permite compresión en desktop
     }
   }
 
@@ -93,6 +122,8 @@
 
   .contButton {
     text-align: center;
+    padding: 0 2rem;
+    margin-top: 2rem; // ← Agregar margen superior explícito
   }
 
   .buttonInscripcion {
@@ -134,9 +165,18 @@
       font-size: 1.5rem;
     }
 
+    .cardsScrollContainer {
+      padding: 0 1rem;
+    }
+
     .contCards {
-      grid-template-columns: 1fr;
       gap: 1.5rem;
+      padding: 0;
+      margin-bottom: 5rem; // ← Mucho más espacio en móvil pequeño
+    }
+
+    .cardClase {
+      width: 280px; // ← Ancho ajustado para móvil pequeño
     }
 
     .cardImage {
@@ -152,9 +192,30 @@
       gap: 0.5rem;
     }
 
+    .contButton {
+      margin-top: 3rem; // ← Más margen en móvil pequeño
+    }
+
     .buttonInscripcion {
       padding: 0.8rem 1.5rem;
       font-size: 1rem;
+    }
+  }
+}
+
+// Responsive para móvil mediano
+@media (max-width: 768px) {
+  .sectionClases {
+    .contCards {
+      margin-bottom: 5rem; // ← Mucho más espacio en móvil mediano
+    }
+
+    .cardClase {
+      width: 300px; // ← Ancho para móvil mediano
+    }
+
+    .contButton {
+      margin-top: 3rem; // ← Más margen en móvil mediano
     }
   }
 }
@@ -163,8 +224,16 @@
 @media (max-width: 1024px) {
   .sectionClases {
     .contCards {
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 1.5rem;
+      margin-bottom: 4.5rem; // ← Más espacio en tablet
+    }
+
+    .cardClase {
+      width: 320px; // ← Ancho ajustado para tablet
+    }
+
+    .contButton {
+      margin-top: 2.5rem; // ← Margen en tablet
     }
 
     .mensaje h2 {

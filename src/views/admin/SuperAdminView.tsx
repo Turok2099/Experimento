@@ -12,6 +12,8 @@ import { useAuth } from "@/context/AuthContext";
 const SuperAdminView: React.FC = () => {
   // Estado para controlar la sección activa
   const [activeSection, setActiveSection] = useState("users");
+  // Estado para controlar el menú móvil
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Obtener el token del contexto de autenticación
   const { userData } = useAuth();
@@ -37,15 +39,30 @@ const SuperAdminView: React.FC = () => {
 
   return (
     <div className={styles.container}>
+      {/* Overlay para móvil */}
+      {isMobileMenuOpen && (
+        <div
+          className={styles.overlay}
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
-      <aside className={styles.sidebar}>
+      <aside
+        className={`${styles.sidebar} ${
+          isMobileMenuOpen ? styles.sidebarOpen : ""
+        }`}
+      >
         <h2 className={styles.logo}>Consola de Administrador</h2>
         <nav className={styles.menu}>
           <button
             className={`${styles.menuItem} ${
               activeSection === "users" ? styles.active : ""
             }`}
-            onClick={() => setActiveSection("users")}
+            onClick={() => {
+              setActiveSection("users");
+              setIsMobileMenuOpen(false);
+            }}
           >
             Usuarios
           </button>
@@ -53,7 +70,10 @@ const SuperAdminView: React.FC = () => {
             className={`${styles.menuItem} ${
               activeSection === "classes" ? styles.active : ""
             }`}
-            onClick={() => setActiveSection("classes")}
+            onClick={() => {
+              setActiveSection("classes");
+              setIsMobileMenuOpen(false);
+            }}
           >
             Clases
           </button>
@@ -61,7 +81,10 @@ const SuperAdminView: React.FC = () => {
             className={`${styles.menuItem} ${
               activeSection === "exercises" ? styles.active : ""
             }`}
-            onClick={() => setActiveSection("exercises")}
+            onClick={() => {
+              setActiveSection("exercises");
+              setIsMobileMenuOpen(false);
+            }}
           >
             Ejercicios
           </button>
@@ -69,7 +92,10 @@ const SuperAdminView: React.FC = () => {
             className={`${styles.menuItem} ${
               activeSection === "plans" ? styles.active : ""
             }`}
-            onClick={() => setActiveSection("plans")}
+            onClick={() => {
+              setActiveSection("plans");
+              setIsMobileMenuOpen(false);
+            }}
           >
             Planes
           </button>
@@ -77,7 +103,10 @@ const SuperAdminView: React.FC = () => {
             className={`${styles.menuItem} ${
               activeSection === "reviews" ? styles.active : ""
             }`}
-            onClick={() => setActiveSection("reviews")}
+            onClick={() => {
+              setActiveSection("reviews");
+              setIsMobileMenuOpen(false);
+            }}
           >
             Reseñas
           </button>
@@ -86,7 +115,16 @@ const SuperAdminView: React.FC = () => {
 
       {/* Contenido principal */}
       <main className={styles.content}>
-        <h1 className={styles.title}>Panel de Administrador</h1>
+        <div className={styles.titleContainer}>
+          <h1 className={styles.title}>Panel de Administrador</h1>
+          {/* Botón hamburguesa para móvil */}
+          <button
+            className={styles.mobileMenuButton}
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            ☰
+          </button>
+        </div>
         <div className={styles.section}>{renderSection}</div>
       </main>
     </div>

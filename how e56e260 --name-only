@@ -1,0 +1,322 @@
+[33mcommit e56e2608765154b2b991a6edd85a8f0dea90c5dc[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: turok2099 <jorge.castro.cruz@hotmail.com>
+Date:   Wed Sep 24 10:52:30 2025 -0600
+
+    Fix: Configurar dominio de Cloudinary en Next.js para imágenes externas
+    
+    - Agregar 'res.cloudinary.com' a domains en next.config.ts
+    - Permitir que Next.js Image component cargue imágenes de Cloudinary
+    - Solucionar problema de renderizado de imágenes de ejercicios
+
+[1mdiff --git a/next.config.ts b/next.config.ts[m
+[1mindex 46537d1..24579d2 100644[m
+[1m--- a/next.config.ts[m
+[1m+++ b/next.config.ts[m
+[36m@@ -3,6 +3,9 @@[m [mimport type { NextConfig } from "next";[m
+ const nextConfig: NextConfig = {[m
+   images: {[m
+     qualities: [25, 50, 75, 95],[m
+[32m+[m[32m    domains: [[m
+[32m+[m[32m      'res.cloudinary.com', // Dominio de Cloudinary para imágenes[m
+[32m+[m[32m    ],[m
+   },[m
+ };[m
+ [m
+[1mdiff --git a/src/components/superAdmin/ManageExercises/ExercisesManagement.tsx b/src/components/superAdmin/ManageExercises/ExercisesManagement.tsx[m
+[1mindex c572dc2..6d12dfa 100644[m
+[1m--- a/src/components/superAdmin/ManageExercises/ExercisesManagement.tsx[m
+[1m+++ b/src/components/superAdmin/ManageExercises/ExercisesManagement.tsx[m
+[36m@@ -20,38 +20,25 @@[m [minterface Exercise {[m
+   image_url?: string; // Nueva columna para Cloudinary[m
+   created_at: string;[m
+   updated_at: string;[m
+[31m-}[m
+[31m-[m
+[31m-interface Class {[m
+[31m-  id: string;[m
+[31m-  title: string;[m
+[31m-  date: string;[m
+[31m-  startTime: string;[m
+[31m-  endTime: string;[m
+[31m-  capacity: number;[m
+[31m-  trainerName?: string;[m
+[31m-  trainerId?: string;[m
+[32m+[m[32m  // Campos para clases[m
+[32m+[m[32m  title?: string;[m
+[32m+[m[32m  date?: string;[m
+[32m+[m[32m  startTime?: string;[m
+[32m+[m[32m  endTime?: string;[m
+[32m+[m[32m  capacity?: number;[m
+   location?: string;[m
+   description?: string;[m
+[31m-  is_active: boolean;[m
+[31m-  image_url?: string; // Nueva columna para Cloudinary[m
+[31m-  created_at: string;[m
+[31m-  updated_at: string;[m
+ }[m
+ [m
+[31m-type ContentType = "exercises" | "classes";[m
+[31m-type ExerciseCategory = "hipertrofia" | "fuerza" | "resistencia";[m
+[32m+[m[32mtype ExerciseCategory = "hipertrofia" | "fuerza" | "resistencia" | "clases";[m
+ [m
+ const ExercisesManagement: React.FC = () => {[m
+   const [exercises, setExercises] = useState<Exercise[]>([]);[m
+[31m-  // const [classes, setClasses] = useState<Class[]>([]); // No se usa actualmente[m
+   const [loading, setLoading] = useState(true);[m
+   const [error, setError] = useState<string | null>(null);[m
+   const [editingExercise, setEditingExercise] = useState<Exercise | null>(null);[m
+[31m-  const [editingClass, setEditingClass] = useState<Class | null>(null);[m
+[31m-  const [formData, setFormData] = useState<Partial<Exercise & Class>>({});[m
+[32m+[m[32m  const [formData, setFormData] = useState<Partial<Exercise>>({});[m
+   const [showAddForm, setShowAddForm] = useState(false);[m
+[31m-  const [contentType, setContentType] = useState<ContentType>("exercises");[m
+   const [exerciseCategory, setExerciseCategory] =[m
+     useState<ExerciseCategory>("hipertrofia");[m
+   const [selectedImage, setSelectedImage] = useState<File | null>(null);[m
+[36m@@ -362,148 +349,130 @@[m [mconst ExercisesManagement: React.FC = () => {[m
+       </div>[m
+ [m
+       {/* Formulario de agregar/editar */}[m
+[31m-      {(showAddForm || editingExercise || editingClass) && ([m
+[32m+[m[32m      {(showAddForm || editingExercise) && ([m
+         <div className={styles.formContainer}>[m
+           <h3>[m
+             {editingExercise[m
+               ? "Editar Ejercicio"[m
+[31m-              : editingClass[m
+[31m-              ? "Editar Clase"[m
+[32m+[m[32m              : exerciseCategory === "clases"[m
+[32m+[m[32m              ? "Agregar Clase"[m
+               : "Agregar Ejercicio"}[m
+           </h3>[m
+ [m
+           <div className={styles.formGrid}>[m
+[31m-            {/* Primera decisión: Ejercicios o Clases */}[m
+[31m-            <div className={styles.contentTypeSelector}>[m
+[31m-              <h4>¿Qué tipo de contenido deseas agregar?</h4>[m
+[31m-              <div className={styles.contentTypeButtons}>[m
+[32m+[m[32m            {/* Selección directa de categoría */}[m
+[32m+[m[32m            <div className={styles.categorySelector}>[m
+[32m+[m[32m              <h4>Selecciona el tipo de contenido:</h4>[m
+[32m+[m[32m              <div className={styles.categoryButtons}>[m
+                 <button[m
+[31m-                  className={`${styles.contentTypeButton} ${[m
+[31m-                    contentType === "exercises" ? styles.active : ""[m
+[32m+[m[32m                  className={`${styles.categoryButton} ${[m
+[32m+[m[32m                    exerciseCategory === "hipertrofia" ? styles.active : ""[m
+                   }`}[m
+[31m-                  onClick={() => setContentType("exercises")}[m
+[32m+[m[32m                  onClick={() => setExerciseCategory("hipertrofia")}[m
+                 >[m
+[31m-                  Ejercicios[m
+[32m+[m[32m                  Hipertrofia[m
+                 </button>[m
+                 <button[m
+[31m-                  className={`${styles.contentTypeButton} ${[m
+[31m-                    contentType === "classes" ? styles.active : ""[m
+[32m+[m[32m                  className={`${styles.categoryButton} ${[m
+[32m+[m[32m                    exerciseCategory === "fuerza" ? styles.active : ""[m
+                   }`}[m
+[31m-                  onClick={() => setContentType("classes")}[m
+[32m+[m[32m                  onClick={() => setExerciseCategory("fuerza")}[m
+[32m+[m[32m                >[m
+[32m+[m[32m                  Fuerza[m
+[32m+[m[32m                </button>[m
+[32m+[m[32m                <button[m
+[32m+[m[32m                  className={`${styles.categoryButton} ${[m
+[32m+[m[32m                    exerciseCategory === "resistencia" ? styles.active : ""[m
+[32m+[m[32m                  }`}[m
+[32m+[m[32m                  onClick={() => {[m
+[32m+[m[32m                    setExerciseCategory("resistencia");[m
+[32m+[m[32m                    // Establecer valores automáticos para resistencia[m
+[32m+[m[32m                    setFormData({[m
+[32m+[m[32m                      ...formData,[m
+[32m+[m[32m                      categoria: "Resistencia",[m
+[32m+[m[32m                      grupo: "Integral",[m
+[32m+[m[32m                    });[m
+[32m+[m[32m                  }}[m
+[32m+[m[32m                >[m
+[32m+[m[32m                  Resistencia[m
+[32m+[m[32m                </button>[m
+[32m+[m[32m                <button[m
+[32m+[m[32m                  className={`${styles.categoryButton} ${[m
+[32m+[m[32m                    exerciseCategory === "clases" ? styles.active : ""[m
+[32m+[m[32m                  }`}[m
+[32m+[m[32m                  onClick={() => setExerciseCategory("clases")}[m
+                 >[m
+                   Clases[m
+                 </button>[m
+               </div>[m
+             </div>[m
+ [m
+[31m-            {/* Segunda decisión para Ejercicios: Categoría - Solo visible después de seleccionar Ejercicios */}[m
+[31m-            {contentType === "exercises" && ([m
+[31m-              <div className={styles.categorySelector}>[m
+[31m-                <h4>Selecciona la categoría del ejercicio:</h4>[m
+[31m-                <div className={styles.categoryButtons}>[m
+[31m-                  <button[m
+[31m-                    className={`${styles.categoryButton} ${[m
+[31m-                      exerciseCategory === "hipertrofia" ? styles.active : ""[m
+[31m-                    }`}[m
+[31m-                    onClick={() => setExerciseCategory("hipertrofia")}[m
+[31m-                  >[m
+[31m-                    Hipertrofia[m
+[31m-                  </button>[m
+[31m-                  <button[m
+[31m-                    className={`${styles.categoryButton} ${[m
+[31m-                      exerciseCategory === "fuerza" ? styles.active : ""[m
+[31m-                    }`}[m
+[31m-                    onClick={() => setExerciseCategory("fuerza")}[m
+[32m+[m[32m            {/* Campos específicos para Hipertrofia */}[m
+[32m+[m[32m            {exerciseCategory === "hipertrofia" && ([m
+[32m+[m[32m              <>[m
+[32m+[m[32m                <div className={styles.formGroup}>[m
+[32m+[m[32m                  <label>Nombre del Ejercicio:</label>[m
+[32m+[m[32m                  <input[m
+[32m+[m[32m                    type="text"[m
+[32m+[m[32m                    value={formData.ejercicio || ""}[m
+[32m+[m[32m                    onChange={(e) =>[m
+[32m+[m[32m                      setFormData({ ...formData, ejercicio: e.target.value })[m
+[32m+[m[32m                    }[m
+[32m+[m[32m                    placeholder="Ej: Press de banca con barra"[m
+[32m+[m[32m                  />[m
+[32m+[m[32m                </div>[m
+[32m+[m
+[32m+[m[32m                <div className={styles.formGroup}>[m
+[32m+[m[32m                  <label>Grupo Muscular:</label>[m
+[32m+[m[32m                  <select[m
+[32m+[m[32m                    value={formData.grupo || ""}[m
+[32m+[m[32m                    onChange={(e) =>[m
+[32m+[m[32m                      setFormData({ ...formData, grupo: e.target.value })[m
+[32m+[m[32m                    }[m
+                   >[m
+[31m-                    Fuerza[m
+[31m-                  </button>[m
+[31m-                  <button[m
+[31m-                    className={`${styles.categoryButton} ${[m
+[31m-                      exerciseCategory === "resistencia" ? styles.active : ""[m
+[31m-                    }`}[m
+[31m-                    onClick={() => {[m
+[31m-                      setExerciseCategory("resistencia");[m
+[31m-                      // Establecer valores automáticos para resistencia[m
+[32m+[m[32m                    <option value="">Seleccionar grupo</option>[m
+[32m+[m[32m                    <option value="PECHO">PECHO</option>[m
+[32m+[m[32m                    <option value="BRAZO">BRAZO</option>[m
+[32m+[m[32m                    <option value="TRICEP">TRICEP</option>[m
+[32m+[m[32m                    <option value="ESPALDA">ESPALDA</option>[m
+[32m+[m[32m                    <option value="PIERNA">PIERNA</option>[m
+[32m+[m[32m                  </select>[m
+[32m+[m[32m                </div>[m
+[32m+[m
+[32m+[m[32m                <div className={styles.formGroup}>[m
+[32m+[m[32m                  <label>Series:</label>[m
+[32m+[m[32m                  <input[m
+[32m+[m[32m                    type="number"[m
+[32m+[m[32m                    value={formData.hipertrofia_series || ""}[m
+[32m+[m[32m                    onChange={(e) =>[m
+                       setFormData({[m
+                         ...formData,[m
+[31m-                        categoria: "Resistencia",[m
+[31m-                        grupo: "Integral",[m
+[31m-                      });[m
+[31m-                    }}[m
+[31m-                  >[m
+[31m-                    Resistencia[m
+[31m-                  </button>[m
+[32m+[m[32m                        hipertrofia_series: parseInt(e.target.value),[m
+[32m+[m[32m                      })[m
+[32m+[m[32m                    }[m
+[32m+[m[32m                    placeholder="Ej: 4"[m
+[32m+[m[32m                  />[m
+                 </div>[m
+[31m-              </div>[m
+[32m+[m
+[32m+[m[32m                <div className={styles.formGroup}>[m
+[32m+[m[32m                  <label>Repeticiones:</label>[m
+[32m+[m[32m                  <input[m
+[32m+[m[32m                    type="number"[m
+[32m+[m[32m                    value={formData.hipertrofia_repeticiones || ""}[m
+[32m+[m[32m                    onChange={(e) =>[m
+[32m+[m[32m                      setFormData({[m
+[32m+[m[32m                        ...formData,[m
+[32m+[m[32m                        hipertrofia_repeticiones: parseInt(e.target.value),[m
+[32m+[m[32m                      })[m
+[32m+[m[32m                    }[m
+[32m+[m[32m                    placeholder="Ej: 10"[m
+[32m+[m[32m                  />[m
+[32m+[m[32m                </div>[m
+[32m+[m[32m              </>[m
+             )}[m
+ [m
+[31m-            {/* Campos específicos para Hipertrofia - Solo visible después de seleccionar Ejercicios + Hipertrofia */}[m
+[31m-            {contentType === "exercises" &&[m
+[31m-              exerciseCategory === "hipertrofia" && ([m
+[31m-                <>[m
+[31m-                  <div className={styles.formGroup}>[m
+[31m-                    <label>Nombre del Ejercicio:</label>[m
+[31m-                    <input[m
+[31m-                      type="text"[m
+[31m-                      value={formData.ejercicio || ""}[m
+[31m-                      onChange={(e) =>[m
+[31m-                        setFormData({ ...formData, ejercicio: e.target.value })[m
+[31m-                      }[m
+[31m-                      placeholder="Ej: Press de banca con barra"[m
+[31m-                    />[m
+[31m-                  </div>[m
+[31m-[m
+[31m-                  <div className={styles.formGroup}>[m
+[31m-                    <label>Grupo Muscular:</label>[m
+[31m-                    <select[m
+[31m-                      value={formData.grupo || ""}[m
+[31m-                      onChange={(e) =>[m
+[31m-                        setFormData({ ...formData, grupo: e.target.value })[m
+[31m-                      }[m
+[31m-                    >[m
+[31m-                      <option value="">Seleccionar grupo</option>[m
+[31m-                      <option value="PECHO">PECHO</option>[m
+[31m-                      <option value="BRAZO">BRAZO</option>[m
+[31m-                      <option value="TRICEP">TRICEP</option>[m
+[31m-                      <option value="ESPALDA">ESPALDA</option>[m
+[31m-                      <option value="PIERNA">PIERNA</option>[m
+[31m-                    </select>[m
+[31m-                  </div>[m
+[31m-[m
+[31m-                  <div className={styles.formGroup}>[m
+[31m-                    <label>Series:</label>[m
+[31m-                    <input[m
+[31m-                      type="number"[m
+[31m-                      value={formData.hipertrofia_series || ""}[m
+[31m-                      onChange={(e) =>[m
+[31m-                        setFormData({[m
+[31m-                          ...formData,[m
+[31m-                          hipertrofia_series: parseInt(e.target.value),[m
+[31m-                        })[m
+[31m-                      }[m
+[31m-                      placeholder="Ej: 4"[m
+[31m-                    />[m
+[31m-                  </div>[m
+[31m-[m
+[31m-                  <div className={styles.formGroup}>[m
+[31m-                    <label>Repeticiones:</label>[m
+[31m-                    <input[m
+[31m-                      type="number"[m
+[31m-                      value={formData.hipertrofia_repeticiones || ""}[m
+[31m-                      onChange={(e) =>[m
+[31m-                        setFormData({[m
+[31m-                          ...formData,[m
+[31m-                          hipertrofia_repeticiones: parseInt(e.target.value),[m
+[31m-                        })[m
+[31m-                      }[m
+[31m-                      placeholder="Ej: 10"[m
+[31m-                    />[m
+[31m-                  </div>[m
+[31m-                </>[m
+[31m-              )}[m
+[31m-[m
+[31m-            {/* Campos específicos para Fuerza - Solo visible después de seleccionar Ejercicios + Fuerza */}[m
+[31m-            {contentType === "exercises" && exerciseCategory === "fuerza" && ([m
+[32m+[m[32m            {/* Campos específicos para Fuerza */}[m
+[32m+[m[32m            {exerciseCategory === "fuerza" && ([m
+               <>[m
+                 <div className={styles.formGroup}>[m
+                   <label>Nombre del Ejercic
